@@ -24,6 +24,7 @@
 enum E_GAME_SCENE
 {
 	GAME_SCENE_TITLE,	// タイトル画面.
+	GAME_SCENE_SELECT,	// タイトル画面.
 	GAME_SCENE_STORY,	// ゲーム中(協力)
 	GAME_SCENE_BUTTLE,	// ゲーム中(対戦)
 	GAME_SCENE_OVER,	// ゲームオーバー 
@@ -65,18 +66,21 @@ public:
 	void InitGame();		// ゲーム状態を初期化.
 	HRESULT InitFont();		// Font 初期化
 	void TitleInit();		// タイトル画面初期化
-
+	void SelectInit();		// セレクトシーンの初期化
+	
 	void Release();			// リソース解放.
 
 	BOOL UpdateMain();		// 更新メイン.
 
 	void UpdateScene();      // 全てのシーンの更新処理
 	void UpdateTitle();     // タイトル画面用の更新処理
+	void UpdateSelect();   // セレクト画面用の更新処理
 	void UpdateStory();       // 協力用の更新処理
 	void UpdateResult();      // リザルト画面用の更新処理
 	
 	void DrawScene();		 // 全てのシーンの描画処理
 	void DrawTitle();		// タイトル画面描画
+	void DrawSelect();
 	void DrawResult();      // リザルト画面描画
 	void DrawStory();		// 協力用画面描画
 	void DrawMain();		// 描画メイン.

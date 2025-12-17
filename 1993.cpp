@@ -223,7 +223,12 @@ BOOL MyApp::LoadResource()
 			 ,_T("img/tile/distance_32.png")
 			 ,_T("img/tile/spanner_32.png")
 			 ,_T("img/post.png")
-			};
+
+			,_T("img/TEST.png")
+			,_T("img/logo.png")
+			,_T("img/image.png")
+
+		};
 		//static_assert(_countof(pszTexName)==TEX_COUNT,"" ):
 		for (int i = 0; i < TEX_COUNT; i++) {
 			LoadTexture(m_pDev, pszTexName[i], &m_pTex[i]);
@@ -281,18 +286,43 @@ void MyApp::Release()
 	if (m_pD3D)	m_pD3D->Release();
 }
 
+// Title
 void MyApp::TitleInit() {
 	m_gameScene = GAME_SCENE_BEGIN;
 }
+
 void MyApp::UpdateTitle()
 {
 	MyInput* pInput = GetInputInst();
-	// 何かキーが押されたらゲームシーンへ
-	if (pInput->IsPushKeyOne(DIK_TAB)) {
+	// デバッグ用 : Enterキーでゲームシーンへ
+	if (pInput->IsPushKeyOne(DIK_RETURN)) {
 		/*m_gameScene = GAME_SCENE_STORY;*/
-		ChangeScene(GAME_SCENE_STORY);
+		ChangeScene(GAME_SCENE_SELECT);
 		printf("Enter");
 	}
+
+	//MyInput* pInput = GetInputInst();
+	//// 何かキーが押されたらゲームシーンへ
+	//bool isAnyKeyPressed = false;
+	//for (int i = 0; i < 256; ++i) {
+	//	if (pInput->IsPushKeyOne(i)) {
+	//		isAnyKeyPressed = true;
+	//		break;
+	//	}
+	//}
+	// コントローラーは2つ引数必要
+	/*for (int i = 0; i < 30; ++i) {
+		if (pInput->IsPushBtnOne(i)) {
+			isAnyKeyPressed = true;
+			break;
+		}
+	}*/
+	//if (isAnyKeyPressed = true) {
+	//	/*m_gameScene = GAME_SCENE_STORY;*/
+	//	ChangeScene(GAME_SCENE_STORY);
+	//	printf("キー入力 o");
+	//}
+
 }
 //タイトル画面を描画
 void MyApp::DrawTitle()
@@ -387,6 +417,38 @@ void MyApp::DrawTitle()
 	// シーンの描画を終了.
 	m_pDev->EndScene();
 }
+void MyApp::SelectInit()
+{
+	m_gameScene = GAME_SCENE_SELECT;
+}
+void MyApp::UpdateSelect() 
+{
+	MyInput* pInput = GetInputInst();
+	// デバッグ用 : Enterキーでゲームシーンへ
+	if (pInput->IsPushKeyOne(DIK_RETURN)) {
+		/*m_gameScene = GAME_SCENE_STORY;*/
+		ChangeScene(GAME_SCENE_STORY);
+		printf("Enter");
+	}
+}
+void MyApp::DrawSelect()
+{	
+	//Select messsage
+	//背景
+	// 背景色を決める。RGB=(0,0,255)とする.-
+	D3DCOLOR rgb = D3DCOLOR_XRGB(0, 128, 128);
+	// 画面全体を消去.
+	m_pDev->Clear(0, NULL, D3DCLEAR_TARGET, rgb, 1.0f, 0);
+	// 描画を開始（シーン描画の開始）.
+	m_pDev->BeginScene();
+	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
+	D3DXMATRIX identity;
+	D3DXMatrixIdentity(&identity);
+	m_pSpr->SetTransform(&identity);
+	//シーンの描画を終了.
+	m_pSpr->End();
+	m_pDev->EndScene();
+}
 
 void MyApp::ChangeScene(E_GAME_SCENE nextScene)
 {
@@ -395,6 +457,9 @@ void MyApp::ChangeScene(E_GAME_SCENE nextScene)
 	{
 	case GAME_SCENE_TITLE:
 		this->TitleInit(); // タイトル初期化関数を呼ぶ
+		break;
+	case GAME_SCENE_SELECT:
+		this->SelectInit(); // タイトル初期化関数を呼ぶ
 		break;
 	case GAME_SCENE_STORY:
 		/*case GAME_SCENE_BUTTLE:*/
@@ -417,7 +482,9 @@ void MyApp::UpdateScene()
 	{
 	case GAME_SCENE_TITLE:
 		this->UpdateTitle();
-
+		break;
+	case GAME_SCENE_SELECT:
+		this->UpdateSelect();
 		break;
 	case GAME_SCENE_STORY:
 		/*case GAME_SCENE_BUTTLE:*/
@@ -440,6 +507,9 @@ void MyApp::DrawScene()
 	{
 	case GAME_SCENE_TITLE:
 		this->DrawTitle();
+		break;
+	case GAME_SCENE_SELECT:
+		this->DrawSelect();
 		break;
 
 	case GAME_SCENE_STORY:
@@ -558,9 +628,9 @@ void MyApp::DrawStory() {
 void MyApp::UpdateResult()
 {
 	MyInput* pInput = GetInputInst();
-	if (pInput->IsPushKeyOne(DIK_TAB)) {
+	if (pInput->IsPushKeyOne(DIK_RETURN)) {
 		this->ChangeScene(GAME_SCENE_RESULT);
-		printf("Key");
+		printf("push Enterkey");
 	}
 }
 
@@ -573,15 +643,18 @@ void MyApp::DrawResult() {
 	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
 	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();
 	ID3DXSprite* pSpr = GetAppInst()->GetDxSpr();
-	IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_TITLE);
-
-	// 背景画像の描画
-	m_pSpr->Draw(pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
-
-	m_pSpr->End();
-	RECT rcWIN = {};
+	//IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_TITLE);
+	//// 背景画像の描画
+	//m_pSpr->Draw(pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
+	//m_pSpr->End();
+	
+	ID3DXFont* font = GetAppInst()->GetFont();
+	// テキスト表示
+	RECT rcWIN = { -30, -300, WIDTH, HEIGHT };
 	// 誰が勝利したか表示する(gamesceneで勝った人)
-	//font->DrawText(nullptr, L"%sの勝利", &, -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
+	//font->DrawText(nullptr, L" PL :勝利", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
+	//RECT rcSelect = { -30, 0, WIDTH, HEIGHT };
+	//font->DrawText(nullptr, L"もう一度戦う", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 	// 次の画面遷移を提示する (操作はどのPLができるか)
 	m_pDev->EndScene();
 }

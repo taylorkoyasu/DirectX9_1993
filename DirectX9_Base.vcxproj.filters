@@ -93,4 +93,297 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="img\tile\distance_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\expo_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\hako_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\hpB_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\ishi_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\ishi1_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\ishi2_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\ishi3_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\kareki_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\ki_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\kusa_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\numa_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\oil_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\playerAAA_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\playerBBB_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\playerBullets_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\playerCCC_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\playerDDD_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\post.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\spanner_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\speed_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\tsuchi_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tile\umi_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAANATION_224.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAANATION_224C.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAANATION_224CC.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAANATION_224CCC.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAAP.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAAPOTO.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAAPOTO_64.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAAPOTO_96.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\AAAPOTO_128.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\balkenkreuz.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\BBBNATION_224C.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\BBBPOTO_96.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\BBBPOTO_128.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi - コピー.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi_0.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi_1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi_2.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi_3.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi2.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi3.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\block_ishi4.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\CCCNATION_224C.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\CCCPOTO_96.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\CCCPOTO_128.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\ChatGPT Image 2025年12月3日 14_24_09.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\ChatGPT Image 2025年12月3日 15_36_11.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\ChatGPT Image 2025年12月4日 13_29_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\DDDNATION_224C.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\DDDPOTO_96.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\DDDPOTO_128.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\DDDPOTO_128C.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\fontBitmap.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\fontBitmap_64r.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\grass.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\hammer-sickle.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\image.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\image1.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\iron-cross.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\ki_02_01.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\ki_02_02.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\ki_kareki.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\maptile_numa.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\maptile_sogen_01.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\maptile_tsuchi_02.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\maptile_umi_02.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\mark_heart_red.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\numa.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\PILOT_HPMARK_24.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\player.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\playerAAA_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\playerBBB_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\playerCCC_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\playerDDD_32.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\post.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\ringed-tentacle.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\Spanner.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\sunrise (1).png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\sunrise.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\TANK_HPMARK_24.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tank_r.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\TANK_RINGMARK_24.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\TANK_SPEEDMARK_24.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tank-tread.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\torpedo.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\treasure_red_silver.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\tree.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\usa-flag.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\z_pt1_爱给网_aigei_com.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\地雷(Land mines)_爱给网_aigei_com.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\爆炸(Explode)_爱给网_aigei_com.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="img\弹药(ammo)_爱给网_aigei_com.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="img\image - コピー.psd" />
+    <None Include="img\image.psd" />
+    <None Include="img\layout_size.psd" />
+    <None Include="img\post.psd" />
+  </ItemGroup>
 </Project>
