@@ -27,6 +27,7 @@ void PlayerBBB::Init(Field* f) {
 	m_maxBullets = 3;
 
 	m_bullets.reserve(3);
+	m_tstatus.ring = E_RING_VSHORT;
 }
 void PlayerBBB::Move() {
 
@@ -41,6 +42,7 @@ void PlayerBBB::Move() {
 			m_bullets[i].Move();
 			m_bullets[i].BulletJudge();
 			m_bullets[i].BulletArea();
+			m_bullets[i].BulletAreaRange(m_tstatus.ring);
 		}
 	}
 
@@ -479,7 +481,7 @@ void PlayerBBB::DrawTankSpeed() {
 
 }
 
-void PlayerBBB::DrawPilotMark() {
+void PlayerBBB::DrawBulletMark() {
 
 	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D デバイスの確認
 	assert(m_pDev != NULL && "Direct3D デバイスが初期化されていません");
@@ -487,7 +489,7 @@ void PlayerBBB::DrawPilotMark() {
 	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// スプライトオブジェクトの確認
 	assert(m_pSpr != NULL && "ID3DXSprite オブジェクトが初期化されていません");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKPILOTMARK);// テクスチャの確認
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKMAXBULLETMARK);// テクスチャの確認
 	assert(m_pTex != NULL && "ID3DTex オブジェクトが初期化されていません");
 
 	RECT rc = { 0,  0, 24, 24 };

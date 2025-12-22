@@ -33,7 +33,8 @@ enum E_BOX_ITEM {
 	BOX_ITEM_NONE, 
 	BOX_ITEM_MOVE,     //ˆÚ“®‘¬“x
 	BOX_ITEM_DISTANCE, //ŽË’ö‹——£
-	BOX_ITEM_HP		   //HP‰ñ•œ
+	BOX_ITEM_HP,		   //HP‰ñ•œ
+	BOX_ITEM_BULLET   //’e‚ÌãŒÀ
 };
 
 

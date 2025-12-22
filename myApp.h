@@ -125,7 +125,7 @@ private:
 	PlayerCCC m_pCCC; 
 	PlayerDDD m_pDDD; 
 	
-	void CheckPlayerItemHit();
+	void CheckPlayerItemHit();//アイテム取得チェック
 	
 #if defined(_DEBUG)
 	// デバッグ情報の表示.

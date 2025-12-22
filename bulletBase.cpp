@@ -5,6 +5,7 @@
 void BulletBase::Init (Vector2 cpos, int r, int max, int bsp, int bdam,int angle,bool alive, int facing,Field* f) {
 
 	m_bullet.pos = cpos;
+    m_startPos = cpos;
 	m_bullet.radius = r;
 	m_bullet.maxBulets = max;
 	m_bullet.bulletSpeed = bsp;
@@ -13,7 +14,9 @@ void BulletBase::Init (Vector2 cpos, int r, int max, int bsp, int bdam,int angle
     m_bullet.bulletFacing = facing;
     m_bullet.isAlive = alive;
 
+
     m_pfield = f;
+
 }
 
 // 0  1  2  3 
@@ -82,20 +85,37 @@ void BulletBase::Move() {
     }
     
 }
-
+//4つのパータンする やや短い→短い→中→長
 void BulletBase::BulletArea() {
 
     const int top = (HEIGHT - ROWS * FIELD_SIZE) / 2 + FIELD_SIZE / 2;
     const int down = (HEIGHT + ROWS * FIELD_SIZE) / 2 - FIELD_SIZE / 2;
     const int left = (WIDTH - COLS * FIELD_SIZE) / 2 + FIELD_SIZE / 2;
     const int right = (WIDTH + COLS * FIELD_SIZE) / 2 - FIELD_SIZE / 2;
-	const int offset = 16;
-    if (m_bullet.pos.y < top- offset)   m_bullet.isAlive = false;
-    if (m_bullet.pos.y > down+ offset)  m_bullet.isAlive = false;
-    if (m_bullet.pos.x < left- offset)  m_bullet.isAlive = false;
-    if (m_bullet.pos.x > right+ offset) m_bullet.isAlive = false;
+    const int offset = 16;
 
+
+    if (m_bullet.pos.y < top - offset)   m_bullet.isAlive = false;
+    if (m_bullet.pos.y > down + offset)  m_bullet.isAlive = false;
+    if (m_bullet.pos.x < left - offset)  m_bullet.isAlive = false;
+    if (m_bullet.pos.x > right + offset) m_bullet.isAlive = false;
+  
+    }
+
+void BulletBase::BulletAreaRange(E_TANK_RING ring) {
+
+    float dx = m_bullet.pos.x - m_startPos.x;//弾現位置　弾開始位置 
+    float dy = m_bullet.pos.y - m_startPos.y;
+    float distSq = dx * dx + dy * dy;//距離を取得
+
+    float maxRange = GetMaxRange(ring);//最大距離を取得
+
+    if (distSq > maxRange * maxRange)//超えた場合
+    {
+        m_bullet.isAlive = false;
+    }
 }
+
 
 void BulletBase::BulletJudge()
 {
@@ -156,4 +176,20 @@ void BulletBase::BulletJudge()
 
 		m_bullet.isAlive = false;
 	}
+}
+
+float  BulletBase::GetMaxRange(E_TANK_RING ring) {
+
+    switch (ring)
+    {
+        //1マス32*32
+    case E_RING_VSHORT: return 128.0f;  // 4  マス
+    case E_RING_SHORT:  return 256.0f;  // 8  マス
+    case E_RING_VMID:   return 384.0f;  // 12 マス
+    case E_RING_MID:    return 512.0f;  // 16 マス
+    case E_RING_VLONG:  return 640.0f;  // 20 マス
+    case E_RING_LONG:   return 768.0f;  // 24 マス
+    
+    }
+    return 128.0f;
 }

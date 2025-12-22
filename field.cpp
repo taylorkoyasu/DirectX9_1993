@@ -332,6 +332,7 @@ void Field::DrawItems() {
             int texID = 0;
             switch (item)
             {
+            case BOX_ITEM_BULLET:   texID = TEX_BULLET_UP;break;
             case BOX_ITEM_MOVE:     texID = TEX_MOVE_UP;break;
             case BOX_ITEM_DISTANCE: texID = TEX_DIS_UP ;break;
             case BOX_ITEM_HP:       texID = TEX_HP_UP  ;break;
@@ -355,13 +356,15 @@ E_BOX_ITEM Field::RandomDrop() {
 
 
     int weights[] = {
-       25, // MOVE
-       25, // DISTANCE
-       50  // HP
+       10, //BULLET
+       30, // MOVE
+       30, // DISTANCE
+       30  // HP
+
     };
 
     int total = 0;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
         total += weights[i];
     }
@@ -370,13 +373,18 @@ E_BOX_ITEM Field::RandomDrop() {
     int r = rand() % total;//1‚©‚ç100
 
  
+    
+
     if (r < weights[0]) 
-        return BOX_ITEM_MOVE;
+        return BOX_ITEM_BULLET;
     r -= weights[0];
 
-    if (r < weights[1]) return BOX_ITEM_DISTANCE;
+    if (r < weights[1]) return BOX_ITEM_MOVE;
     r -= weights[1];
     
+    if (r < weights[2]) return BOX_ITEM_DISTANCE;
+    r -= weights[2];
+
     return BOX_ITEM_HP;
 
 }

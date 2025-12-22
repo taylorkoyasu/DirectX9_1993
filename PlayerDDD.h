@@ -46,5 +46,5 @@ public:
 	void DrawTankMark();
 	void DrawTankRing();
 	void DrawTankSpeed();
-	void DrawPilotMark();
+	void DrawBulletMark();
 };

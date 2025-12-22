@@ -86,3 +86,32 @@ void TankBase::AddMoveSpeed(float speed) {
 
 
 }
+
+void TankBase::AddHp(int hp) {
+
+    
+    m_tstatus.hp += hp;
+    if (m_tstatus.hp >= 15) {
+        m_tstatus.hp = 15;
+    }
+}
+
+void TankBase::AddRing() {
+
+    if (m_tstatus.ring < E_RING_LONG)
+    {
+        m_tstatus.ring = static_cast<E_TANK_RING>(
+            static_cast<int>(m_tstatus.ring) + 1);
+    }
+}
+
+void TankBase::AddMaxBullet() {
+
+    const int MaxBullets = 4;
+    if (m_tstatus.maxBullet < MaxBullets) {
+
+        m_tstatus.maxBullet++;
+
+
+    }
+}

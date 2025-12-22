@@ -11,7 +11,19 @@ struct Vector2
 	float  y;
 
 };
-//タンク
+enum E_TANK_RING
+{
+	E_RING_VSHORT,  //4
+	E_RING_SHORT,	//8
+	E_RING_VMID,	//12
+	E_RING_MID,		//16
+	E_RING_LONG,	//20
+	E_RING_VLONG    //24
+	             
+};
+
+
+//タンク(戦車)
 struct TankStatus
 {
 	Vector2 pos;   //座標
@@ -21,6 +33,10 @@ struct TankStatus
 	float angle;   // 90 180 270 360
 	int alpha;     //255不透明　0完全透明
 	bool isDead;   //生存
+
+	//3期追加
+	E_TANK_RING ring;
+	int maxBullet;
 };
 
 class TankBase {
@@ -39,7 +55,8 @@ protected:
 		m_tstatus.angle = 0;
 		m_tstatus.alpha = 255;
 		m_tstatus.isDead = false;
-
+		m_tstatus.ring = E_RING_VSHORT;
+		m_tstatus.maxBullet = 1;
 		// _tprintf(_T("call PlayerBase constractor\n"));
 	}
 public:
@@ -70,5 +87,7 @@ public:
 	//アイテム取得するための関数
 
 	void AddMoveSpeed(float speed);
-		
+	void AddHp(int hp);
+	void AddRing();
+	void AddMaxBullet();
 };

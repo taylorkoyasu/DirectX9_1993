@@ -211,7 +211,7 @@ BOOL MyApp::LoadResource()
 		     ,_T("img/TANK_HPMARK_24.png")
 		     ,_T("img/TANK_RINGMARK_24.png")
 		     ,_T("img/TANK_SPEEDMARK_24.png")
-		     ,_T("img/PILOT_HPMARK_24.png")
+		     ,_T("img/TANK_MAXBULLETMARK_24.png")
 		     ,_T("img/BBBPOTO_128.png")
 		     ,_T("img/BBBNATION_224C.png")
 		     ,_T("img/CCCPOTO_128.png")
@@ -222,6 +222,8 @@ BOOL MyApp::LoadResource()
 			 ,_T("img/tile/speed_32.png")
 			 ,_T("img/tile/distance_32.png")
 			 ,_T("img/tile/spanner_32.png")
+			 ,_T("img/tile/bullet_32.png")
+
 			 ,_T("img/post.png")
 
 			,_T("img/TEST.png")
@@ -577,7 +579,7 @@ void MyApp::DrawStory() {
 		m_pAAA.DrawTankMark();
 		m_pAAA.DrawTankRing();
 		m_pAAA.DrawTankSpeed();
-		m_pAAA.DrawPilotMark();
+		m_pAAA.DrawBulletMark();
 		//P2
 		m_pSpr->SetTransform(&identity);
 		m_pBBB.Draw(TEX_PBBB);
@@ -588,7 +590,7 @@ void MyApp::DrawStory() {
 		m_pBBB.DrawTankMark();
 		m_pBBB.DrawTankRing();
 		m_pBBB.DrawTankSpeed();
-		m_pBBB.DrawPilotMark();
+		m_pBBB.DrawBulletMark();
 		//p3
 		m_pSpr->SetTransform(&identity);
 		m_pCCC.Draw(TEX_PCCC);
@@ -599,7 +601,7 @@ void MyApp::DrawStory() {
 		m_pCCC.DrawTankMark();
 		m_pCCC.DrawTankRing();
 		m_pCCC.DrawTankSpeed();
-		m_pCCC.DrawPilotMark();
+		m_pCCC.DrawBulletMark();
 		//p4
 		m_pSpr->SetTransform(&identity);
 		m_pDDD.Draw(TEX_PDDD);
@@ -610,7 +612,7 @@ void MyApp::DrawStory() {
 		m_pDDD.DrawTankMark();
 		m_pDDD.DrawTankRing();
 		m_pDDD.DrawTankSpeed();
-		m_pDDD.DrawPilotMark();
+		m_pDDD.DrawBulletMark();
 
 #if defined(_DEBUG)
 		DrawDebugInfo();// デバッグ情報の表示.
@@ -887,18 +889,23 @@ void MyApp::CheckPlayerItemHit()
 		// ★ アイテム効果
 		switch (item)
 		{
+		case BOX_ITEM_BULLET:
+			tank->AddMaxBullet();
+			break;
+		
 		case BOX_ITEM_MOVE:
-			tank->AddMoveSpeed(0.3f*50);
+			tank->AddMoveSpeed(0.3f);
 			break;
 
 		case BOX_ITEM_DISTANCE:
-			//tank->AddShotRange(20);
+			tank->AddRing();
 			break;
 
 		case BOX_ITEM_HP:
-			//tank->AddHp(3);
+			tank->AddHp(3);
 			break;
 		}
+
 
 		// ★ delete アイテム
 		item = BOX_ITEM_NONE;
