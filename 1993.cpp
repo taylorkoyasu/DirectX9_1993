@@ -225,8 +225,8 @@ BOOL MyApp::LoadResource()
 			 ,_T("img/tile/bullet_32.png")
 
 			/* ,_T("img/post.png")*/
-			,_T("img/TEST.png")		// タイトル画像
-			,_T("img/logo_1993.png")		// ロゴ画像
+			,_T("img/TEST.png")		   // タイトル画像
+			,_T("img/logo_1993.png")   // ロゴ画像
 			/*,_T("img/image.png")*/
 
 		};
