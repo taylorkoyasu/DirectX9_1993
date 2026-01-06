@@ -29,3 +29,4 @@
 #include "tankBase.h"
 #include "bulletBase.h"
 #include "pilotBase.h"
+#include "SceneManager.h"

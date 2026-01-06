@@ -3,7 +3,7 @@
 #include "myApp.h"
 //#include "filed.h"
 //KJJ V
-#define FULLSCREEN
+//#define FULLSCREEN
 
 //#if !defined(_DEBUG)
 //#define FULLSCREEN
@@ -139,8 +139,11 @@ HRESULT MyApp::InitDirectX()
 #else
 	//windows mode
 	d3dpp.Windowed = TRUE;
-	d3dpp.BackBufferHeight = WIDTH;
-	d3dpp.BackBufferWidth = HEIGHT;
+	/*d3dpp.BackBufferHeight = WIDTH;
+	d3dpp.BackBufferWidth = HEIGHT;*/
+	d3dpp.BackBufferWidth = WIDTH;
+	d3dpp.BackBufferHeight = HEIGHT;
+
 #endif 
 	
 	d3dpp.BackBufferCount = 1;
@@ -228,8 +231,7 @@ BOOL MyApp::LoadResource()
 			/* ,_T("img/post.png")*/
 			,_T("img/TEST.png")		   // タイトル画像
 			,_T("img/logo_1993.png")   // ロゴ画像
-			/*,_T("img/image.png")*/
-
+			,_T("img/cursor.png")	   // 選択カーソル
 		};
 		//static_assert(_countof(pszTexName)==TEX_COUNT,"" ):
 		for (int i = 0; i < TEX_COUNT; i++) {
@@ -243,14 +245,13 @@ BOOL MyApp::LoadResource()
 	return TRUE;
 }
 
-
 //ゲーム開始時の初期化
 void MyApp::InitGame()
 {
 
 	//タイトル部
 	{
-		TitleInit();
+		m_gameScene = GAME_SCENE_BEGIN;
 	}
 	//ゲーム部
 	{
@@ -275,7 +276,6 @@ void MyApp::InitGame()
 
 }
 
-
 // リソースを解放する.
 void MyApp::Release()
 {
@@ -288,185 +288,16 @@ void MyApp::Release()
 	if (m_pD3D)	m_pD3D->Release();
 }
 
-// Title
-void MyApp::TitleInit() {
-	m_gameScene = GAME_SCENE_BEGIN;
-}
-
-void MyApp::UpdateTitle()
-{
-	MyInput* pInput = GetInputInst();
-	// デバッグ用 : Enterキーでゲームシーンへ
-	if (pInput->IsPushKeyOne(DIK_RETURN)) {
-		/*m_gameScene = GAME_SCENE_STORY;*/
-		ChangeScene(GAME_SCENE_SELECT);
-		printf("Enter");
-	}
-
-	//MyInput* pInput = GetInputInst();
-	//// 何かキーが押されたらゲームシーンへ
-	//bool isAnyKeyPressed = false;
-	//for (int i = 0; i < 256; ++i) {
-	//	if (pInput->IsPushKeyOne(i)) {
-	//		isAnyKeyPressed = true;
-	//		break;
-	//	}
-	//}
-	// コントローラーは2つ引数必要
-	/*for (int i = 0; i < 30; ++i) {
-		if (pInput->IsPushBtnOne(i)) {
-			isAnyKeyPressed = true;
-			break;
-		}
-	}*/
-	//if (isAnyKeyPressed = true) {
-	//	/*m_gameScene = GAME_SCENE_STORY;*/
-	//	ChangeScene(GAME_SCENE_STORY);
-	//	printf("キー入力 o");
-	//}
-}
-//タイトル画面を描画
-void MyApp::DrawTitle()
-{
-	//Title messsage
-	//背景
-	// 背景色を決める。RGB=(0,0,255)とする.-
-	D3DCOLOR rgb = D3DCOLOR_XRGB(0, 0, 255);
-	// 画面全体を消去.
-	m_pDev->Clear(0, NULL, D3DCLEAR_TARGET, rgb, 1.0f, 0);
-
-	// 描画を開始（シーン描画の開始）.
-	m_pDev->BeginScene();
-	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
-
-	D3DXMATRIX identity;
-	D3DXMatrixIdentity(&identity);
-	m_pSpr->SetTransform(&identity);
-
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();
-	ID3DXSprite* pSpr = GetAppInst()->GetDxSpr();
-	IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_TITLE);
-	IDirect3DTexture9* pLogo = GetAppInst()->GetDxTex(TEX_LOGO);
-
-	//D3DXMATRIX identity;
-	//D3DXMatrixIdentity(&identity);
-	//pSpr->SetTransform(&identity);
-	// テクスチャ情報を取得（幅、高さ）
-	D3DSURFACE_DESC desc;
-	pTex->GetLevelDesc(0, &desc);
-
-	float texW = (float)desc.Width;   // 512
-	float texH = (float)desc.Height;  // 512
-		
-	// 画面いっぱいにするスケールを計算
-	float scaleX = 1280.0f / texW;
-	float scaleY = 1024.0f / texH;
-
-	D3DXMATRIX mat;
-	D3DXMatrixScaling(&mat, scaleX, scaleY, 1.0f);
-	pSpr->SetTransform(&mat);
-
-	// 背景画像の描画
-	m_pSpr->Draw(pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
-	//m_pSpr->Draw(m_pTex, &rc, NULL, NULL, 0xFFFFFFFF);
-	//pSpr->Draw(pTex, nullptr, nullptr, &pos, D3DCOLOR_ARGB(255, 255, 255, 255));
-	m_pSpr->End();
-
-	////text処理
-	static int frameBlink = 0;
-
-	// 点滅の間隔
-	int blinkInterval = 30;
-	frameBlink++;
-
-	// 点滅 ON/OFF
-	bool visible = (frameBlink / blinkInterval) % 2 == 0;
-
-	// TEXTアニメーション描画 機体の4色で回す
-	D3DCOLOR colors[4] =
-	{
-		D3DCOLOR_XRGB(230,  20,  20),   // 赤
-		D3DCOLOR_XRGB(250, 200,  50),   // 黄色
-		D3DCOLOR_XRGB(250, 100, 160),	// ピンク
-		D3DCOLOR_XRGB(148, 20, 210),    // 紫 6216E5
-	};
-	static int colorTimer = 0;
-	static int colorIndex = 0;
-	static bool oldVisible = true;
-	// 4色のインデックス
-	if (visible == true && oldVisible == false)
-	{
-		colorIndex = rand() % 4;
-	}
-	oldVisible = visible;
-	ID3DXFont* font = GetAppInst()->GetFont();
-	// テキスト
-	if (visible == true)   // 点滅 : OFFの時は描画しない
-	{
-		wchar_t Text[64];
-		ZeroMemory(Text, sizeof(Text));
-		swprintf_s(Text, 64, L"Hello world\n");
-		// 中央に表示
-		RECT rcTitle{ -30, (HEIGHT / 2) + 200, WIDTH, HEIGHT };
-		// RECT rcTitle{ 0, 0, WIDTH, HEIGHT};
-		 /*font->DrawText(nullptr, Text, -1, &rcTitle,
-			 DT_CENTER | DT_VCENTER | DT_SINGLELINE,
-			 colors[colorIndex]);*/
-			 // コントローラーABXY
-			 //font->DrawText(nullptr, L"任意のボタンを押してゲームを開始", -1, &rcTitle, DT_RIGHT | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
-		font->DrawText(nullptr, L"任意のボタンを押してゲームを開始", -1, &rcTitle, DT_CENTER | DT_VCENTER, colors[colorIndex]);
-	}
-	// シーンの描画を終了.
-	m_pDev->EndScene();
-}
-void MyApp::SelectInit()
-{
-	m_gameScene = GAME_SCENE_SELECT;
-}
-void MyApp::UpdateSelect() 
-{
-	MyInput* pInput = GetInputInst();
-	// デバッグ用 : Enterキーでゲームシーンへ
-	if (pInput->IsPushKeyOne(DIK_RETURN)) {
-		/*m_gameScene = GAME_SCENE_STORY;*/
-		ChangeScene(GAME_SCENE_STORY);
-		printf("Enter");
-	}
-
-}
-void MyApp::DrawSelect()
-{	
-	//Select messsage
-	//背景
-	// 背景色を決める。RGB=(0,0,255)とする.-
-	D3DCOLOR rgb = D3DCOLOR_XRGB(0, 0, 0);
-	// 画面全体を消去.
-	m_pDev->Clear(0, NULL, D3DCLEAR_TARGET, rgb, 1.0f, 0);
-	// 描画を開始（シーン描画の開始）.
-	m_pDev->BeginScene();
-	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
-	D3DXMATRIX identity;
-	D3DXMatrixIdentity(&identity);
-	m_pSpr->SetTransform(&identity);
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();
-	ID3DXSprite* pSpr = GetAppInst()->GetDxSpr();
-	// 動画を取得してループ再生・カーソルが動いたら初期化
-
-	//シーンの描画を終了.
-	m_pSpr->End();
-	m_pDev->EndScene();
-}
-
 void MyApp::ChangeScene(E_GAME_SCENE nextScene)
 {
 	// 現在のシーンから次のシーンへの移行処理をここに書く
 	switch (nextScene)
 	{
 	case GAME_SCENE_TITLE:
-		this->TitleInit(); // タイトル初期化関数を呼ぶ
+		title.TitleInit(); // タイトル初期化関数を呼ぶ
 		break;
 	case GAME_SCENE_SELECT:
-		this->SelectInit(); // タイトル初期化関数を呼ぶ
+		select.SelectInit(); // タイトル初期化関数を呼ぶ
 		break;
 	case GAME_SCENE_STORY:
 		/*case GAME_SCENE_BUTTLE:*/
@@ -477,6 +308,7 @@ void MyApp::ChangeScene(E_GAME_SCENE nextScene)
 		//	break;
 	case GAME_SCENE_RESULT:
 		// リザルト画面の初期化処理
+		result.ResultInit();
 		break;
 	default:
 		break;
@@ -488,10 +320,10 @@ void MyApp::UpdateScene()
 	switch (m_gameScene)
 	{
 	case GAME_SCENE_TITLE:
-		this->UpdateTitle();
+		title.UpdateTitle();
 		break;
 	case GAME_SCENE_SELECT:
-		this->UpdateSelect();
+		select.UpdateSelect();
 		break;
 	case GAME_SCENE_STORY:
 		/*case GAME_SCENE_BUTTLE:*/
@@ -501,7 +333,7 @@ void MyApp::UpdateScene()
 		//	this->Update();
 		//	break;
 	case GAME_SCENE_RESULT:
-		this->UpdateResult();
+		result.UpdateResult();
 		break;
 
 	default:
@@ -513,10 +345,10 @@ void MyApp::DrawScene()
 	switch (m_gameScene)
 	{
 	case GAME_SCENE_TITLE:
-		this->DrawTitle();
+		title.DrawTitle();
 		break;
 	case GAME_SCENE_SELECT:
-		this->DrawSelect();
+		select.DrawSelect();
 		break;
 
 	case GAME_SCENE_STORY:
@@ -526,7 +358,7 @@ void MyApp::DrawScene()
 		//	this->DrawGameOver();
 		//	break;
 	case GAME_SCENE_RESULT:
-		this->DrawResult();
+		result.DrawResult();
 		break;
 	default:
 		break;
@@ -623,49 +455,14 @@ void MyApp::DrawStory() {
 		DrawDebugInfo();// デバッグ情報の表示.
 #endif
 	}
-	// ↑ここでスプライトを描画.
+	// ↑ここでスプライトを描画
 
-	// スプライトの描画を終了.
+	// スプライトの描画を終了
 	m_pSpr->End();
 
-	// シーンの描画を終了.
-	m_pDev->EndScene();
-
-}
-void MyApp::UpdateResult()
-{
-	MyInput* pInput = GetInputInst();
-	if (pInput->IsPushKeyOne(DIK_RETURN)) {
-		this->ChangeScene(GAME_SCENE_RESULT);
-		printf("push Enterkey");
-	}
-}
-
-void MyApp::DrawResult() {
-	D3DCOLOR rgb = D3DCOLOR_XRGB(64, 64, 64);
-	// 画面全体を消去.
-	m_pDev->Clear(0, NULL, D3DCLEAR_TARGET, rgb, 1.0f, 0);
-	// 描画を開始（シーン描画の開始）.
-	m_pDev->BeginScene();
-	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();
-	ID3DXSprite* pSpr = GetAppInst()->GetDxSpr();
-	//IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_TITLE);
-	//// 背景画像の描画
-	//m_pSpr->Draw(pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
-	//m_pSpr->End();
-	
-	ID3DXFont* font = GetAppInst()->GetFont();
-	// テキスト表示
-	RECT rcWIN = { -30, -300, WIDTH, HEIGHT };
-	// 誰が勝利したか表示する(gamesceneで勝った人)
-	//font->DrawText(nullptr, L" PL :勝利", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
-	//RECT rcSelect = { -30, 0, WIDTH, HEIGHT };
-	//font->DrawText(nullptr, L"もう一度戦う", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
-	// 次の画面遷移を提示する (操作はどのPLができるか)
+	// シーンの描画を終了
 	m_pDev->EndScene();
 }
-
 // 毎フレームの更新処理.
 BOOL MyApp::UpdateMain()
 {
@@ -751,11 +548,9 @@ void MyApp::DrawMain()
 
 	}
 
-
-
-// メインループ処理.
+// メインループ処理
 void MyApp::MainLoop()
-{
+{	
 	// メッセージループ
 	bool flag = 1;
 	while (flag) {

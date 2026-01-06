@@ -13,6 +13,7 @@
 #include "PlayerBBB.h"
 #include "PlayerCCC.h"
 #include "PlayerDDD.h"
+#include "SceneManager.h"
 //#include "BulletAAA.h"
 // クライアント領域の幅と高さを定数で設定する.
 //16:9
@@ -53,11 +54,9 @@ public:
 	IDirect3DDevice9* GetDxDev(){assert(m_pDev != NULL);return m_pDev;}
 
 
-
 	BOOL InitApp();			// アプリの初期化.
 	HRESULT InitDirectX();	// DirectXの初期化.
 	BOOL LoadResource();	// リソース読み込み.
-
 
 	
 
@@ -65,22 +64,17 @@ public:
 
 	void InitGame();		// ゲーム状態を初期化.
 	HRESULT InitFont();		// Font 初期化
-	void TitleInit();		// タイトル画面初期化
-	void SelectInit();		// セレクトシーンの初期化
-	
+
 	void Release();			// リソース解放.
-
 	BOOL UpdateMain();		// 更新メイン.
-
 	void UpdateScene();      // 全てのシーンの更新処理
-	void UpdateTitle();     // タイトル画面用の更新処理
-	void UpdateSelect();   // セレクト画面用の更新処理
+//	void UpdateSelect();   // セレクト画面用の更新処理
 	void UpdateStory();       // 協力用の更新処理
 	void UpdateResult();      // リザルト画面用の更新処理
 	
 	void DrawScene();		 // 全てのシーンの描画処理
-	void DrawTitle();		// タイトル画面描画
-	void DrawSelect();
+	//void DrawTitle();		// タイトル画面描画
+	//void DrawSelect();
 	void DrawResult();      // リザルト画面描画
 	void DrawStory();		// 協力用画面描画
 	void DrawMain();		// 描画メイン.
@@ -114,7 +108,6 @@ private:
 	IDirect3DTexture9* GetTex(int index) {return m_pTex[index];}
 	
 	E_GAME_SCENE m_gameScene;			// ゲームのシーン.
-
 	MyTimer m_syncTimer;				// 描画更新タイミングの制御用.
 
 	Field m_field;//フィールド
@@ -125,6 +118,11 @@ private:
 	PlayerCCC m_pCCC; 
 	PlayerDDD m_pDDD; 
 	
+	TitleScene title;                   // タイトルのポインタ
+	SelectScene select;					// セレクトのポインタ
+	ResultScene result;
+	//;					// リザルトのポインタ
+
 	void CheckPlayerItemHit();//アイテム取得チェック
 	
 #if defined(_DEBUG)

@@ -35,7 +35,7 @@
     <ClCompile Include="PlayerCCC.cpp" />
     <ClCompile Include="PlayerDDD.cpp" />
     <ClCompile Include="tankBase.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletBase.h" />
@@ -45,7 +45,9 @@
     <ClInclude Include="PlayerBBB.h" />
     <ClInclude Include="PlayerCCC.h" />
     <ClInclude Include="PlayerDDD.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="tankBase.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\AAANATION_224.png" />
