@@ -230,6 +230,8 @@ BOOL MyApp::LoadResource()
 
 			/* ,_T("img/post.png")*/
 			,_T("img/TEST.png")		   // タイトル画像
+			,_T("img/BG_Image.png")		   // セレクト画像
+			,_T("img/BG_Image.png")		   // リザルト画像
 			,_T("img/logo_1993.png")   // ロゴ画像
 			,_T("img/cursor.png")	   // 選択カーソル
 		};

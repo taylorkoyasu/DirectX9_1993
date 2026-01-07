@@ -189,16 +189,16 @@ void SelectScene::UpdateSelect()
 	}
 	if (state == STATE_MODE_SELECT) {
 
-		if (pInput->IsPushKeyOne(DIK_LEFT) || pInput->IsPushKeyOne(DIK_A)) {
+		if (pInput->IsPushKeyOne(DIK_UP) || pInput->IsPushKeyOne(DIK_W)) {
 			currentMode = GameMode::Coop;
 		}
-		if (pInput->IsPushKeyOne(DIK_RIGHT) || pInput->IsPushKeyOne(DIK_D)) {
+		if (pInput->IsPushKeyOne(DIK_DOWN) || pInput->IsPushKeyOne(DIK_S)) {
 			currentMode = GameMode::Versus;
 	}
 		// カーソル位置
 		arrowPos = (currentMode == Coop)
-			? D3DXVECTOR3(250, 300, 0)
-			: D3DXVECTOR3(550, 300, 0);
+			? D3DXVECTOR3(450, 800, 0)
+			: D3DXVECTOR3(450, 1400, 0);
 
 		// モード変更検出
 		if (currentMode != prevMode) {
@@ -237,13 +237,13 @@ void SelectScene::UpdateSelect()
 		if (whiteAlpha < 0.0f) whiteAlpha = 0.0f;
 	}
 
-	// player 待機画面
-	if (state == STATE_WAIT_START) {
-		if (pInput->IsPushKeyOne(DIK_RETURN)) {
-			// 決定されたら	
-			GetAppInst()->ChangeScene(GAME_SCENE_STORY);
-			return;
-		}
+	//// player 待機画面
+	//if (state == STATE_WAIT_START) {
+	//	if (pInput->IsPushKeyOne(DIK_RETURN)) {
+	//		// 決定されたら	
+	//		GetAppInst()->ChangeScene(GAME_SCENE_STORY);
+	//		return;
+	//	}
 
 		// 2人以上のplayerがボタンを押しているか
 		// おしたplayerの場所の画像は差し替える
@@ -251,7 +251,7 @@ void SelectScene::UpdateSelect()
 			GetAppInst()->ChangeScene(GAME_SCENE_STORY);
 			return;
 		}*/
-	}
+	//}
 }
 
 void SelectScene::DrawSelect()
@@ -273,6 +273,84 @@ void SelectScene::DrawSelect()
 	D3DXMATRIX identity;
 	D3DXMatrixIdentity(&identity);
 	m_pSpr->SetTransform(&identity);
+
+	IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_SELECT);
+	
+	const D3DXVECTOR3 infoPos(300, 50, 0);
+
+	if (state == STATE_MODE_SELECT) {
+		if (currentMode == GameMode::Versus)
+		{
+			m_pSpr->Draw(
+				infoTex_1[infoIndex],   // 対戦用
+				NULL, NULL,
+				&infoPos,
+				D3DCOLOR_XRGB(255, 255, 255)
+			);
+		}
+		else // Coop
+		{
+			m_pSpr->Draw(
+				infoTex_2[infoIndex],   // 協力用
+				NULL, NULL,
+				&infoPos,
+				D3DCOLOR_XRGB(255, 255, 255)
+			);
+		}
+	}
+	RECT CPRect = { 300, 400, 800, 1800 };
+	RECT VSRect = { 300, 600, 800, 1800 };
+	ID3DXFont* font = GetAppInst()->GetFont();
+	font->DrawText(nullptr, L"協力モード:力を合わせてボスに勝利しよう", -1, &CPRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
+	font->DrawText(nullptr, L"対戦モード:アイテムを駆使して敵国(ライバル)を倒そう", -1, &VSRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
+	IDirect3DTexture9* pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
+	// カーソル
+	pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
+	// 縮小率（半分)
+	float scale = 0.5f;
+	// 変換行列
+	D3DXMATRIX matScale;
+	D3DXMatrixScaling(&matScale, scale, scale, 1.0f);
+	m_pSpr->SetTransform(&matScale);
+	// 描画
+	/*m_pSpr->Draw(
+		pointTex,
+		NULL,
+		NULL,
+		NULL,
+		D3DCOLOR_XRGB(255, 255, 255)
+	);*/
+	m_pSpr->Draw(pointTex, NULL, NULL, &arrowPos, 0xFFFFFFFF);
+	D3DXMATRIX matIdentity;
+	D3DXMatrixIdentity(&matIdentity);
+	m_pSpr->SetTransform(&matIdentity);
+
+
+	/*m_pSpr->Draw(pointTex, NULL, NULL, &arrowPos, 0xFFFFFFFF);*/
+
+	/*if (whiteAlpha > 0.0f)
+	{
+		D3DCOLOR white =
+			D3DCOLOR_ARGB(
+				(int)(255 * whiteAlpha),
+				255, 255, 255
+			);*/
+
+		//// 1×1 白テクスチャを全画面に拡大
+		//D3DXMATRIX matScale;
+		//D3DXMatrixScaling(&matScale,
+		//	(float)WIDTH, (float)HEIGHT, 1.0f);
+		//m_pSpr->SetTransform(&matScale);
+		//m_pSpr->Draw(
+		//	whiteTex,
+		//	NULL, NULL,
+		//	NULL,
+		//	white
+		//);
+
+		//// 行列を戻す（超重要）
+		//m_pSpr->SetTransform(&identity);
+
 	//// 動画を取得してループ再生・カーソルが動いたら初期化
 	//if (state == STATE_MODE_SELECT)
 	//{
@@ -299,24 +377,26 @@ void SelectScene::DrawSelect()
 	//		RECT WhiteRc = {200, 200, WIDTH, HEIGHT};
 	//	}
 	//}
-	if (currentMode == GameMode::Versus)
-	{
-		m_pSpr->Draw(
-			infoTex_1[infoIndex],   // 対戦用
-			NULL, NULL,
-			&D3DXVECTOR3(300, 180, 0),
-			D3DCOLOR_XRGB(255, 255, 255)
-		);
-	}
-	else // Coop
-	{
-		m_pSpr->Draw(
-			infoTex_2[infoIndex],   // 協力用
-			NULL, NULL,
-			&D3DXVECTOR3(300, 180, 0),
-			D3DCOLOR_XRGB(255, 255, 255)
-		);
-	}
+
+
+	//if (currentMode == GameMode::Versus)
+	//{
+	//	m_pSpr->Draw(
+	//		infoTex_1[infoIndex],   // 対戦用
+	//		NULL, NULL,
+	//		&D3DXVECTOR3(300, 180, 0),
+	//		D3DCOLOR_XRGB(255, 255, 255)
+	//	);
+	//}
+	//else // Coop
+	//{
+	//	m_pSpr->Draw(
+	//		infoTex_2[infoIndex],   // 協力用
+	//		NULL, NULL,
+	//		&D3DXVECTOR3(300, 180, 0),
+	//		D3DCOLOR_XRGB(255, 255, 255)
+	//	);
+	//}
 
 	//シーンの描画を終了.
 	m_pSpr->End();
