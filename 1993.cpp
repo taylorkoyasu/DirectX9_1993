@@ -295,6 +295,7 @@ void MyApp::ChangeScene(E_GAME_SCENE nextScene)
 	// 現在のシーンから次のシーンへの移行処理をここに書く
 	switch (nextScene)
 	{
+
 	case GAME_SCENE_TITLE:
 		title.TitleInit(); // タイトル初期化関数を呼ぶ
 		break;
@@ -661,6 +662,13 @@ HRESULT MyApp::InitFont()
 		SHIFTJIS_CHARSET, OUT_TT_ONLY_PRECIS,
 		ANTIALIASED_QUALITY, FF_DONTCARE, L"DotGothic16-Regular", &m_pFontS);
 	if (FAILED(hr)) return E_FAIL;
+	// ゲームシーンUIフォント
+	hr = D3DXCreateFont(
+		m_pDev, 12, 0, FW_HEAVY, 1, FALSE,
+		SHIFTJIS_CHARSET, OUT_TT_ONLY_PRECIS,
+		ANTIALIASED_QUALITY, FF_DONTCARE, L"DotGothic16-Regular", &m_pFontSS);
+	if (FAILED(hr)) return E_FAIL;
+
 	return S_OK;
 }
 

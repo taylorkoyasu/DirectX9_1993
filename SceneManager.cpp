@@ -6,17 +6,15 @@
 
 // Title
 void TitleScene::TitleInit() {
-	m_logo.logoY = -200.0f;
+	m_logo.logoY = 0.0f;
 	m_logo.logoSpeed = 120.0f;
 	m_logo.logotime = 1.0f / 60.0f;
-
 	//m_gameScene = GAME_SCENE_BEGIN;
 }
 
 void TitleScene::UpdateTitle()
 {	
 	float targetY = 200.0f; // 最終位置
-
 	if (m_logo.logoY < targetY)
 	{
 		m_logo.logoY += m_logo.logoSpeed * m_logo.logotime;
@@ -59,8 +57,6 @@ void TitleScene::DrawTitle()
 	assert(m_pDev != NULL && "Direct3D デバイスが初期化されていません");
 	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// スプライトオブジェクトの確認
 	assert(m_pSpr != NULL && "ID3DXSprite オブジェクトが初期化されていません");
-	
-
 	// 背景色を決める。RGB=(0,0,255)とする.-
 	D3DCOLOR rgb = D3DCOLOR_XRGB(0, 0, 255);
 	// 画面全体を消去.
@@ -103,7 +99,6 @@ void TitleScene::DrawTitle()
 	// ロゴ
 	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
 
-
 	// 行列
 	D3DXMATRIX matScale, matTrans, matWorld;
 	// 縮小率
@@ -122,7 +117,8 @@ void TitleScene::DrawTitle()
 	matWorld = matScale * matTrans;
 	m_pSpr->SetTransform(&matWorld);
 
-	m_pSpr->Draw(m_pLogo, nullptr, nullptr, nullptr, 0xFFFFFFFF);
+	m_pSpr->Draw(m_pLogo, NULL, NULL, NULL, 0xFFFFFFFF);
+	//m_pSpr->Draw(m_pLogo, nullptr, nullptr, nullptr, 0xFFFFFFFF);
 	m_pSpr->End();
 
 	//text処理
@@ -169,7 +165,7 @@ void TitleScene::DrawTitle()
 			 //font->DrawText(nullptr, L"任意のボタンを押してゲームを開始", -1, &rcTitle, DT_RIGHT | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 		font->DrawText(nullptr, L"任意のボタンを押してゲームを開始", -1, &rcTitle, DT_CENTER | DT_VCENTER, colors[colorIndex]);
 	}
-	// シーンの描画を終了.
+	// シーンの描画を終了
 	m_pDev->EndScene();
 }
 void SelectScene::SelectInit()
@@ -197,8 +193,8 @@ void SelectScene::UpdateSelect()
 	}
 		// カーソル位置
 		arrowPos = (currentMode == Coop)
-			? D3DXVECTOR3(450, 800, 0)
-			: D3DXVECTOR3(450, 1400, 0);
+			? D3DXVECTOR3(200, 1100, 0)
+			: D3DXVECTOR3(200, 1500, 0);
 
 		// モード変更検出
 		if (currentMode != prevMode) {
@@ -273,7 +269,7 @@ void SelectScene::DrawSelect()
 	D3DXMATRIX identity;
 	D3DXMatrixIdentity(&identity);
 	m_pSpr->SetTransform(&identity);
-
+	
 	IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_SELECT);
 	
 	const D3DXVECTOR3 infoPos(300, 50, 0);
@@ -298,15 +294,16 @@ void SelectScene::DrawSelect()
 			);
 		}
 	}
-	RECT CPRect = { 300, 400, 800, 1800 };
-	RECT VSRect = { 300, 600, 800, 1800 };
+	RECT CPRect = { 250, 580, 1000, 1800 };
+	RECT VSRect = { 250, 780, 1400, 1800 };
 	ID3DXFont* font = GetAppInst()->GetFont();
 	font->DrawText(nullptr, L"協力モード:力を合わせてボスに勝利しよう", -1, &CPRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
 	font->DrawText(nullptr, L"対戦モード:アイテムを駆使して敵国(ライバル)を倒そう", -1, &VSRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
+	
 	IDirect3DTexture9* pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
 	// カーソル
 	pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
-	// 縮小率（半分)
+	// 縮小
 	float scale = 0.5f;
 	// 変換行列
 	D3DXMATRIX matScale;

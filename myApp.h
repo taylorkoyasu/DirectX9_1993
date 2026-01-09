@@ -86,6 +86,7 @@ public:
 	
 	LPD3DXFONT  GetFont()  { return m_pFont; } //通常フォント
 	LPD3DXFONT  GetFontS() { return m_pFontS; }//小フォント
+	LPD3DXFONT  GetFontSS() { return m_pFontSS; }//小フォント
 	//自作
 	//3
 	template <class S, class T>
@@ -104,6 +105,7 @@ private:
 	
 	LPD3DXFONT  m_pFont;				// フォント.
 	LPD3DXFONT  m_pFontS;               // 小フォント.
+	LPD3DXFONT  m_pFontSS;              // ゲーム時UI用フォント.
 
 	IDirect3DTexture9* GetTex(int index) {return m_pTex[index];}
 	
@@ -120,10 +122,9 @@ private:
 	
 	TitleScene title;                   // タイトルのポインタ
 	SelectScene select;					// セレクトのポインタ
-	ResultScene result;
-	//;					// リザルトのポインタ
+	ResultScene result;					// リザルトのポインタ
 
-	void CheckPlayerItemHit();//アイテム取得チェック
+	void CheckPlayerItemHit();			//アイテム取得チェック
 	
 #if defined(_DEBUG)
 	// デバッグ情報の表示.
