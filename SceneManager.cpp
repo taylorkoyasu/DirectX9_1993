@@ -436,11 +436,23 @@ void ResultScene::DrawResult() {
 	// テキスト表示
 	RECT rcWIN = { -30, -300, WIDTH, HEIGHT };
 	font->DrawText(nullptr, L"Enterでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));//仮
+
+	IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_TITLE);
+	//// 背景画像の描画
+	//m_pSpr->Draw(pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
+	//m_pSpr->End();
+	m_pSpr->End();
+	ID3DXFont* font = GetAppInst()->GetFont();
+	// テキスト表示
+	RECT rcWIN = { -30, -300, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"任意のキーでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));//仮
+
 	// 誰が勝利したか表示する(gamesceneで勝った人)
 	//font->DrawText(nullptr, L" PL :勝利", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 	//RECT rcSelect = { -30, 0, WIDTH, HEIGHT };
 	//font->DrawText(nullptr, L"もう一度戦う", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 	// 次の画面遷移を提示する (操作はどのPLができるか)
+
 	m_pSpr->End();
 	m_pDev->EndScene();
 }

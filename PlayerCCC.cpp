@@ -335,7 +335,7 @@ void PlayerCCC::DrawPoto() {
 
 	D3DXMATRIX trans;
 	const float startX = 640;
-	const float startY = 0;
+	const float startY = 0 + GetHitShakeOffsetY();
 	D3DXMatrixTranslation(&trans, startX, startY, 0.0f);
 	m_pSpr->SetTransform(&trans);
 	m_pSpr->Draw(m_pTex, &rc, &cnt, NULL, 0xffffffff);

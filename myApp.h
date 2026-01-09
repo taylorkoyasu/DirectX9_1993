@@ -123,8 +123,12 @@ private:
 	TitleScene title;                   // タイトルのポインタ
 	SelectScene select;					// セレクトのポインタ
 	ResultScene result;					// リザルトのポインタ
-
 	void CheckPlayerItemHit();			//アイテム取得チェック
+	ResultScene result;                 // リザルトのポインタ
+	
+
+	void CheckPlayerItemHit();//アイテム取得チェック
+>>>>>>> aa8d8c3 (icon)
 	
 #if defined(_DEBUG)
 	// デバッグ情報の表示.

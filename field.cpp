@@ -297,7 +297,7 @@ void Field::DropUpdate() {
         {
             int& hp = m_object2HP[i][j];
             ENUM_FIELD_OBJECT2& tile = m_object2[i][j];
-            printf("hp=%d tile=%d\n", hp, tile);
+            //printf("hp=%d tile=%d\n", hp, tile);
             if (hp <= 0 && tile == FIELD_OBJECT2_BOX)
             {
                 DropItem(i, j);  
