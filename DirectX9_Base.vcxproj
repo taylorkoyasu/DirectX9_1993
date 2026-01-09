@@ -34,8 +34,8 @@
     <ClCompile Include="PlayerBBB.cpp" />
     <ClCompile Include="PlayerCCC.cpp" />
     <ClCompile Include="PlayerDDD.cpp" />
-    <ClCompile Include="tankBase.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="tankBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletBase.h" />

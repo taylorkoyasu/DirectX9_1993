@@ -37,6 +37,10 @@ struct TankStatus
 	//3期追加
 	E_TANK_RING ring;
 	int maxBullet;
+	//Damage Performance
+	int hitShakeTimer; // 揺れ残りフレーム
+	int hitShakeTotal; // 開始時のフレーム（減衰用）
+ 
 };
 
 class TankBase {
@@ -58,6 +62,8 @@ protected:
 		m_tstatus.ring = E_RING_VSHORT;
 		m_tstatus.maxBullet = 1;
 		// _tprintf(_T("call PlayerBase constractor\n"));
+		//３期追加
+	
 	}
 public:
 	virtual ~TankBase() = default;
@@ -80,6 +86,7 @@ public:
 	void Damage(int d)
 	{
 		m_tstatus.hp -= d;
+		StartHitShake();
 		if (m_tstatus.hp <= 0)
 			m_tstatus.isDead = true;
 	}
@@ -90,4 +97,10 @@ public:
 	void AddHp(int hp);
 	void AddRing();
 	void AddMaxBullet();
+
+	//DamagePerformance
+	
+	void StartHitShake();// ダメージ演出：揺れ開始
+	void UpdateHitShake();// 毎フレーム更新
+	int GetHitShakeOffsetY();// 描画で使う揺れオフセット
 };

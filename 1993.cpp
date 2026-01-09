@@ -226,14 +226,15 @@ BOOL MyApp::LoadResource()
 			 ,_T("img/tile/distance_32.png")
 			 ,_T("img/tile/spanner_32.png")
 			 ,_T("img/tile/bullet_32.png")
-
+			
 
 			/* ,_T("img/post.png")*/
 			,_T("img/TEST.png")		   // タイトル画像
 			,_T("img/BG_Image.png")	   // セレクト画像
-			,_T("img/BG_Result.png")   // リザルト画像
+			,_T("img/BG_Result.png")   //リザルト
 			,_T("img/logo_1993.png")   // ロゴ画像
 			,_T("img/cursor.png")	   // 選択カーソル
+
 		};
 		//static_assert(_countof(pszTexName)==TEX_COUNT,"" ):
 		for (int i = 0; i < TEX_COUNT; i++) {

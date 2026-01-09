@@ -37,7 +37,9 @@ public:
 	std::vector<BulletBase>& GetBullets() { return m_bullets; }
 	const Vector2& GetPos() const { return m_tstatus.pos; }
 	//int GetHp() const { return m_tstatus.hp; }
-	void Damage(int d) { m_tstatus.hp -= d; }
+	void Damage(int d) { m_tstatus.hp -= d; 
+	                     StartHitShake();
+	}
 
 	int GetHp() const { return m_tstatus.hp; }
 	void SetHp(int hp) { m_tstatus.hp = hp; }

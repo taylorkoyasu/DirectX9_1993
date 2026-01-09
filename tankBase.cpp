@@ -23,11 +23,13 @@ void TankBase::Init(float tx, float ty, float tvx, float tvy,int tspeed, int thp
     m_tstatus.moveSpeed = tspeed;
     m_tstatus.hp = thp;
 	m_tstatus.isDead = isDead;
-
+    m_tstatus.hitShakeTimer =0;
+    m_tstatus.hitShakeTotal =0;
 }
 void TankBase::Updata() {
 
     Move();
+    UpdateHitShake();
     m_tstatus.pos.x += m_tstatus.vel.x ;
     m_tstatus.pos.y += m_tstatus.vel.y ;
 
@@ -114,4 +116,38 @@ void TankBase::AddMaxBullet() {
 
 
     }
+}
+
+void TankBase::StartHitShake() {
+
+
+    printf("[ShakeStart] this=%p timer(before)=%d\n",
+        (void*)this, m_tstatus.hitShakeTimer);
+    m_tstatus.hitShakeTimer = 120;
+    m_tstatus.hitShakeTotal = 120;
+    
+    
+}
+
+void TankBase::UpdateHitShake()
+{
+    if (m_tstatus.hitShakeTimer > 0)
+    {
+        m_tstatus.hitShakeTimer--;
+    }
+}
+
+int TankBase::GetHitShakeOffsetY() 
+{
+    if (m_tstatus.hitShakeTimer <= 0) return 0;
+
+    const float amp = 6.0f;   // 振度（像素）
+    const float freq = 0.6f;   // 頻度
+
+    float passed = float(m_tstatus.hitShakeTotal - m_tstatus.hitShakeTimer);
+    float fade = float(m_tstatus.hitShakeTimer) / float(m_tstatus.hitShakeTotal); // 1→0
+
+    float s = sinf(passed * freq);
+
+    return (int)(s * amp * fade);
 }

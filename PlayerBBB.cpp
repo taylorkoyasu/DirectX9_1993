@@ -317,6 +317,7 @@ Vector2 PlayerBBB::GetBulletStartPos()
 
 void PlayerBBB::DrawPoto() {
 
+
 	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D デバイスの確認
 	assert(m_pDev != NULL && "Direct3D デバイスが初期化されていません");
 
@@ -332,7 +333,7 @@ void PlayerBBB::DrawPoto() {
 
 	D3DXMATRIX trans;
 	const float startX = 320;
-	const float startY = 0;
+	const float startY = 0 + GetHitShakeOffsetY();
 	D3DXMatrixTranslation(&trans, startX, startY, 0.0f);
 	m_pSpr->SetTransform(&trans);
 	m_pSpr->Draw(m_pTex, &rc, &cnt, NULL, 0xffffffff);
