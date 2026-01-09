@@ -388,6 +388,9 @@
     <Image Include="img\cursor.png">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="img\BG_Result.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="img\image - コピー.psd" />

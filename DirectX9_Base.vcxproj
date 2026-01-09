@@ -34,8 +34,8 @@
     <ClCompile Include="PlayerBBB.cpp" />
     <ClCompile Include="PlayerCCC.cpp" />
     <ClCompile Include="PlayerDDD.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="tankBase.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletBase.h" />
@@ -63,6 +63,7 @@
     <Image Include="img\BBBNATION_224C.png" />
     <Image Include="img\BBBPOTO_128.png" />
     <Image Include="img\BBBPOTO_96.png" />
+    <Image Include="img\BG_Result.png" />
     <Image Include="img\block_ishi - コピー.png" />
     <Image Include="img\block_ishi.png" />
     <Image Include="img\block_ishi2.png" />
