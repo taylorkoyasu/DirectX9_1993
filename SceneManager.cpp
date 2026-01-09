@@ -442,9 +442,7 @@ void ResultScene::DrawResult() {
 	//m_pSpr->Draw(pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
 	//m_pSpr->End();
 	m_pSpr->End();
-	ID3DXFont* font = GetAppInst()->GetFont();
 	// テキスト表示
-	RECT rcWIN = { -30, -300, WIDTH, HEIGHT };
 	font->DrawText(nullptr, L"任意のキーでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));//仮
 
 	// 誰が勝利したか表示する(gamesceneで勝った人)

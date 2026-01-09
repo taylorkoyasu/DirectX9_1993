@@ -36,7 +36,6 @@
     <ClCompile Include="PlayerDDD.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="tankBase.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bulletBase.h" />
