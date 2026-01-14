@@ -20,6 +20,7 @@ void TitleScene::UpdateTitle()
 		m_logo.logoY += m_logo.logoSpeed * m_logo.logotime;
 		if (m_logo.logoY > targetY)
 			m_logo.logoY = targetY;
+
 	}
 	MyInput* pInput = GetInputInst();
 	if (pInput->IsPushKeyOne(DIK_RETURN)) {
@@ -72,6 +73,8 @@ void TitleScene::DrawTitle()
 
 	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TITLE);
 	IDirect3DTexture9* m_pLogo = GetAppInst()->GetDxTex(TEX_LOGO);
+	//IDirect3DTexture9* m_pUI = GetAppInst()->GetDxTex(TEX_UI_SENSHA);
+
 	//D3DXMATRIX identity;
 	//D3DXMatrixIdentity(&identity);
 	//pSpr->SetTransform(&identity);
@@ -91,8 +94,8 @@ void TitleScene::DrawTitle()
 	m_pSpr->SetTransform(&mat);
 
 	// 背景画像の描画
-	m_pSpr->Draw(m_pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
-
+	//m_pSpr->Draw(m_pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
+	m_pSpr->Draw(m_pTex, nullptr, nullptr, nullptr, 0xEECCFFAA);
 	//m_pSpr->Draw(m_pTex, &rc, NULL, NULL, 0xFFFFFFFF);
 	//pSpr->Draw(pTex, nullptr, nullptr, &pos, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pSpr->End();
@@ -120,6 +123,27 @@ void TitleScene::DrawTitle()
 	m_pSpr->Draw(m_pLogo, NULL, NULL, NULL, 0xFFFFFFFF);
 	//m_pSpr->Draw(m_pLogo, nullptr, nullptr, nullptr, 0xFFFFFFFF);
 	m_pSpr->End();
+	//m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
+
+	//// スケール設定
+	//float scaleUI = 1.0f;
+	//D3DXMatrixScaling(&matScale, scaleUI, scaleUI, 1.0f);
+	//float screenWidth = 1280.0f;
+	//float screenHeight = 1024.0f;
+	//float imageW = 512.0f * scaleUI; // スケール後の幅
+	//float imageH = 512.0f * scaleUI; // スケール後の高さ
+	//float posX = screenWidth - imageW;
+	//float posY = screenHeight - imageH;
+
+	//D3DXMatrixTranslation(&matTrans, posX, posY, 0.0f);
+	//// 行列の合成（SRTの順：Scale -> Rotation -> Translation）
+	//matWorld = matScale * matTrans;
+
+	//// 行列の適用と描画
+	//m_pSpr->SetTransform(&matWorld);
+	//m_pSpr->Draw(m_pUI, NULL, NULL, NULL, 0xFFFFFFFF);
+
+	//m_pSpr->End();
 
 	//text処理
 	static int frameBlink = 0;
@@ -170,6 +194,13 @@ void TitleScene::DrawTitle()
 }
 void SelectScene::SelectInit()
 {
+	int infoIndex = 0;
+	float infoTimer = 3.0f;  //選択
+	float INFO_INTERVAL = 3.0f;//待機時のタイマー
+
+	float whiteAlpha = 0.0f;
+	bool whiteFade = false;
+	
 	/*m_gameScene = GAME_SCENE_SELECT;*/
 }
 
@@ -183,64 +214,92 @@ void SelectScene::UpdateSelect()
 		printf("Enter");
 		return;
 	}
-	if (state == STATE_MODE_SELECT) {
 
-		if (pInput->IsPushKeyOne(DIK_UP) || pInput->IsPushKeyOne(DIK_W)) {
-			currentMode = GameMode::Coop;
-		}
-		if (pInput->IsPushKeyOne(DIK_DOWN) || pInput->IsPushKeyOne(DIK_S)) {
-			currentMode = GameMode::Versus;
+	if (pInput->IsPushKeyOne(DIK_SPACE)) // Aボタンなど
+	{
+		isP1Activated = true;
 	}
-		// カーソル位置
-		arrowPos = (currentMode == Coop)
-			? D3DXVECTOR3(200, 1100, 0)
-			: D3DXVECTOR3(200, 1500, 0);
-
-		// モード変更検出
-		if (currentMode != prevMode) {
-			infoIndex = 0;
-			infoTimer = 0.0f;
-			whiteFade = true;
-			whiteAlpha = 0.0f;
-			prevMode = currentMode;
-		}
-		// 決定
-		if (pInput->IsPushKeyOne(DIK_RETURN)) {
-			state = STATE_WAIT_START;
-		}
-		return;
+	//if (pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A)) // Aボタンなど
+	//{
+	//	isP1Activated = true;
+	//}
+	if (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A)) // Aボタンなど
+	{
+		isP2Activated = true;
+	}
+	if (pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A)) // Aボタンなど
+	{
+		isP3Activated = true;
+	}
+	if (pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A)) // Aボタンなど
+	{
+		isP4Activated = true;
 	}
 
-	// 説明画像 自動切り替え
-	infoTimer += 1.0f / 60.0f;
-	if (infoTimer >= INFO_INTERVAL) {
-		infoTimer = 0.0f;
-		infoIndex = (infoIndex + 1) % 3;
-		whiteFade = true;
-		whiteAlpha = 0.0f;
-	}
-	// 白フェード更新
-	const float fadeSpeed = 2.0f;
-	if (whiteFade) {
-		whiteAlpha += fadeSpeed * (1.0f / 60.0f);
-		if (whiteAlpha >= 1.0f) {
-			whiteAlpha = 1.0f;
-			whiteFade = false;
-		}
-	}
-	else if (whiteAlpha > 0.0f) {
-		whiteAlpha -= fadeSpeed * (1.0f / 60.0f);
-		if (whiteAlpha < 0.0f) whiteAlpha = 0.0f;
-	}
+	//if (state == STATE_MODE_SELECT) {
+
+	//	if (pInput->IsPushKeyOne(DIK_UP) || pInput->IsPushKeyOne(DIK_W)) {
+	//		currentMode = GameMode::Coop;
+	//	}
+	//	if (pInput->IsPushKeyOne(DIK_DOWN) || pInput->IsPushKeyOne(DIK_S)) {
+	//		currentMode = GameMode::Versus;
+	//}
+	//	// カーソル位置
+	//	arrowPos = (currentMode == Coop)
+	//		? D3DXVECTOR3(200, 1100, 0)
+	//		: D3DXVECTOR3(200, 1500, 0);
+
+	//	// モード変更検出
+	//	if (currentMode != prevMode) {
+	//		infoIndex = 0;
+	//		infoTimer = 0.0f;
+	//		whiteFade = true;
+	//		whiteAlpha = 0.0f;
+	//		prevMode = currentMode;
+	//	}
+	//	// 決定
+	//	if (pInput->IsPushKeyOne(DIK_RETURN)) {
+	//		state = STATE_WAIT_START;
+	//	}
+	//	return;
+	//}
+
+	//// 説明画像 自動切り替え
+	//infoTimer += 1.0f / 60.0f;
+	//if (infoTimer >= 3) {
+	//	infoTimer = 0.0f;
+	//	infoIndex = (infoIndex + 1) % 3;
+	//	whiteFade = true;
+	//	whiteAlpha = 0.0f;
+	//}
+	//// 白フェード更新
+	//const float fadeSpeed = 2.0f;
+	//if (whiteFade) {
+	//	whiteAlpha += fadeSpeed * (1.0f / 60.0f);
+	//	if (whiteAlpha >= 1.0f) {
+	//		whiteAlpha = 1.0f;
+	//		whiteFade = false;
+	//	}
+	//}
+	//else if (whiteAlpha > 0.0f) {
+	//	whiteAlpha -= fadeSpeed * (1.0f / 60.0f);
+	//	if (whiteAlpha < 0.0f) whiteAlpha = 0.0f;
+	//}
 
 	//// player 待機画面
-	//if (state == STATE_WAIT_START) {
-	//	if (pInput->IsPushKeyOne(DIK_RETURN)) {
-	//		// 決定されたら	
-	//		GetAppInst()->ChangeScene(GAME_SCENE_STORY);
-	//		return;
-	//	}
+	if (state == STATE_WAIT_START) {
 
+		if (INFO_INTERVAL <= 0.0f)
+		{
+			// タイムアップ処理
+			if (pInput->IsPushKeyOne(DIK_RETURN)) {
+				// 決定されたら	
+				GetAppInst()->ChangeScene(GAME_SCENE_STORY);
+				return;
+			}
+		}
+		
+	}
 		// 2人以上のplayerがボタンを押しているか
 		// おしたplayerの場所の画像は差し替える
 	    /*if (IsReadyToStart() == true) {
@@ -274,59 +333,62 @@ void SelectScene::DrawSelect()
 	// 待機時の
 	IDirect3DTexture9* pTex2 = GetAppInst()->GetDxTex(TEX_SELECT);
 	
-	const D3DXVECTOR3 infoPos(300, 50, 0);
+	//const D3DXVECTOR3 infoPos(300, 50, 0);
 
-	if (state == STATE_MODE_SELECT) {
-		if (currentMode == GameMode::Versus)
-		{
-			m_pSpr->Draw(
-				infoTex_1[infoIndex],   // 対戦用
-				NULL, NULL,
-				&infoPos,
-				D3DCOLOR_XRGB(255, 255, 255)
-			);
-		}
-		else // Coop
-		{
-			m_pSpr->Draw(
-				infoTex_2[infoIndex],   // 協力用
-				NULL, NULL,
-				&infoPos,
-				D3DCOLOR_XRGB(255, 255, 255)
-			);
-		}
-	}
-	RECT CPRect = { 250, 580, 1000, 1800 };
-	RECT VSRect = { 250, 780, 1400, 1800 };
-	ID3DXFont* font = GetAppInst()->GetFont();
-	font->DrawText(nullptr, L"協力モード:力を合わせてボスに勝利しよう", -1, &CPRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
-	font->DrawText(nullptr, L"対戦モード:アイテムを駆使して敵国(ライバル)を倒そう", -1, &VSRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
-	
-	IDirect3DTexture9* pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
-	// カーソル
-	pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
-	// 縮小
-	float scale = 0.5f;
-	// 変換行列
-	D3DXMATRIX matScale;
-	D3DXMatrixScaling(&matScale, scale, scale, 1.0f);
-	m_pSpr->SetTransform(&matScale);
-	// 描画
-	/*m_pSpr->Draw(
-		pointTex,
-		NULL,
-		NULL,
-		NULL,
-		D3DCOLOR_XRGB(255, 255, 255)
-	);*/
-	m_pSpr->Draw(pointTex, NULL, NULL, &arrowPos, 0xFFFFFFFF);
-	D3DXMATRIX matIdentity;
-	D3DXMatrixIdentity(&matIdentity);
-	m_pSpr->SetTransform(&matIdentity);
+	//if (state == STATE_MODE_SELECT) {
+	//	if (currentMode == GameMode::Versus)
+	//	{
+	//		m_pSpr->Draw(
+	//			infoTex_1[infoIndex],   // 対戦用
+	//			NULL, NULL,
+	//			&infoPos,
+	//			D3DCOLOR_XRGB(255, 255, 255)
+	//		);
+	//	}
+	//	else // Coop
+	//	{
+	//		m_pSpr->Draw(
+	//			infoTex_2[infoIndex],   // 協力用
+	//			NULL, NULL,
+	//			&infoPos,
+	//			D3DCOLOR_XRGB(255, 255, 255)
+	//		);
+	//	}
+	//}
+
+	//if (state == STATE_WAIT_START) {
+	///*	int sec = (int)INFO_INTERVAL;
+	//	m_pSpr->Draw(infoTex_1[infoIndex], NULL, NULL,&infoPos,D3DCOLOR_XRGB(255, 255, 255));*/
+	//}
+
+	//待機画面
 
 
+	//IDirect3DTexture9* pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
+	//// カーソル
+	//pointTex = GetAppInst()->GetDxTex(TEX_CURSOR);
+	//// 縮小
+	//float scale = 0.5f;
+	//// 変換行列
+	//D3DXMATRIX matScale;
+	//D3DXMatrixScaling(&matScale, scale, scale, 1.0f);
+	//m_pSpr->SetTransform(&matScale);
+	//// 描画
+	//m_pSpr->Draw(pointTex, NULL, NULL, &arrowPos, 0xFFFFFFFF);
+	//D3DXMATRIX matIdentity;
+	//D3DXMatrixIdentity(&matIdentity);
+	//m_pSpr->SetTransform(&matIdentity);
+
+	//m_pSpr->End();
+
+	//RECT CPRect = { 250, 580, 1000, 1800 };
+	//RECT VSRect = { 250, 780, 1400, 1800 };
+	//ID3DXFont* font = GetAppInst()->GetFont();
+	//font->DrawText(nullptr, L"協力モード:力を合わせてボスに勝利しよう", -1, &CPRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
+	//font->DrawText(nullptr, L"対戦モード:アイテムを駆使して敵国(ライバル)を倒そう", -1, &VSRect, DT_LEFT, D3DCOLOR_XRGB(255, 255, 255));
+
+	// ここはまだ
 	/*m_pSpr->Draw(pointTex, NULL, NULL, &arrowPos, 0xFFFFFFFF);*/
-
 	/*if (whiteAlpha > 0.0f)
 	{
 		D3DCOLOR white =
@@ -368,15 +430,21 @@ void SelectScene::DrawSelect()
 	//		&D3DXVECTOR3(300, 180, 0),
 	//		D3DCOLOR_XRGB(255, 255, 255)
 	//	);
-	//	// 白フェード
-	//	if (whiteAlpha > 0.0f) {
-	//		D3DCOLOR white =
-	//			D3DCOLOR_ARGB(int(255 * whiteAlpha), 255, 255, 255);
+	IDirect3DTexture9* whiteTex = nullptr;
+	m_pDev->CreateTexture(
+		1, 1,
+		1,
+		0,
+		D3DFMT_A8R8G8B8,
+		D3DPOOL_MANAGED,
+		&whiteTex,
+		nullptr
+	);
 
-	//		RECT WhiteRc = {200, 200, WIDTH, HEIGHT};
-	//	}
-	//}
-
+	D3DLOCKED_RECT lr;
+	whiteTex->LockRect(0, &lr, nullptr, 0);
+	*(DWORD*)lr.pBits = 0xFFFFFFFF; // 白
+	whiteTex->UnlockRect(0);
 
 	//if (currentMode == GameMode::Versus)
 	//{
@@ -397,8 +465,190 @@ void SelectScene::DrawSelect()
 	//	);
 	//}
 
-	//シーンの描画を終了.
+    IDirect3DTexture9* iconTex1 = GetAppInst()->GetDxTex(TEX_AAAPHTO);
+    IDirect3DTexture9* iconTex2 = GetAppInst()->GetDxTex(TEX_BBBPHTO);
+    IDirect3DTexture9* iconTex3 = GetAppInst()->GetDxTex(TEX_CCCPHTO);
+    IDirect3DTexture9* iconTex4 = GetAppInst()->GetDxTex(TEX_DDDPHTO);
+	// カーソル
+	iconTex1 = GetAppInst()->GetDxTex(TEX_AAAPHTO);
+	iconTex2 = GetAppInst()->GetDxTex(TEX_BBBPHTO);
+	iconTex3 = GetAppInst()->GetDxTex(TEX_CCCPHTO);
+	iconTex4 = GetAppInst()->GetDxTex(TEX_DDDPHTO);
+
+	D3DXVECTOR3 IconPos1(300, 200,0);
+	D3DXVECTOR3 IconPos2(800, 200,0);
+	D3DXVECTOR3 IconPos3(300, 600,0);
+	D3DXVECTOR3 IconPos4(800, 600,0);
+
+	// アイコン
+	{
+		D3DSURFACE_DESC desc1;
+		iconTex1->GetLevelDesc(0, &desc1);
+		// 拡大率
+		float scale = 2.0f;
+		// 拡大行列
+		D3DXMATRIX matScale, matTrans;
+		D3DXMatrixScaling(&matScale, scale, scale, 1.0f);
+		// 移動行列
+		D3DXMatrixTranslation(&matTrans, IconPos1.x, IconPos1.y, 0);
+		// 合成（スケール → 移動）
+		D3DXMATRIX matWorld = matScale * matTrans;
+		m_pSpr->SetTransform(&matWorld);
+		// アイコン描画
+		m_pSpr->Draw(iconTex1, NULL, NULL, NULL, 0xFFFFFFFF);
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+	{
+		D3DSURFACE_DESC desc2;
+		iconTex2->GetLevelDesc(0, &desc2);
+		// 拡大率
+		float scale = 2.0f;
+		// 拡大行列
+		D3DXMATRIX matScale, matTrans;
+		D3DXMatrixScaling(&matScale, scale, scale, 1.0f);
+		// 移動行列
+		D3DXMatrixTranslation(&matTrans, IconPos2.x, IconPos2.y, 0);
+		// 合成（スケール → 移動）
+		D3DXMATRIX matWorld = matScale * matTrans;
+		m_pSpr->SetTransform(&matWorld);
+		// アイコン描画
+		m_pSpr->Draw(iconTex2, NULL, NULL, NULL, 0xFFFFFFFF);
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+	{
+		D3DSURFACE_DESC desc3;
+		iconTex3->GetLevelDesc(0, &desc3);
+		// 拡大率
+		float scale = 2.0f;
+		// 拡大行列
+		D3DXMATRIX matScale, matTrans;
+		D3DXMatrixScaling(&matScale, scale, scale, 1.0f);
+		// 移動行列
+		D3DXMatrixTranslation(&matTrans, IconPos3.x, IconPos3.y, 0);
+		// 合成（スケール → 移動）
+		D3DXMATRIX matWorld = matScale * matTrans;
+		m_pSpr->SetTransform(&matWorld);
+		// アイコン描画
+		m_pSpr->Draw(iconTex3, NULL, NULL, NULL, 0xFFFFFFFF);
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+	{
+		D3DSURFACE_DESC desc4;
+		iconTex4->GetLevelDesc(0, &desc4);
+		// 拡大率
+		float scale = 2.0f;
+		// 拡大行列
+		D3DXMATRIX matScale, matTrans;
+		D3DXMatrixScaling(&matScale, scale, scale, 1.0f);
+		// 移動行列
+		D3DXMatrixTranslation(&matTrans, IconPos4.x, IconPos4.y, 0);
+		// 合成（スケール → 移動）
+		D3DXMATRIX matWorld = matScale * matTrans;
+		m_pSpr->SetTransform(&matWorld);
+		// アイコン描画
+		m_pSpr->Draw(iconTex4, NULL, NULL, NULL, 0xFFFFFFFF);
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+
+	// グレーオーバーレイ
+	if (!isP1Activated)
+	{
+		D3DSURFACE_DESC desc1;
+		iconTex1->GetLevelDesc(0, &desc1);
+		float scaleG = 1.5f;
+		D3DXMATRIX matGrayScale, matGrayTrans, matGrayWorld;
+		// 1x1のwhiteTexを「表示倍率×アイコンのピクセル幅」に拡大する
+		D3DXMatrixScaling(&matGrayScale, scaleG * desc1.Width, scaleG * desc1.Height, 1.0f);
+		D3DXMatrixTranslation(&matGrayTrans, IconPos1.x, IconPos1.y, 0);
+
+		matGrayWorld = matGrayScale * matGrayTrans;
+		m_pSpr->SetTransform(&matGrayWorld);
+
+		// 1x1のテクスチャをアイコンサイズまで引き伸ばして描画
+		m_pSpr->Draw(whiteTex, NULL, NULL, NULL, D3DCOLOR_ARGB(220, 80, 80, 80));
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+	if (!isP2Activated)
+	{
+		D3DSURFACE_DESC desc;
+		iconTex2->GetLevelDesc(0, &desc);
+		float scaleG = 1.5f;
+		D3DXMATRIX matGrayScale, matGrayTrans, matGrayWorld;
+		// 1x1のwhiteTexを「表示倍率×アイコンのピクセル幅」に拡大する
+		D3DXMatrixScaling(&matGrayScale, scaleG * desc.Width, scaleG * desc.Height, 1.0f);
+		D3DXMatrixTranslation(&matGrayTrans, IconPos2.x, IconPos2.y, 0);
+
+		matGrayWorld = matGrayScale * matGrayTrans;
+		m_pSpr->SetTransform(&matGrayWorld);
+
+		// 1x1のテクスチャをアイコンサイズまで引き伸ばして描画
+		m_pSpr->Draw(whiteTex, NULL, NULL, NULL, D3DCOLOR_ARGB(220, 80, 80, 80));
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+	if (!isP3Activated)
+	{
+		D3DSURFACE_DESC desc;
+		iconTex3->GetLevelDesc(0, &desc);
+		float scaleG = 1.5f;
+		D3DXMATRIX matGrayScale, matGrayTrans, matGrayWorld;
+		// 1x1のwhiteTexを「表示倍率×アイコンのピクセル幅」に拡大する
+		D3DXMatrixScaling(&matGrayScale, scaleG * desc.Width, scaleG * desc.Height, 1.0f);
+		D3DXMatrixTranslation(&matGrayTrans, IconPos3.x, IconPos3.y, 0);
+
+		matGrayWorld = matGrayScale * matGrayTrans;
+		m_pSpr->SetTransform(&matGrayWorld);
+
+		// 1x1のテクスチャをアイコンサイズまで引き伸ばして描画
+		m_pSpr->Draw(whiteTex, NULL, NULL, NULL, D3DCOLOR_ARGB(220, 80, 80, 80));
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+	if (!isP4Activated)
+	{
+		D3DSURFACE_DESC desc;
+		iconTex4->GetLevelDesc(0, &desc);
+		float scaleG = 1.5f;
+		D3DXMATRIX matGrayScale, matGrayTrans, matGrayWorld;
+		// 1x1のwhiteTexを「表示倍率×アイコンのピクセル幅」に拡大する
+		D3DXMatrixScaling(&matGrayScale, scaleG * desc.Width, scaleG * desc.Height, 1.0f);
+		D3DXMatrixTranslation(&matGrayTrans, IconPos4.x, IconPos4.y, 0);
+
+		matGrayWorld = matGrayScale * matGrayTrans;
+		m_pSpr->SetTransform(&matGrayWorld);
+
+		// 1x1のテクスチャをアイコンサイズまで引き伸ばして描画
+		m_pSpr->Draw(whiteTex, NULL, NULL, NULL, D3DCOLOR_ARGB(220, 80, 80, 80));
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity(&matIdentity);
+		m_pSpr->SetTransform(&matIdentity);
+	}
+
 	m_pSpr->End();
+	ID3DXFont* font = GetAppInst()->GetFont();
+	RECT rcA = {};
+	font->DrawText(nullptr, L"各自Aボタンから参加し戦闘を待つ", -1, &rcA, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));//仮
+	//シーンの描画を終了.
 	m_pDev->EndScene();
 }
 

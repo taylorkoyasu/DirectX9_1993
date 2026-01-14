@@ -386,3 +386,4 @@ int MyInput::GetStickRY(E_JOY_CON_ID joy)
 {
 	return (m_joystickInfo[joy][0].ry);
 }
+

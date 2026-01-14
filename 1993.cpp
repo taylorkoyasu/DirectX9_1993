@@ -229,11 +229,14 @@ BOOL MyApp::LoadResource()
 			
 
 			/* ,_T("img/post.png")*/
-			,_T("img/TEST.png")		   // タイトル画像
+			,_T("img/title.png")	   // UI
 			,_T("img/BG_Image.png")	   // セレクト画像
 			,_T("img/BG_Result.png")   //リザルト
 			,_T("img/logo_1993.png")   // ロゴ画像
 			,_T("img/cursor.png")	   // 選択カーソル
+			,_T("img/sensya_title.png")	   // UI
+			
+
 
 		};
 		//static_assert(_countof(pszTexName)==TEX_COUNT,"" ):

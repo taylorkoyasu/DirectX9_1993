@@ -23,9 +23,7 @@ public:
 
 private:
 	//ゲームシーンで必要なもの
-	logoAnime m_logo;               // ロゴアニメーションの型
-
-
+	logoAnime m_logo;    // ロゴアニメーションの型
 	// Get Set
 };
 
@@ -36,8 +34,7 @@ enum GameMode {
 };
 enum SceneState {
 	STATE_MODE_SELECT,   // モード選択中
-	STATE_WAIT_START,    // 決定後（ゲーム参加）
-
+	STATE_WAIT_START,    // 決定後（ゲーム参加
 };
 
 class SelectScene {
@@ -60,18 +57,27 @@ private:
 	//	int joinedPlayers = 2; // 2Pは必須
 
 	// 説明画像
-	int     infoIndex = 0;      // 何枚目の説明か（0,1,2）
-	float   infoTimer = 0.0f;   // 切り替え用タイマー
-	const float INFO_INTERVAL = 3.0f; // 切り替わりまでの時間
+	int     infoIndex;      // 何枚目の説明か（0,1,2）
+	float   infoTimer;      // 切り替え用タイマー
+	float INFO_INTERVAL;    // ゲームシーンまでの切り替わりタイマー
 
 	// 白フェード
-	float whiteAlpha = 0.0f;
-	bool  whiteFade = false;
+	float whiteAlpha;
+	bool  whiteFade;
 	// 説明画像（2～3枚）
-	IDirect3DTexture9* infoTex_1[3]; // 対戦
-	IDirect3DTexture9* infoTex_2[3]; // 協力
+	IDirect3DTexture9* infoTex_1[2]; // 対戦
+	IDirect3DTexture9* infoTex_2[2]; // 協力
 	D3DXVECTOR3 arrowPos;
+	D3DXVECTOR3 IconPos1;
+	D3DXVECTOR3 IconPos2;
+	D3DXVECTOR3 IconPos3;
+	D3DXVECTOR3 IconPos4;
 	int m_infoMax = 3;
+
+	bool isP1Activated = false;
+	bool isP2Activated = false;
+	bool isP3Activated = false;
+	bool isP4Activated = false;
 
 };
 
