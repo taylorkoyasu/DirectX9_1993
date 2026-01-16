@@ -50,12 +50,6 @@ public:
 	GameMode currentMode = GameMode::Coop;
 	GameMode prevMode;
 private:
-	const float JOIN_TIME_LIMIT = 4.0f; // Debug
-	//	const float JOIN_TIME_LIMIT = 15.0f;
-	float joinTimer = 0.0f;
-	int joinedPlayers = 1;     // test
-	//	int joinedPlayers = 2; // 2Pは必須
-
 	// 説明画像
 	int     infoIndex;      // 何枚目の説明か（0,1,2）
 	float   infoTimer;      // 切り替え用タイマー
@@ -74,11 +68,12 @@ private:
 	D3DXVECTOR3 IconPos4;
 	int m_infoMax = 3;
 
+	int isActivCnt; // 参加playerカウント
 	bool isP1Activated = false;
 	bool isP2Activated = false;
 	bool isP3Activated = false;
 	bool isP4Activated = false;
-
+ 	
 };
 
 class GameScene {

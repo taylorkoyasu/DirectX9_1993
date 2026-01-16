@@ -27,6 +27,24 @@ void TitleScene::UpdateTitle()
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
+	// 確認済み
+	if (pInput->IsPushBtnOne(JOY_CON_0,JOY_BTN_BIT_A||JOY_BTN_BIT_B)) {
+		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
+		return;
+	}
+	if ((pInput->IsPushBtnOne(JOY_CON_1,JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_X))) {
+		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
+		return;
+	}
+	if ((pInput->IsPushBtnOne(JOY_CON_2,JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_X))) {
+		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
+		return;
+	}
+	if ((pInput->IsPushBtnOne(JOY_CON_3,JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_X))) {
+		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
+		return;
+	}
+
 	//MyInput* pInput = GetInputInst();
 	//// 何かキーが押されたらゲームシーンへ
 	//bool isAnyKeyPressed = false;
@@ -196,11 +214,14 @@ void SelectScene::SelectInit()
 {
 	int infoIndex = 0;
 	float infoTimer = 3.0f;  //選択
-	float INFO_INTERVAL = 3.0f;//待機時のタイマー
+	float INFO_INTERVAL = 5.0f;//待機時のタイマー
 
 	float whiteAlpha = 0.0f;
 	bool whiteFade = false;
-	
+    isP1Activated = false;
+    isP2Activated = false;
+    isP3Activated = false;
+    isP4Activated = false;
 	/*m_gameScene = GAME_SCENE_SELECT;*/
 }
 
@@ -214,26 +235,33 @@ void SelectScene::UpdateSelect()
 		printf("Enter");
 		return;
 	}
-
 	if (pInput->IsPushKeyOne(DIK_SPACE)) // Aボタンなど
 	{
 		isP1Activated = true;
+		isActivCnt++;
 	}
-	//if (pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A)) // Aボタンなど
-	//{
-	//	isP1Activated = true;
-	//}
+	if (pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A)) // Aボタンなど
+	{
+		//isP1Activated = true;
+		isP2Activated = true;
+		isActivCnt++;
+	}
 	if (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A)) // Aボタンなど
 	{
-		isP2Activated = true;
+		isP3Activated = true;
+		//isP2Activated = true;
+		isActivCnt++;
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A)) // Aボタンなど
 	{
-		isP3Activated = true;
+		//isP3Activated = true;
+		isP4Activated = true;
+		isActivCnt++;
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A)) // Aボタンなど
 	{
 		isP4Activated = true;
+		isActivCnt++;
 	}
 
 	//if (state == STATE_MODE_SELECT) {
@@ -287,19 +315,25 @@ void SelectScene::UpdateSelect()
 	//}
 
 	//// player 待機画面
-	if (state == STATE_WAIT_START) {
-
+//	if (state == STATE_WAIT_START) {
+	   INFO_INTERVAL = 5.0f;
 		if (INFO_INTERVAL <= 0.0f)
 		{
 			// タイムアップ処理
-			if (pInput->IsPushKeyOne(DIK_RETURN)) {
+		//	if (pInput->IsPushKeyOne(DIK_RETURN)) {
 				// 決定されたら	
+		    if(isActivCnt < 1){
+				GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
+				return;
+			}
+			else {
 				GetAppInst()->ChangeScene(GAME_SCENE_STORY);
 				return;
 			}
-		}
-		
-	}
+		//}
+		}		
+	//}
+
 		// 2人以上のplayerがボタンを押しているか
 		// おしたplayerの場所の画像は差し替える
 	    /*if (IsReadyToStart() == true) {
@@ -430,6 +464,7 @@ void SelectScene::DrawSelect()
 	//		&D3DXVECTOR3(300, 180, 0),
 	//		D3DCOLOR_XRGB(255, 255, 255)
 	//	);
+
 	IDirect3DTexture9* whiteTex = nullptr;
 	m_pDev->CreateTexture(
 		1, 1,
@@ -464,6 +499,23 @@ void SelectScene::DrawSelect()
 	//		D3DCOLOR_XRGB(255, 255, 255)
 	//	);
 	//}
+
+	// ゲーム待機
+	
+	D3DSURFACE_DESC desc;
+	pTex2->GetLevelDesc(0, &desc);
+	float texW = (float)desc.Width;   // 512
+	float texH = (float)desc.Height;  // 512
+	// 画面いっぱいにするスケールを計算
+	float scaleX = 1280.0f / texW;
+	float scaleY = 1024.0f / texH;
+
+	D3DXMATRIX mat;
+	D3DXMatrixScaling(&mat, scaleX, scaleY, 1.0f);
+	m_pSpr->SetTransform(&mat);
+
+	// 背景画像の描画
+	m_pSpr->Draw(pTex2, nullptr, nullptr, nullptr, 0xFFFFFFFF);
 
     IDirect3DTexture9* iconTex1 = GetAppInst()->GetDxTex(TEX_AAAPHTO);
     IDirect3DTexture9* iconTex2 = GetAppInst()->GetDxTex(TEX_BBBPHTO);
@@ -645,9 +697,19 @@ void SelectScene::DrawSelect()
 	}
 
 	m_pSpr->End();
+
 	ID3DXFont* font = GetAppInst()->GetFont();
-	RECT rcA = {};
-	font->DrawText(nullptr, L"各自Aボタンから参加し戦闘を待つ", -1, &rcA, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));//仮
+	RECT rc1 = { 330, 400, WIDTH, HEIGHT};
+	font->DrawText(nullptr, L"Player 1", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 255, 255));
+	RECT rc2 = { 530, 400, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"Player 2", -1, &rc2, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 255));
+	RECT rc3 = { 330, 800, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"Player 3", -1, &rc3, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
+	RECT rc4 = { 530, 800, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"Player 4", -1, &rc4, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
+
+	RECT rcA = { 400, HEIGHT/2 + 200,WIDTH,HEIGHT };
+	font->DrawText(nullptr, L"各自Aボタンから参加し戦闘を待つ", -1, &rcA, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(150, 50, 0));//仮
 	//シーンの描画を終了.
 	m_pDev->EndScene();
 }

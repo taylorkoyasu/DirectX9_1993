@@ -374,7 +374,7 @@ void MyApp::DrawScene()
 
 void MyApp::UpdateStory()
 {
-	MyInput* pInput = GetInputInst();
+	MyInput* pInput = GetInputInst ();
 	// 何かキーが押されたらゲームシーンへ
 	if (pInput->IsPushKeyOne(DIK_TAB)) {
 		/*	m_gameScene = GAME_SCENE_RESULT;*/
