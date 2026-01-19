@@ -1,6 +1,7 @@
 // SceneManager.h
 
 #pragma once
+#include "MyTimer.h"
 
 // TitleClass
 // アニメーション
@@ -49,12 +50,14 @@ public:
 
 	GameMode currentMode = GameMode::Coop;
 	GameMode prevMode;
+
 private:
 	// 説明画像
 	int     infoIndex;      // 何枚目の説明か（0,1,2）
 	float   infoTimer;      // 切り替え用タイマー
-	float INFO_INTERVAL;    // ゲームシーンまでの切り替わりタイマー
-
+    LONGLONG interval;      // ゲームシーンまでの切り替わりタイマー
+	MyTimer cdTimer;	    // 描画更新タイミングの制御用.
+	float deltaTime;
 	// 白フェード
 	float whiteAlpha;
 	bool  whiteFade;

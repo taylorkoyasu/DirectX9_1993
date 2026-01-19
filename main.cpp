@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	// argv 引数の実体へのポインタ配列.
 
 	MyApp* pApp = GetAppInst();
-	if (pApp->InitApp()) {
+		if (pApp->InitApp()) {
 		pApp->MainLoop();
 	}
 

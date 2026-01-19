@@ -232,7 +232,7 @@ BOOL MyApp::LoadResource()
 			,_T("img/title.png")	   // UI
 			,_T("img/BG_Image.png")	   // セレクト画像
 			,_T("img/BG_Result.png")   //リザルト
-			,_T("img/logo_1993.png")   // ロゴ画像
+			,_T("img/logo_19X3.png")   // ロゴ画像
 			,_T("img/cursor.png")	   // 選択カーソル
 			,_T("img/sensya_title.png")	   // UI
 			
@@ -256,9 +256,9 @@ void MyApp::InitGame()
 {
 
 	//タイトル部
-	{
-		m_gameScene = GAME_SCENE_BEGIN;
-	}
+	//m_gameScene = GAME_SCENE_BEGIN;
+	//m_gameScene = GAME_SCENE_TITLE;
+	ChangeScene(GAME_SCENE_TITLE);
 	//ゲーム部
 	{
 		m_field.FieldInit(); //フィールドの初期化
@@ -476,13 +476,13 @@ BOOL MyApp::UpdateMain()
 	LONGLONG us = 0; UINT fps = 0;
 
 	// 60FPSで画面更新.
-	{
+	
 		m_syncTimer.GetPassTime(&us, &fps);
 		if (us < 1000000 / 60) {
 			return FALSE;// 60FPSで画面更新.
 		}
 		m_syncTimer.StartTimer();
-	}
+	
 
 	
 	MyInput* pInput = GetInputInst();
@@ -671,6 +671,13 @@ HRESULT MyApp::InitFont()
 		m_pDev, 12, 0, FW_HEAVY, 1, FALSE,
 		SHIFTJIS_CHARSET, OUT_TT_ONLY_PRECIS,
 		ANTIALIASED_QUALITY, FF_DONTCARE, L"DotGothic16-Regular", &m_pFontSS);
+	if (FAILED(hr)) return E_FAIL;
+
+	// 大
+	hr = D3DXCreateFont(
+		m_pDev, 128, 0, FW_HEAVY, 1, FALSE,
+		SHIFTJIS_CHARSET, OUT_TT_ONLY_PRECIS,
+		ANTIALIASED_QUALITY, FF_DONTCARE, L"DotGothic16-Regular", &m_pFontL);
 	if (FAILED(hr)) return E_FAIL;
 
 	return S_OK;

@@ -87,6 +87,7 @@ public:
 	LPD3DXFONT  GetFont()  { return m_pFont; } //通常フォント
 	LPD3DXFONT  GetFontS() { return m_pFontS; }//小フォント
 	LPD3DXFONT  GetFontSS() { return m_pFontSS; }//小フォント
+	LPD3DXFONT  GetFontL() { return m_pFontL; }//大フォント
 	//自作
 	//3
 	template <class S, class T>
@@ -106,6 +107,7 @@ private:
 	LPD3DXFONT  m_pFont;				// フォント.
 	LPD3DXFONT  m_pFontS;               // 小フォント.
 	LPD3DXFONT  m_pFontSS;              // ゲーム時UI用フォント.
+	LPD3DXFONT  m_pFontL;               // 大フォント.
 
 	IDirect3DTexture9* GetTex(int index) {return m_pTex[index];}
 	

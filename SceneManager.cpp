@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "myApp.h"
 #include "myBmpFont.h"
-#include "myTimer.h"
 #include "SceneManager.h"
 
 // Title
@@ -14,13 +13,13 @@ void TitleScene::TitleInit() {
 
 void TitleScene::UpdateTitle()
 {	
-	float targetY = 200.0f; // 最終位置
+	float targetY = 180.0f; // 最終位置
 	if (m_logo.logoY < targetY)
 	{
 		m_logo.logoY += m_logo.logoSpeed * m_logo.logotime;
-		if (m_logo.logoY > targetY)
+		if (m_logo.logoY > targetY) {
 			m_logo.logoY = targetY;
-
+		}
 	}
 	MyInput* pInput = GetInputInst();
 	if (pInput->IsPushKeyOne(DIK_RETURN)) {
@@ -28,19 +27,19 @@ void TitleScene::UpdateTitle()
 		return;
 	}
 	// 確認済み
-	if (pInput->IsPushBtnOne(JOY_CON_0,JOY_BTN_BIT_A||JOY_BTN_BIT_B)) {
+	if ((pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_B))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	if ((pInput->IsPushBtnOne(JOY_CON_1,JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_X))) {
+	if ((pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_B))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	if ((pInput->IsPushBtnOne(JOY_CON_2,JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_X))) {
+	if ((pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_B))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	if ((pInput->IsPushBtnOne(JOY_CON_3,JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_X))) {
+	if ((pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_B))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
@@ -212,9 +211,9 @@ void TitleScene::DrawTitle()
 }
 void SelectScene::SelectInit()
 {
+	cdTimer.StartTimer();    // タイマー開始
 	int infoIndex = 0;
 	float infoTimer = 3.0f;  //選択
-	float INFO_INTERVAL = 5.0f;//待機時のタイマー
 
 	float whiteAlpha = 0.0f;
 	bool whiteFade = false;
@@ -242,20 +241,20 @@ void SelectScene::UpdateSelect()
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A)) // Aボタンなど
 	{
-		//isP1Activated = true;
-		isP2Activated = true;
+		isP1Activated = true;
+		//isP2Activated = true;
 		isActivCnt++;
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A)) // Aボタンなど
 	{
-		isP3Activated = true;
-		//isP2Activated = true;
+		//isP3Activated = true;
+		isP2Activated = true;
 		isActivCnt++;
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A)) // Aボタンなど
 	{
-		//isP3Activated = true;
-		isP4Activated = true;
+		isP3Activated = true;
+		//isP4Activated = true;
 		isActivCnt++;
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A)) // Aボタンなど
@@ -265,7 +264,6 @@ void SelectScene::UpdateSelect()
 	}
 
 	//if (state == STATE_MODE_SELECT) {
-
 	//	if (pInput->IsPushKeyOne(DIK_UP) || pInput->IsPushKeyOne(DIK_W)) {
 	//		currentMode = GameMode::Coop;
 	//	}
@@ -300,34 +298,24 @@ void SelectScene::UpdateSelect()
 	//	whiteFade = true;
 	//	whiteAlpha = 0.0f;
 	//}
-	//// 白フェード更新
-	//const float fadeSpeed = 2.0f;
-	//if (whiteFade) {
-	//	whiteAlpha += fadeSpeed * (1.0f / 60.0f);
-	//	if (whiteAlpha >= 1.0f) {
-	//		whiteAlpha = 1.0f;
-	//		whiteFade = false;
-	//	}
-	//}
-	//else if (whiteAlpha > 0.0f) {
-	//	whiteAlpha -= fadeSpeed * (1.0f / 60.0f);
-	//	if (whiteAlpha < 0.0f) whiteAlpha = 0.0f;
-	//}
 
 	//// player 待機画面
-//	if (state == STATE_WAIT_START) {
-	   INFO_INTERVAL = 5.0f;
-		if (INFO_INTERVAL <= 0.0f)
+    //if (state == STATE_WAIT_START) {
+	// Timer秒
+	UINT fps;
+	cdTimer.GetPassTime(&interval, &fps);
+	//15秒経過したらシーン移行
+		if (interval > (15*1000000))
 		{
 			// タイムアップ処理
-		//	if (pInput->IsPushKeyOne(DIK_RETURN)) {
-				// 決定されたら	
-		    if(isActivCnt < 1){
-				GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
+		    // if (pInput->IsPushKeyOne(DIK_RETURN)) {
+			// 決定されたら	
+		    if(isActivCnt > 2){
+				GetAppInst()->ChangeScene(GAME_SCENE_STORY);	
 				return;
 			}
 			else {
-				GetAppInst()->ChangeScene(GAME_SCENE_STORY);
+				GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
 				return;
 			}
 		//}
@@ -695,22 +683,33 @@ void SelectScene::DrawSelect()
 		D3DXMatrixIdentity(&matIdentity);
 		m_pSpr->SetTransform(&matIdentity);
 	}
-
 	m_pSpr->End();
 
+	LONGLONG restSec = (int)(15 - (interval / 1000000));
+	if(restSec < 0)
+	{
+		restSec = 0;
+	}
+	ID3DXFont* fontL = GetAppInst()->GetFontL();
+	wchar_t timeText[32];
+	swprintf_s(timeText,_countof(timeText),L"%d",restSec);
+	//swprintf_s(timeText, L"000");
+	RECT rcTime = { 600, 50, WIDTH, HEIGHT };
+	fontL->DrawText(nullptr,timeText,-1,&rcTime,DT_LEFT | DT_TOP,D3DCOLOR_XRGB(55, 0, 55));
+	
 	ID3DXFont* font = GetAppInst()->GetFont();
 	RECT rc1 = { 330, 400, WIDTH, HEIGHT};
-	font->DrawText(nullptr, L"Player 1", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 255, 255));
+	font->DrawText(nullptr, L"Player 1", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 205, 0));
 	RECT rc2 = { 530, 400, WIDTH, HEIGHT };
-	font->DrawText(nullptr, L"Player 2", -1, &rc2, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 255));
+	font->DrawText(nullptr, L"Player 2", -1, &rc2, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(155, 50, 155));
 	RECT rc3 = { 330, 800, WIDTH, HEIGHT };
-	font->DrawText(nullptr, L"Player 3", -1, &rc3, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
+	font->DrawText(nullptr, L"Player 3", -1, &rc3, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 5, 0));
 	RECT rc4 = { 530, 800, WIDTH, HEIGHT };
-	font->DrawText(nullptr, L"Player 4", -1, &rc4, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
+	font->DrawText(nullptr, L"Player 4", -1, &rc4, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(250, 50, 255));
 
-	RECT rcA = { 400, HEIGHT/2 + 200,WIDTH,HEIGHT };
-	font->DrawText(nullptr, L"各自Aボタンから参加し戦闘を待つ", -1, &rcA, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(150, 50, 0));//仮
-	//シーンの描画を終了.
+	RECT rcA = { 350, 500, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"各自Aボタンから参加し戦闘を待つ", -1, &rcA, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(200, 100, 100));
+	//シーンの描画を終了
 	m_pDev->EndScene();
 }
 
