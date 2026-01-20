@@ -27,19 +27,19 @@ void TitleScene::UpdateTitle()
 		return;
 	}
 	// 確認済み
-	if ((pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_B))) {
+	if ((pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_B)||(pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_X)))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	if ((pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_B))) {
+	if ((pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_B)||(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_X)))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	if ((pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_B))) {
+	if ((pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_B)||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_X)))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	if ((pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_B))) {
+	if ((pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_B)||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_X)))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
@@ -685,30 +685,30 @@ void SelectScene::DrawSelect()
 	}
 	m_pSpr->End();
 
-	LONGLONG restSec = (int)(15 - (interval / 1000000));
+	LONGLONG restSec = 15 - (interval / 1000000);
 	if(restSec < 0)
 	{
 		restSec = 0;
 	}
 	ID3DXFont* fontL = GetAppInst()->GetFontL();
-	wchar_t timeText[32];
-	swprintf_s(timeText,_countof(timeText),L"%d",restSec);
+	wchar_t timeText[64];
+	swprintf_s(timeText,L"%d", (int)restSec);
 	//swprintf_s(timeText, L"000");
 	RECT rcTime = { 600, 50, WIDTH, HEIGHT };
 	fontL->DrawText(nullptr,timeText,-1,&rcTime,DT_LEFT | DT_TOP,D3DCOLOR_XRGB(55, 0, 55));
 	
 	ID3DXFont* font = GetAppInst()->GetFont();
 	RECT rc1 = { 330, 400, WIDTH, HEIGHT};
-	font->DrawText(nullptr, L"Player 1", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 205, 0));
-	RECT rc2 = { 530, 400, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"Player 1", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 165, 0));
+	RECT rc2 = { 520, 400, WIDTH, HEIGHT };
 	font->DrawText(nullptr, L"Player 2", -1, &rc2, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(155, 50, 155));
 	RECT rc3 = { 330, 800, WIDTH, HEIGHT };
 	font->DrawText(nullptr, L"Player 3", -1, &rc3, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 5, 0));
-	RECT rc4 = { 530, 800, WIDTH, HEIGHT };
+	RECT rc4 = { 520, 800, WIDTH, HEIGHT };
 	font->DrawText(nullptr, L"Player 4", -1, &rc4, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(250, 50, 255));
 
 	RECT rcA = { 350, 500, WIDTH, HEIGHT };
-	font->DrawText(nullptr, L"各自Aボタンから参加し戦闘を待つ", -1, &rcA, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(200, 100, 100));
+	font->DrawText(nullptr, L"各自Aボタンから参加し戦闘を待つ", -1, &rcA, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(240, 0, 100));
 	//シーンの描画を終了
 	m_pDev->EndScene();
 }
@@ -728,6 +728,12 @@ void ResultScene::UpdateResult() {
 		printf("push Enterkey");
 		return;
 	}
+
+	if ((pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A))|| (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A))) {
+		GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
+		printf("push Enterkey");
+		return;
+	}
 }
 void ResultScene::DrawResult() {
 	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D デバイスの確認
@@ -743,15 +749,31 @@ void ResultScene::DrawResult() {
 	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
 	IDirect3DTexture9* pTex = GetAppInst()->GetDxTex(TEX_RESULT);
 	//// 背景画像の描画
+	D3DSURFACE_DESC desc;
+	pTex->GetLevelDesc(0, &desc);
+	float texW = (float)desc.Width;   // 1900
+	float texH = (float)desc.Height;  // 1200
+	// 画面いっぱいにするスケールを計算
+	float scaleX = 1280.0f / texW;
+	float scaleY = 1024.0f / texH;
+	D3DXMATRIX mat;
+	D3DXMatrixScaling(&mat, scaleX, scaleY, 1.0f);
+	m_pSpr->SetTransform(&mat);
 	m_pSpr->Draw(pTex, nullptr, nullptr, nullptr, 0xFFFFFFFF);//888899
+	// 行列を元に戻す
+	D3DXMATRIX matIdentity;
+	D3DXMatrixIdentity(&matIdentity);
+	m_pSpr->SetTransform(&matIdentity);
 	m_pSpr->End();
+	ID3DXFont* fontL = GetAppInst()->GetFontL();
 	ID3DXFont* font = GetAppInst()->GetFont();
+
 	// テキスト表示
-	RECT rcWIN = { -30, -300, WIDTH, HEIGHT };
-	// テキスト表示
-	font->DrawText(nullptr, L"任意のキーでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));//仮
+	RECT rcWIN = { -30, 800, WIDTH, HEIGHT };
+	// サイズはL
+	fontL->DrawText(nullptr, L"Aボタンでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 100, 0));//仮
 	// 誰が勝利したか表示する(gamesceneで勝った人)
-	//font->DrawText(nullptr, L" PL :勝利", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
+	//font->DrawText(nullptr, L" PL : 勝利", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 	//RECT rcSelect = { -30, 0, WIDTH, HEIGHT };
 	//font->DrawText(nullptr, L"もう一度戦う", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 	// 次の画面遷移を提示する (操作はどのPLができるか)
