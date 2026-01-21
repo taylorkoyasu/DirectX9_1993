@@ -244,6 +244,7 @@ void SelectScene::UpdateSelect()
 		isP1Activated = true;
 		//isP2Activated = true;
 		isActivCnt++;
+
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A)) // Aボタンなど
 	{
@@ -728,12 +729,34 @@ void ResultScene::UpdateResult() {
 		printf("push Enterkey");
 		return;
 	}
-
 	if ((pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A))|| (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
 		printf("push Enterkey");
 		return;
 	}
+	/*if (pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A)){
+		GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
+		printf("push Enterkey");
+		return;
+	}
+	if(pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A)) {
+		GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
+		printf("push Enterkey");
+		return;
+	}
+	if (pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A)) {
+
+		GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
+		printf("push Enterkey");
+		return;
+	}
+	if (pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A)) {
+
+		GetAppInst()->ChangeScene(GAME_SCENE_TITLE);
+		printf("push Enterkey");
+		return;
+	}*/
+
 }
 void ResultScene::DrawResult() {
 	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D デバイスの確認
