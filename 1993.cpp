@@ -365,6 +365,7 @@ void MyApp::DrawScene()
 		//	this->DrawGameOver();
 		//	break;
 	case GAME_SCENE_RESULT:
+		//result‚Ì•`‰æ‚ª‚±‚±‚É
 		result.DrawResult();
 		break;
 	default:

@@ -98,6 +98,8 @@ public:
 	void UpdateResult();
 	
 	void DrawResult();
+	void DrawIcon();
+	void DrawData();//各playerそれぞれの成績(アイテム取得率、ダメージ受け率など)
 
 private:
 

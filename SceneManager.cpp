@@ -787,6 +787,8 @@ void ResultScene::DrawResult() {
 	D3DXMATRIX matIdentity;
 	D3DXMatrixIdentity(&matIdentity);
 	m_pSpr->SetTransform(&matIdentity);
+	DrawIcon();
+
 	m_pSpr->End();
 	ID3DXFont* fontL = GetAppInst()->GetFontL();
 	ID3DXFont* font = GetAppInst()->GetFont();
@@ -801,4 +803,34 @@ void ResultScene::DrawResult() {
 	//font->DrawText(nullptr, L"‚à‚¤ˆê“xí‚¤", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 	// ŽŸ‚Ì‰æ–Ê‘JˆÚ‚ð’ñŽ¦‚·‚é (‘€ì‚Í‚Ç‚ÌPL‚ª‚Å‚«‚é‚©)
 	m_pDev->EndScene();
+}
+
+void ResultScene::DrawIcon() {
+
+		ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();
+
+		RECT rc = { 0,0,96,96 };
+		D3DXVECTOR3 center(0, 0, 0);
+
+		IDirect3DTexture9* p1 = GetAppInst()->GetDxTex(TEX_AAAPHTO);
+		IDirect3DTexture9* p2 = GetAppInst()->GetDxTex(TEX_BBBPHTO);
+		IDirect3DTexture9* p3 = GetAppInst()->GetDxTex(TEX_CCCPHTO);
+		IDirect3DTexture9* p4 = GetAppInst()->GetDxTex(TEX_DDDPHTO);
+		 
+		//if (!t0 || !t1 || !t2 || !t3) return; // ‚Ç‚ê‚©–¢ƒ[ƒh
+
+		D3DXVECTOR3 pos;
+
+		pos = D3DXVECTOR3(200, 100, 0);
+		m_pSpr->Draw(p1, &rc, &center, &pos, 0xFFFFFFFF);
+
+		pos = D3DXVECTOR3(200, 300, 0);
+		m_pSpr->Draw(p2, &rc, &center, &pos, 0xFFFFFFFF);
+
+		pos = D3DXVECTOR3(200, 500, 0);
+		m_pSpr->Draw(p3, &rc, &center, &pos, 0xFFFFFFFF);
+
+		pos = D3DXVECTOR3(200, 700, 0);
+		m_pSpr->Draw(p4, &rc, &center, &pos, 0xFFFFFFFF);
+	
 }

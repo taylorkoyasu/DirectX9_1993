@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "myApp.h"
 #include "PlayerDDD.h"
 
@@ -10,17 +10,17 @@
 
 
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void PlayerDDD::Init(Field* f) {
 	m_pfield = f;
 
 	float fieldLeft = (WIDTH - COLS * FIELD_SIZE) / 2;
 	float fieldTop = (HEIGHT - ROWS * FIELD_SIZE) / 2;
 
-	// BBB ‚Ì x
+	// BBB ã® x
 	float dddX = fieldLeft + (COLS - 1) * FIELD_SIZE + FIELD_SIZE / 2;
 
-	// Å‰º’i‚Ì y
+	// æœ€ä¸‹æ®µã® y
 	float dddY = fieldTop + (ROWS - 1) * FIELD_SIZE + FIELD_SIZE / 2;
 
 	m_tstatus.pos.x = dddX;
@@ -37,7 +37,7 @@ void PlayerDDD::Init(Field* f) {
 void PlayerDDD::Move() {
 
 	if (IsDead()) return;
-	MyInput* pInput = GetInputInst(); //D3DInputƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
+	MyInput* pInput = GetInputInst(); //D3DInputã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
 
 
 	for (int i = 0; i < m_bullets.size(); i++)
@@ -51,57 +51,57 @@ void PlayerDDD::Move() {
 		}
 	}
 
-	//PlayerˆÚ“®ˆ—
+	//Playerç§»å‹•å‡¦ç†
 	Vector2 v{ 0,0 };
 	const int top = (HEIGHT - ROWS * FIELD_SIZE) / 2 + FIELD_SIZE / 2;
 	const int down = (HEIGHT + ROWS * FIELD_SIZE) / 2 - FIELD_SIZE / 2;
 	const int left = (WIDTH - COLS * FIELD_SIZE) / 2 + FIELD_SIZE / 2;
 	const int right = (WIDTH + COLS * FIELD_SIZE) / 2 - FIELD_SIZE / 2;
-	//ƒWƒ‡ƒCƒXƒeƒBƒbƒN
+	//ã‚¸ãƒ§ã‚¤ã‚¹ãƒ†ã‚£ãƒƒã‚¯
 	if (m_tstatus.hp > 0) {
 		int ix = 0, iy = 0;
-		// ª
+		// â†‘
 		//if (pInput->IsPushKey(DIK_UP) && m_tstatus.pos.y >= top)
 		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_UP) && m_tstatus.pos.y >= top)
 		{
 
 			iy -= 1;
-			m_tstatus.angle = D3DXToRadian(0);//ƒ‰ƒWƒAƒ“•K{
+			m_tstatus.angle = D3DXToRadian(0);//ãƒ©ã‚¸ã‚¢ãƒ³å¿…é ˆ
 			m_facing = DIR_UP;
 		}
-		// «
+		// â†“
 		//if (pInput->IsPushKey(DIK_DOWN) && m_tstatus.pos.y <= down)
 		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_DN) && m_tstatus.pos.y <= down)
 		{
 			iy += 1;
-			m_tstatus.angle = D3DXToRadian(180);//ƒ‰ƒWƒAƒ“•K{
+			m_tstatus.angle = D3DXToRadian(180);//ãƒ©ã‚¸ã‚¢ãƒ³å¿…é ˆ
 			m_facing = DIR_DOWN;
 		}
-		// ©
+		// â†
 
 		//if (pInput->IsPushKey(DIK_LEFT) && m_tstatus.pos.x >= left)
 		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_LT) && m_tstatus.pos.x >= left)
 		{
 			ix -= 1;
-			m_tstatus.angle = D3DXToRadian(270);//ƒ‰ƒWƒAƒ“•K{
+			m_tstatus.angle = D3DXToRadian(270);//ãƒ©ã‚¸ã‚¢ãƒ³å¿…é ˆ
 			m_facing = DIR_LEFT;
 		}
-		// ¨
+		// â†’
 		//if (pInput->IsPushKey(DIK_RIGHT) && m_tstatus.pos.x <= right)
 		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_RT) && m_tstatus.pos.x <= right)
 		{
 			ix += 1;
-			m_tstatus.angle = D3DXToRadian(90);//ƒ‰ƒWƒAƒ“•K{
+			m_tstatus.angle = D3DXToRadian(90);//ãƒ©ã‚¸ã‚¢ãƒ³å¿…é ˆ
 			m_facing = DIR_RIGHT;
 		}
-		//Î‚ß–h~
-		//—¼•û‘¬“x‚ª‚ ‚éˆê•à‚ğ0‚É‚·‚é
+		//æ–œã‚é˜²æ­¢
+		//ä¸¡æ–¹é€Ÿåº¦ãŒã‚ã‚‹æ™‚ä¸€æ­©ã‚’0ã«ã™ã‚‹
 		if (ix != 0 && iy != 0) {
 
 			iy = 0;
 			ix = 0;
 		}
-		//true  “®‚¯‚é false “®‚©‚È‚¢
+		//true  å‹•ã‘ã‚‹ false å‹•ã‹ãªã„
 		if (CheckLayOut1() && CheckLayOut2()) {
 			v.x = ix * m_tstatus.moveSpeed;
 			v.y = iy * m_tstatus.moveSpeed;
@@ -120,10 +120,10 @@ void PlayerDDD::Move() {
 	}
 }
 
-//space‚ğŠO‚É
+//spaceã‚’å¤–ã«
 void PlayerDDD::Fire()
 {
-	// 1) ”‚¦‚éF¶‚«‚Ä‚¢‚é’e‚Ì”
+	// 1) æ•°ãˆã‚‹ï¼šç”Ÿãã¦ã„ã‚‹å¼¾ã®æ•°
 	int activeCount = 0;
 	for (int i = 0; i < m_bullets.size(); i++)
 	{
@@ -131,14 +131,14 @@ void PlayerDDD::Fire()
 			activeCount++;
 	}
 
-	// Å‘å’e”ƒ`ƒFƒbƒN
+	// æœ€å¤§å¼¾æ•°ãƒã‚§ãƒƒã‚¯
 	if (activeCount >= m_maxBullets) {
 
 		return;
 
 	}
 
-	// 2) Šù‘¶‚Ì’e‚ğÄ—˜—p
+	// 2) æ—¢å­˜ã®å¼¾ã‚’å†åˆ©ç”¨
 	for (int i = 0; i < m_bullets.size(); i++)
 	{
 		if (!m_bullets[i].GetAlive())
@@ -149,7 +149,7 @@ void PlayerDDD::Fire()
 		}
 	}
 
-	// 3) V‹Kì¬
+	// 3) æ–°è¦ä½œæˆ
 	m_bullets.push_back(CreateBullet());
 }
 
@@ -167,40 +167,40 @@ void PlayerDDD::DrawBullets() {
 }
 bool PlayerDDD::CheckLayOut1() {
 
-	//ã‰º¶‰E
-	//æ‚¸‚Í©•ª(ƒ^ƒ“ƒN)‚ÌŒ»İMASU–Ú‚ğŠm”F
-	const int ox = (WIDTH - COLS * FIELD_SIZE) / 2;//field¶ã‚˜
-	const int oy = (HEIGHT - ROWS * FIELD_SIZE) / 2;//field¶ã‚™
+	//ä¸Šä¸‹å·¦å³
+	//å…ˆãšã¯è‡ªåˆ†(ã‚¿ãƒ³ã‚¯)ã®ç¾åœ¨MASUç›®ã‚’ç¢ºèª
+	const int ox = (WIDTH - COLS * FIELD_SIZE) / 2;//fieldå·¦ä¸Šï½˜
+	const int oy = (HEIGHT - ROWS * FIELD_SIZE) / 2;//fieldå·¦ä¸Šï½™
 
 	// int mx = int((m_tstatus.pos.x - ox) / FIELD_SIZE);
 	// int my = int((m_tstatus.pos.y - oy) / FIELD_SIZE);
 
 	float offsetHalf = FIELD_SIZE / 2.0f;
 
-	//player.’†SÀ•W
+	//player.ä¸­å¿ƒåº§æ¨™
 	float cx = m_tstatus.pos.x;
 	float cy = m_tstatus.pos.y;
 	//ENUM_FIELD_OBJECT1 obj = m_pfield->GetField1(mx, my);
-	// layout1‚É‚Í 
-	// ƒ^ƒ“ƒN‚Í@1,3,4@’Ê‰ß‚Å‚«‚é@
-	// ƒpƒCƒƒbƒg‚Í@1,2,3@’Ê‰ß‚Å‚«‚é
+	// layout1ã«ã¯ 
+	// ã‚¿ãƒ³ã‚¯ã¯ã€€1,3,4ã€€é€šéã§ãã‚‹ã€€
+	// ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯ã€€1,2,3ã€€é€šéã§ãã‚‹
 
 	switch (m_facing)
 	{
-		//y‚ÌˆêŒÂ•ªã‚ğƒ`ƒFƒbƒN
-		//***ƒ^ƒ“ƒN‚¾‚¯
-		//‰Í‚Å‚Í‚È‚¢ê‡’Ê‰ß‰Â”\
+		//yã®ä¸€å€‹åˆ†ä¸Šã‚’ãƒã‚§ãƒƒã‚¯
+		//***ã‚¿ãƒ³ã‚¯ã ã‘
+		//æ²³ã§ã¯ãªã„å ´åˆé€šéå¯èƒ½
 	case DIR_UP:    cy -= offsetHalf; break;
 	case DIR_DOWN:  cy += offsetHalf; break;
 	case DIR_LEFT:  cx -= offsetHalf; break;
 	case DIR_RIGHT: cx += offsetHalf; break;
 
 	default:
-		assert("ƒtƒB[ƒ‹ƒh”z—ñ‚É—\Šú‚³‚ê‚Ä‚È‚¢’l‚Å‚·");
+		assert("ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰é…åˆ—ã«äºˆæœŸã•ã‚Œã¦ãªã„å€¤ã§ã™");
 		return false;
 		break;
 	}
-	//‚¸‚Á‚ê‚½ƒ}ƒX
+	//ãšã£ã‚ŒãŸãƒã‚¹
 	int tx = int((cx - ox) / FIELD_SIZE);
 	int ty = int((cy - oy) / FIELD_SIZE);
 
@@ -216,52 +216,52 @@ bool PlayerDDD::CheckLayOut1() {
 		m_tstatus.alpha = 255;
 
 	}
-	//ŠC‚È‚çfalse
-	//‚Ù‚© true
+	//æµ·ãªã‚‰false
+	//ã»ã‹ true
 	return (tile != FIELD_OBJECT1_LAKE);
 }
 
 bool PlayerDDD::CheckLayOut2() {
 
 
-	//ã‰º¶‰E
-	//æ‚¸‚Í©•ª(ƒ^ƒ“ƒN)‚ÌŒ»İMASU–Ú‚ğŠm”F
-	const int ox = (WIDTH - COLS * FIELD_SIZE) / 2;//field¶ã‚˜
-	const int oy = (HEIGHT - ROWS * FIELD_SIZE) / 2;//field¶ã‚™
+	//ä¸Šä¸‹å·¦å³
+	//å…ˆãšã¯è‡ªåˆ†(ã‚¿ãƒ³ã‚¯)ã®ç¾åœ¨MASUç›®ã‚’ç¢ºèª
+	const int ox = (WIDTH - COLS * FIELD_SIZE) / 2;//fieldå·¦ä¸Šï½˜
+	const int oy = (HEIGHT - ROWS * FIELD_SIZE) / 2;//fieldå·¦ä¸Šï½™
 
 	// int mx = int((m_tstatus.pos.x - ox) / FIELD_SIZE);
 	// int my = int((m_tstatus.pos.y - oy) / FIELD_SIZE);
 
 	float offsetHalf = FIELD_SIZE / 2.0f;
 
-	//player.’†SÀ•W
+	//player.ä¸­å¿ƒåº§æ¨™
 	float cx = m_tstatus.pos.x;
 	float cy = m_tstatus.pos.y;
 	//ENUM_FIELD_OBJECT1 obj = m_pfield->GetField1(mx, my);
-	// layout1‚É‚Í 
-	// ƒ^ƒ“ƒN‚Í@1,3,4@’Ê‰ß‚Å‚«‚é@
-	// ƒpƒCƒƒbƒg‚Í@1,2,3@’Ê‰ß‚Å‚«‚é
+	// layout1ã«ã¯ 
+	// ã‚¿ãƒ³ã‚¯ã¯ã€€1,3,4ã€€é€šéã§ãã‚‹ã€€
+	// ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯ã€€1,2,3ã€€é€šéã§ãã‚‹
 
 	switch (m_facing)
 	{
-		//y‚ÌˆêŒÂ•ªã‚ğƒ`ƒFƒbƒN
-		//***ƒ^ƒ“ƒN‚¾‚¯
-		//‰Í‚Å‚Í‚È‚¢ê‡’Ê‰ß‰Â”\
+		//yã®ä¸€å€‹åˆ†ä¸Šã‚’ãƒã‚§ãƒƒã‚¯
+		//***ã‚¿ãƒ³ã‚¯ã ã‘
+		//æ²³ã§ã¯ãªã„å ´åˆé€šéå¯èƒ½
 	case DIR_UP:    cy -= offsetHalf; break;
 	case DIR_DOWN:  cy += offsetHalf; break;
 	case DIR_LEFT:  cx -= offsetHalf; break;
 	case DIR_RIGHT: cx += offsetHalf; break;
 
 	default:
-		assert("ƒtƒB[ƒ‹ƒh”z—ñ‚É—\Šú‚³‚ê‚Ä‚È‚¢’l‚Å‚·");
+		assert("ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰é…åˆ—ã«äºˆæœŸã•ã‚Œã¦ãªã„å€¤ã§ã™");
 		return false;
 		break;
 	}
-	//‚¸‚Á‚ê‚½ƒ}ƒX
+	//ãšã£ã‚ŒãŸãƒã‚¹
 	int tx = int((cx - ox) / FIELD_SIZE);
 	int ty = int((cy - oy) / FIELD_SIZE);
 
-	//‚±‚±‚ªˆá‚¤
+	//ã“ã“ãŒé•ã†
 	ENUM_FIELD_OBJECT2 tile = m_pfield->GetField2(tx, ty);
 
 
@@ -285,12 +285,12 @@ BulletBase PlayerDDD::CreateBullet() {
 	Vector2 startPos = GetBulletStartPos();
 
 	bullet.Init(
-		startPos, // ˆÊ’u
-		8,                   // ”¼Œa
-		3,                   // Å‘å’e”iˆÈ@‰Â—p m_maxBulletsj
-		10,                  // ‘¬“x
-		1,                   // ƒ_ƒ[ƒW
-		0,                   // Šp“xiˆÈ@‰Â—p m_facingj
+		startPos, // ä½ç½®
+		8,                   // åŠå¾„
+		3,                   // æœ€å¤§å¼¾æ•°ï¼ˆä»¥åå¯ç”¨ m_maxBulletsï¼‰
+		10,                  // é€Ÿåº¦
+		1,                   // ãƒ€ãƒ¡ãƒ¼ã‚¸
+		0,                   // è§’åº¦ï¼ˆä»¥åå¯ç”¨ m_facingï¼‰
 		true,                // alive
 		m_facing,
 		m_pfield             // field
@@ -303,37 +303,37 @@ BulletBase PlayerDDD::CreateBullet() {
 
 Vector2 PlayerDDD::GetBulletStartPos()
 {
-	float cx = m_tstatus.pos.x;  // ’†SX
-	float cy = m_tstatus.pos.y;  // ’†SY
+	float cx = m_tstatus.pos.x;  // ä¸­å¿ƒX
+	float cy = m_tstatus.pos.y;  // ä¸­å¿ƒY
 
 	switch (m_facing)
 	{
 	case DIR_UP:
-		return { cx, cy - 16 };  // ã
+		return { cx, cy - 16 };  // ä¸Š
 	case DIR_DOWN:
-		return { cx, cy + 16 };  // ‰º
+		return { cx, cy + 16 };  // ä¸‹
 	case DIR_LEFT:
-		return { cx - 16 , cy };  // ¶
+		return { cx - 16 , cy };  // å·¦
 	case DIR_RIGHT:
-		return { cx + 16 , cy };  // ‰E
+		return { cx + 16 , cy };  // å³
 	}
 	return { cx, cy };
 }
 
 void PlayerDDD::DrawPoto() {
 
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ƒfƒoƒCƒX‚ÌŠm”F
-	assert(m_pDev != NULL && "Direct3D ƒfƒoƒCƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ãƒ‡ãƒã‚¤ã‚¹ã®ç¢ºèª
+	assert(m_pDev != NULL && "Direct3D ãƒ‡ãƒã‚¤ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚ÌŠm”F
-	assert(m_pSpr != NULL && "ID3DXSprite ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
+	assert(m_pSpr != NULL && "ID3DXSprite ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_DDDPHTO);// ƒeƒNƒXƒ`ƒƒ‚ÌŠm”F
-	assert(m_pTex != NULL && "ID3DTex ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_DDDPHTO);// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¢ºèª
+	assert(m_pTex != NULL && "ID3DTex ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
 	RECT rc = { 0,  0, 96, 96 };
 
-	D3DXVECTOR3 cnt(0, 0, 0);//¶ãw’è
+	D3DXVECTOR3 cnt(0, 0, 0);//å·¦ä¸ŠæŒ‡å®š
 
 	D3DXMATRIX trans;
 	const float startX = 960.0f;
@@ -346,19 +346,19 @@ void PlayerDDD::DrawPoto() {
 
 void PlayerDDD::DrawNation() {
 
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ƒfƒoƒCƒX‚ÌŠm”F
-	assert(m_pDev != NULL && "Direct3D ƒfƒoƒCƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ãƒ‡ãƒã‚¤ã‚¹ã®ç¢ºèª
+	assert(m_pDev != NULL && "Direct3D ãƒ‡ãƒã‚¤ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚ÌŠm”F
-	assert(m_pSpr != NULL && "ID3DXSprite ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
+	assert(m_pSpr != NULL && "ID3DXSprite ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_DDDNATION);// ƒeƒNƒXƒ`ƒƒ‚ÌŠm”F
-	assert(m_pTex != NULL && "ID3DTex ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_DDDNATION);// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¢ºèª
+	assert(m_pTex != NULL && "ID3DTex ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
 
 	RECT rc = { 0,  0, 224, 96 };
 
-	D3DXVECTOR3 cnt(0, 0, 0);//¶ãw’è
+	D3DXVECTOR3 cnt(0, 0, 0);//å·¦ä¸ŠæŒ‡å®š
 
 	const float startX = 960.0f + 96.0f;
 	const float startY = 0.0f;
@@ -375,18 +375,18 @@ void PlayerDDD::DrawNation() {
 
 void PlayerDDD::DrawHpBar() {
 
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ƒfƒoƒCƒX‚ÌŠm”F
-	assert(m_pDev != NULL && "Direct3D ƒfƒoƒCƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ãƒ‡ãƒã‚¤ã‚¹ã®ç¢ºèª
+	assert(m_pDev != NULL && "Direct3D ãƒ‡ãƒã‚¤ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚ÌŠm”F
-	assert(m_pSpr != NULL && "ID3DXSprite ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
+	assert(m_pSpr != NULL && "ID3DXSprite ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_DDDPHTO);// ƒeƒNƒXƒ`ƒƒ‚ÌŠm”F
-	assert(m_pTex != NULL && "ID3DTex ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_DDDPHTO);// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¢ºèª
+	assert(m_pTex != NULL && "ID3DTex ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
 	RECT rc = { 0,  0, 6, 6 };
 
-	D3DXVECTOR3 cnt(0, 0, 0);//¶ãw’è
+	D3DXVECTOR3 cnt(0, 0, 0);//å·¦ä¸ŠæŒ‡å®š
 	const float offsetX = 12.0f;
 	const float startX = 1056 + 24.0f + offsetX;
 	const float startY = 12.0f;
@@ -403,19 +403,19 @@ void PlayerDDD::DrawHpBar() {
 
 void PlayerDDD::DrawTankMark() {
 
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ƒfƒoƒCƒX‚ÌŠm”F
-	assert(m_pDev != NULL && "Direct3D ƒfƒoƒCƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ãƒ‡ãƒã‚¤ã‚¹ã®ç¢ºèª
+	assert(m_pDev != NULL && "Direct3D ãƒ‡ãƒã‚¤ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚ÌŠm”F
-	assert(m_pSpr != NULL && "ID3DXSprite ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
+	assert(m_pSpr != NULL && "ID3DXSprite ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKHPMARK);// ƒeƒNƒXƒ`ƒƒ‚ÌŠm”F
-	assert(m_pTex != NULL && "ID3DTex ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKHPMARK);// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¢ºèª
+	assert(m_pTex != NULL && "ID3DTex ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
 
 	RECT rc = { 0,  0, 24, 24 };
 
-	D3DXVECTOR3 cnt(0, 0, 0);//¶ãw’è
+	D3DXVECTOR3 cnt(0, 0, 0);//å·¦ä¸ŠæŒ‡å®š
 
 	const float offsetX = 4.0f;
 	const float startX = 1056.0f + offsetX;
@@ -431,19 +431,19 @@ void PlayerDDD::DrawTankMark() {
 
 void PlayerDDD::DrawTankRing() {
 
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ƒfƒoƒCƒX‚ÌŠm”F
-	assert(m_pDev != NULL && "Direct3D ƒfƒoƒCƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ãƒ‡ãƒã‚¤ã‚¹ã®ç¢ºèª
+	assert(m_pDev != NULL && "Direct3D ãƒ‡ãƒã‚¤ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚ÌŠm”F
-	assert(m_pSpr != NULL && "ID3DXSprite ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
+	assert(m_pSpr != NULL && "ID3DXSprite ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKRINGMARK);// ƒeƒNƒXƒ`ƒƒ‚ÌŠm”F
-	assert(m_pTex != NULL && "ID3DTex ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKRINGMARK);// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¢ºèª
+	assert(m_pTex != NULL && "ID3DTex ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
 
 	RECT rc = { 0,  0, 24, 24 };
 
-	D3DXVECTOR3 cnt(0, 0, 0);//¶ãw’è
+	D3DXVECTOR3 cnt(0, 0, 0);//å·¦ä¸ŠæŒ‡å®š
 
 	const float offsetX = 4.0f;
 	const float startX = 1056.0f + offsetX;
@@ -455,22 +455,52 @@ void PlayerDDD::DrawTankRing() {
 	m_pSpr->SetTransform(&trans);
 
 	m_pSpr->Draw(m_pTex, &rc, NULL, NULL, 0xffffffff);
+
+	ID3DXFont* font = GetAppInst()->GetFontS();
+
+	RECT rc1 = { startX + 24 + 50, startY + 2, WIDTH, HEIGHT };
+	if (m_tstatus.data.ringData == 0) {
+
+		font->DrawText(nullptr, L"çŸ­ã€€â»Šå·¨ ç¦»éš¹", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else if (m_tstatus.data.ringData == 1) {
+
+		font->DrawText(nullptr, L"çŸ¢è±† â»Šå·¨ ç¦»éš¹", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+
+	else if (m_tstatus.data.ringData == 2) {
+
+		font->DrawText(nullptr, L"ä¸­ã€€â»Šå·¨ ç¦»éš¹", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+
+	else if (m_tstatus.data.ringData == 3) {
+
+		font->DrawText(nullptr, L"é•·ã€€â»Šå·¨ ç¦»éš¹", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else {
+
+		font->DrawText(nullptr, L"æœ€ã€€é•·ã€€â»Šå·¨ ç¦»éš¹ï¼ˆMAXï¼‰", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+	}
 }
 
 void PlayerDDD::DrawTankSpeed() {
 
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ƒfƒoƒCƒX‚ÌŠm”F
-	assert(m_pDev != NULL && "Direct3D ƒfƒoƒCƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ãƒ‡ãƒã‚¤ã‚¹ã®ç¢ºèª
+	assert(m_pDev != NULL && "Direct3D ãƒ‡ãƒã‚¤ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚ÌŠm”F
-	assert(m_pSpr != NULL && "ID3DXSprite ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
+	assert(m_pSpr != NULL && "ID3DXSprite ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKSPEEDMARK);// ƒeƒNƒXƒ`ƒƒ‚ÌŠm”F
-	assert(m_pTex != NULL && "ID3DTex ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKSPEEDMARK);// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¢ºèª
+	assert(m_pTex != NULL && "ID3DTex ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
 	RECT rc = { 0,  0, 24, 24 };
 
-	D3DXVECTOR3 cnt(0, 0, 0);//¶ãw’è
+	D3DXVECTOR3 cnt(0, 0, 0);//å·¦ä¸ŠæŒ‡å®š
 
 	const float offsetX = 4.0f;
 	const float startX = 1056.0f + offsetX;
@@ -483,22 +513,50 @@ void PlayerDDD::DrawTankSpeed() {
 
 	m_pSpr->Draw(m_pTex, &rc, NULL, NULL, 0xffffffff);
 
+	ID3DXFont* font = GetAppInst()->GetFontS();
+	RECT rc1 = { startX + 24 + 50, startY + 2, WIDTH, HEIGHT };
+
+	if (m_tstatus.data.speedData == 0) {
+
+		font->DrawText(nullptr, L"é…ã€€ã„", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else if (m_tstatus.data.speedData == 1) {
+
+		font->DrawText(nullptr, L"é…ã€€ã„", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else if (m_tstatus.data.speedData == 2) {
+
+		font->DrawText(nullptr, L"æ™®ã€€é€š", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else if (m_tstatus.data.speedData == 3) {
+
+		font->DrawText(nullptr, L"æ™®ã€€é€š", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else
+	{
+		font->DrawText(nullptr, L"é€Ÿã€€ã„ï¼ˆMAXï¼‰", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+	}
+
 }
 
 void PlayerDDD::DrawBulletMark() {
 
-	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ƒfƒoƒCƒX‚ÌŠm”F
-	assert(m_pDev != NULL && "Direct3D ƒfƒoƒCƒX‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DDevice9* m_pDev = GetAppInst()->GetDxDev();// Direct3D ãƒ‡ãƒã‚¤ã‚¹ã®ç¢ºèª
+	assert(m_pDev != NULL && "Direct3D ãƒ‡ãƒã‚¤ã‚¹ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚ÌŠm”F
-	assert(m_pSpr != NULL && "ID3DXSprite ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
+	assert(m_pSpr != NULL && "ID3DXSprite ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
-	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKMAXBULLETMARK);// ƒeƒNƒXƒ`ƒƒ‚ÌŠm”F
-	assert(m_pTex != NULL && "ID3DTex ƒIƒuƒWƒFƒNƒg‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TANKMAXBULLETMARK);// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ç¢ºèª
+	assert(m_pTex != NULL && "ID3DTex ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“");
 
 	RECT rc = { 0,  0, 24, 24 };
 
-	D3DXVECTOR3 cnt(0, 0, 0);//¶ãw’è
+	D3DXVECTOR3 cnt(0, 0, 0);//å·¦ä¸ŠæŒ‡å®š
 
 	const float offsetX = 4.0f;
 	const float startX = 1056.0f + offsetX;
@@ -510,5 +568,29 @@ void PlayerDDD::DrawBulletMark() {
 	m_pSpr->SetTransform(&trans);
 
 	m_pSpr->Draw(m_pTex, &rc, NULL, NULL, 0xffffffff);
+
+	ID3DXFont* font = GetAppInst()->GetFontS();
+	RECT rc1 = { startX + 24 + 50, startY + 2, WIDTH, HEIGHT };
+
+	if (m_tstatus.data.bulletData == 0) {
+
+		font->DrawText(nullptr, L"å£±ã€€é€£ã€€ç™º", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else if (m_tstatus.data.bulletData == 1) {
+
+		font->DrawText(nullptr, L"å¼ã€€é€£ã€€ç™º", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else if (m_tstatus.data.bulletData == 2) {
+
+		font->DrawText(nullptr, L"å‚ã€€é€£ã€€ç™º", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
+	else {
+
+		font->DrawText(nullptr, L"è‚†ã€€é€£ã€€ç™º ï¼ˆMAXï¼‰", -1, &rc1, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(255, 0, 160));
+
+	}
 }
 

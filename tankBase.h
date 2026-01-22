@@ -21,7 +21,13 @@ enum E_TANK_RING
 	E_RING_VLONG    //24
 	             
 };
-
+//戦車データ
+struct TankData {
+	int ringData;  
+	int bulletData;
+	int speedData;
+	int hpData;
+};
 
 //タンク(戦車)
 struct TankStatus
@@ -41,6 +47,7 @@ struct TankStatus
 	int hitShakeTimer; // 揺れ残りフレーム
 	int hitShakeTotal; // 開始時のフレーム（減衰用）
  
+	TankData data;
 };
 
 class TankBase {
@@ -51,7 +58,7 @@ protected:
 	TankStatus  m_tstatus;//搭載物の情報
 
 	TankBase()
-		:m_texName(TEX_INVALID) {
+	   :m_texName(TEX_INVALID) {
 		m_tstatus.pos = { 0.0f, 0.0f };
 		m_tstatus.vel = { 0.0f, 0.0f };
 		m_tstatus.moveSpeed = 0;
@@ -63,7 +70,10 @@ protected:
 		m_tstatus.maxBullet = 1;
 		// _tprintf(_T("call PlayerBase constractor\n"));
 		//３期追加
-	
+		m_tstatus.data.ringData = 0;
+		m_tstatus.data.bulletData = 0;
+		m_tstatus.data.speedData = 0;
+		m_tstatus.data.hpData = 0;
 	}
 public:
 	virtual ~TankBase() = default;

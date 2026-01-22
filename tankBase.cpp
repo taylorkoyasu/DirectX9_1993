@@ -25,6 +25,10 @@ void TankBase::Init(float tx, float ty, float tvx, float tvy,int tspeed, int thp
 	m_tstatus.isDead = isDead;
     m_tstatus.hitShakeTimer =0;
     m_tstatus.hitShakeTotal =0;
+    m_tstatus.data.ringData = 0;
+    m_tstatus.data.bulletData = 0;
+    m_tstatus.data.speedData = 0;
+    m_tstatus.data.hpData = 0;
 }
 void TankBase::Updata() {
 
@@ -84,8 +88,11 @@ void TankBase::IsLive() {
 
 void TankBase::AddMoveSpeed(float speed) {
 
-    m_tstatus.moveSpeed += speed;
-
+    //微調整
+    m_tstatus.moveSpeed += speed*1.2f;
+    
+    m_tstatus.data.speedData++;
+  
 
 }
 
@@ -93,9 +100,11 @@ void TankBase::AddHp(int hp) {
 
     
     m_tstatus.hp += hp;
+    m_tstatus.data.hpData++;
     if (m_tstatus.hp >= 15) {
         m_tstatus.hp = 15;
     }
+
 }
 
 void TankBase::AddRing() {
@@ -105,6 +114,7 @@ void TankBase::AddRing() {
         m_tstatus.ring = static_cast<E_TANK_RING>(
             static_cast<int>(m_tstatus.ring) + 1);
     }
+    m_tstatus.data.ringData++;
 }
 
 void TankBase::AddMaxBullet() {
@@ -116,6 +126,7 @@ void TankBase::AddMaxBullet() {
 
 
     }
+    m_tstatus.data.bulletData++;
 }
 
 void TankBase::StartHitShake() {
