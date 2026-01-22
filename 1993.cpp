@@ -377,11 +377,15 @@ void MyApp::UpdateStory()
 {
 	MyInput* pInput = GetInputInst ();
 	// 何かキーが押されたらゲームシーンへ
+	//debug
 	if (pInput->IsPushKeyOne(DIK_TAB)) {
 		/*	m_gameScene = GAME_SCENE_RESULT;*/
 		this->ChangeScene(GAME_SCENE_RESULT);
 		printf("Key");
 	}
+	//実際はPlayer残り一人の場合ジャンプ
+	
+
 }
 void MyApp::DrawStory() {
 	D3DCOLOR rgb = D3DCOLOR_XRGB(64, 64, 64);
@@ -515,6 +519,7 @@ BOOL MyApp::UpdateMain()
 	//ドロップ処理
 	m_field.DropUpdate();
 	CheckPlayerItemHit();
+	CheckAlivePlayers();
 	return TRUE;
 }
 
@@ -733,6 +738,43 @@ void MyApp::CheckPlayerItemHit()
 		item = BOX_ITEM_NONE;
 	}
 }
+void MyApp::CheckAlivePlayers()
+{
+	int aliveCount = 0;
+	TankBase* lastAlive = nullptr;
+
+	for (TankBase* p : m_players)
+	{
+		if (!p->IsDead())
+		{
+			aliveCount++;
+			lastAlive = p;
+		}
+	}
+
+	if (aliveCount == 1 && lastAlive)
+	{
+		// 勝者indexを決める（例：m_players の順番が AAA,BBB,CCC,DDD の想定）
+		int winnerIdx = -1;
+		for (int i = 0; i < (int)m_players.size(); i++)
+		{
+			if (m_players[i] == lastAlive) { winnerIdx = i; break; }
+		}
+		SetWinnerIndex(winnerIdx);
+
+		m_resultData.timeCount++;
+		if (m_resultData.timeCount >= 90)
+		{
+			ChangeScene(GAME_SCENE_RESULT);
+			m_resultData.timeCount = 0;
+		}
+	}
+	else
+	{
+		m_resultData.timeCount = 0; // まだ決着してないならリセット
+	}
+}
+
 
 
 

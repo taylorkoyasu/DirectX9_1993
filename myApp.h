@@ -38,6 +38,12 @@ enum E_GAME_SCENE
 };
 #define IS_VALID_GAME_SCENE(st) (GAME_SCENE_BEGIN <= (st) && (st) <= GAME_SCENE_COUNT)
 
+struct ResultData {
+
+	int winner =-1;
+	int timeCount =0;
+
+};
 
 // プログラムに必要なデータをMyAppクラスにまとめる.
 class MyApp
@@ -92,6 +98,11 @@ public:
 	//3
 	template <class S, class T>
 	void CheckBulletHitPlayer(S& shooter, T& target);
+	void CheckPlayerItemHit();			//アイテム取得チェック
+	void CheckAlivePlayers();
+	int  GetWinnerIndex() const { return m_resultData.winner; }
+	void SetWinnerIndex(int idx) { m_resultData.winner = idx; }
+
 private:
 	HINSTANCE m_hInstance;				// インスタンスハンドル.
 	HWND m_hWnd;						// 表示ウィンドウ.
@@ -122,10 +133,11 @@ private:
 	PlayerCCC m_pCCC; 
 	PlayerDDD m_pDDD; 
 	
+	ResultData m_resultData;
+	
 	TitleScene title;                   // タイトルのポインタ
 	SelectScene select;					// セレクトのポインタ
 	ResultScene result;					// リザルトのポインタ
-	void CheckPlayerItemHit();			//アイテム取得チェック
 
 	
 #if defined(_DEBUG)

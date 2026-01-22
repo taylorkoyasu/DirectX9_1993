@@ -808,6 +808,7 @@ void ResultScene::DrawResult() {
 void ResultScene::DrawIcon() {
 
 		ID3DXSprite* m_pSpr = GetAppInst()->GetDxSpr();
+		
 
 		RECT rc = { 0,0,96,96 };
 		D3DXVECTOR3 center(0, 0, 0);
@@ -819,18 +820,24 @@ void ResultScene::DrawIcon() {
 		 
 		//if (!t0 || !t1 || !t2 || !t3) return; // ‚Ç‚ê‚©–¢ƒ[ƒh
 
+		int winner = GetAppInst()->GetWinnerIndex();
+
+		const DWORD COL_WIN = 0xFFFFFFFF;
+		const DWORD COL_LOSE = D3DCOLOR_ARGB(120, 80, 80, 80);
+
 		D3DXVECTOR3 pos;
 
 		pos = D3DXVECTOR3(200, 100, 0);
-		m_pSpr->Draw(p1, &rc, &center, &pos, 0xFFFFFFFF);
+		m_pSpr->Draw(p1, &rc, &center, &pos, (winner == 0) ? COL_WIN : COL_LOSE);
 
 		pos = D3DXVECTOR3(200, 300, 0);
-		m_pSpr->Draw(p2, &rc, &center, &pos, 0xFFFFFFFF);
+		m_pSpr->Draw(p2, &rc, &center, &pos, (winner == 1) ? COL_WIN : COL_LOSE);
 
 		pos = D3DXVECTOR3(200, 500, 0);
-		m_pSpr->Draw(p3, &rc, &center, &pos, 0xFFFFFFFF);
+		m_pSpr->Draw(p3, &rc, &center, &pos, (winner == 2) ? COL_WIN : COL_LOSE);
 
 		pos = D3DXVECTOR3(200, 700, 0);
-		m_pSpr->Draw(p4, &rc, &center, &pos, 0xFFFFFFFF);
-	
+		m_pSpr->Draw(p4, &rc, &center, &pos, (winner == 3) ? COL_WIN : COL_LOSE);
 }
+
+
