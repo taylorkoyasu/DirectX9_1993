@@ -13,10 +13,7 @@ void TitleScene::TitleInit() {
 	m_logo.logoSpeed = 120.0f;
 	m_logo.logotime = 1.0f / 60.0f;
 	//m_gameScene = GAME_SCENE_BEGIN;
-
 	InitExplosion();
-	StartExplosion(400.0f, 300.0f);
-	
 }
 
 EffectAnim m_explosion;
@@ -25,7 +22,7 @@ void TitleScene::InitExplosion()
 {
 	m_explosion.isActive = false;
 	m_explosion.frame = 0;
-	m_explosion.maxFrame = 25;          //画像のコマ数
+	m_explosion.maxFrame = 40;          //画像のコマ数
 	m_explosion.frameTime = 0.05f;      // 0.05秒ごと
 	m_explosion.timer = 0.0f;
 
@@ -40,7 +37,24 @@ void TitleScene::StartExplosion(float x, float y)
 	m_explosion.timer = 0.0f;
 	m_explosion.AnimPos = D3DXVECTOR3(x, y, 0);
 }
+void TitleScene::UpdateExplosion(float deltaTime)
+{
+	if (!m_explosion.isActive) return;
 
+	m_explosion.timer += deltaTime;
+
+	if (m_explosion.timer >= m_explosion.frameTime)
+	{
+		m_explosion.timer -= m_explosion.frameTime;
+		m_explosion.frame++;
+
+		// 最後まで再生したら消す
+		if (m_explosion.frame >= m_explosion.maxFrame)
+		{
+			m_explosion.isActive = false;
+		}
+	}
+}
 
 void TitleScene::UpdateTitle()
 {	
@@ -58,7 +72,7 @@ void TitleScene::UpdateTitle()
 		return;
 	}
 	if (pInput->IsPushKeyOne(DIK_J)) {
-	    ();
+		StartExplosion(300 ,400);
 		return;
 	}
 	// 確認済み
@@ -78,24 +92,7 @@ void TitleScene::UpdateTitle()
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	// アニメーション
-	float deltaTime = 1.0f / 60.0f; // 固定でOK
-
-	if (m_explosion.isActive)
-	{
-		m_explosion.timer += deltaTime;
-
-		if (m_explosion.timer >= m_explosion.frameTime)
-		{
-			m_explosion.timer = 0.0f;
-			m_explosion.frame++;
-
-			if (m_explosion.frame >= m_explosion.maxFrame)
-			{
-				m_explosion.isActive = false; // 1回で終了
-			}
-		}
-	}
+	
 
 	//MyInput* pInput = GetInputInst();
 	//// 何かキーが押されたらゲームシーンへ
@@ -178,6 +175,19 @@ void TitleScene::DrawTitle()
 	D3DSURFACE_DESC descA;
 	m_pAnim->GetLevelDesc(0, &descA);
 	printf("EXP TEX = %d x %d\n", descA.Width, descA.Height);
+	/*if (!m_explosion.isActive) return;
+
+	const int FRAME_X_COUNT = 8;
+	const int FRAME_Y_COUNT = 5;
+
+	int frameX = m_explosion.frame % FRAME_X_COUNT;
+	int frameY = m_explosion.frame / FRAME_X_COUNT;*/
+
+	//RECT src;
+	//src.left = frameX * m_explosion.frameW;
+	//src.top = frameY * m_explosion.frameH;
+	//src.right = src.left + m_explosion.frameW;
+	//src.bottom = src.top + m_explosion.frameH;
 
 	RECT src;
 	src.left = m_explosion.frame * m_explosion.frameW;
@@ -874,18 +884,18 @@ void ResultScene::DrawResult() {
 	ID3DXFont* font = GetAppInst()->GetFont();
 	ID3DXFont* fontS = GetAppInst()->GetFontS();
 
-	RECT rcInfo1 = { -50, 150, WIDTH, HEIGHT };
-	//font->DrawText(nullptr, L"アイテム取得数: 壊した障害物: ", -1, &rcInfo1, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 178, 0));
-	//RECT rcInfo2 = { -50, 300, WIDTH, HEIGHT };
-	//font->DrawText(nullptr, L" :", -1, &rcInfo2, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(200, 158, 0));
+	/*RECT rcInfo1 = { -150, 100, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"アイテム取得数: 壊した障害物: ", -1, &rcInfo1, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(100, 50, 0));
+	RECT rcInfo2 = { 330, 200, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"TEXT : ", -1, &rcInfo2, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(250, 200, 0));*/
 	//RECT rcInfo3 = { -50, 450, WIDTH, HEIGHT };
 	//font->DrawText(nullptr, L":", -1, &rcInfo3, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 100, 0));
 
 
 	// テキスト表示
-	RECT rcWIN = { -30, 850, WIDTH, HEIGHT };
+	RECT rcWIN = { -20, 850, WIDTH, HEIGHT };
 	// サイズはL
-	fontL->DrawText(nullptr, L"Aボタンでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 100, 0));//仮
+	fontL->DrawText(nullptr, L"Aボタンでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 50, 50));//仮
 	// 誰が勝利したか表示する(gamesceneで勝った人)
 	//font->DrawText(nullptr, L" PL : 勝利", /*&,*/-1,&rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 255, 0));
 	//RECT rcSelect = { -30, 0, WIDTH, HEIGHT };
@@ -929,4 +939,14 @@ void ResultScene::DrawIcon() {
 		m_pSpr->Draw(p4, &rc, &center, &pos, (winner == 3) ? COL_WIN : COL_LOSE);
 }
 
+void ResultScene::DrawData() {
 
+	ID3DXFont* fontL = GetAppInst()->GetFontL();
+	ID3DXFont* font = GetAppInst()->GetFont();
+	ID3DXFont* fontS = GetAppInst()->GetFontS();
+
+	RECT rcInfo1 = { -150, 100, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"アイテム取得数: 壊した障害物: ", -1, &rcInfo1, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(100, 50, 0));
+	RECT rcInfo2 = { 330, 200, WIDTH, HEIGHT };
+	font->DrawText(nullptr, L"TEXT : ", -1, &rcInfo2, DT_LEFT | DT_TOP, D3DCOLOR_XRGB(250, 200, 0));
+}

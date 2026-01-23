@@ -387,6 +387,7 @@ void MyApp::DrawScene()
 	case GAME_SCENE_RESULT:
 		//result‚Ì•`‰æ‚ª‚±‚±‚É
 		result.DrawResult();
+		result.DrawData();
 		break;
 	default:
 		break;

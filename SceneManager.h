@@ -29,8 +29,11 @@ struct logoAnime
 
 class TitleScene {
 public:
+	
 	void InitExplosion();
 	void StartExplosion(float x, float y);
+	void UpdateExplosion(float deltaTime);
+
 	void TitleInit();
 	void UpdateTitle();     //XVŠÖ”
 	void DrawTitle();       //•`‰æŠÖ”
