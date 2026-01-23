@@ -13,48 +13,47 @@ void TitleScene::TitleInit() {
 	m_logo.logoSpeed = 120.0f;
 	m_logo.logotime = 1.0f / 60.0f;
 	//m_gameScene = GAME_SCENE_BEGIN;
-	InitExplosion();
+	//InitExplosion();
 }
 
-EffectAnim m_explosion;
-
-void TitleScene::InitExplosion()
-{
-	m_explosion.isActive = false;
-	m_explosion.frame = 0;
-	m_explosion.maxFrame = 40;          //画像のコマ数
-	m_explosion.frameTime = 0.05f;      // 0.05秒ごと
-	m_explosion.timer = 0.0f;
-
-	m_explosion.frameW = 32;              // 画像1コマの幅
-	m_explosion.frameH = 32;              // 高さ
-}
-
-void TitleScene::StartExplosion(float x, float y)
-{
-	m_explosion.isActive = true;
-	m_explosion.frame = 0;
-	m_explosion.timer = 0.0f;
-	m_explosion.AnimPos = D3DXVECTOR3(x, y, 0);
-}
-void TitleScene::UpdateExplosion(float deltaTime)
-{
-	if (!m_explosion.isActive) return;
-
-	m_explosion.timer += deltaTime;
-
-	if (m_explosion.timer >= m_explosion.frameTime)
-	{
-		m_explosion.timer -= m_explosion.frameTime;
-		m_explosion.frame++;
-
-		// 最後まで再生したら消す
-		if (m_explosion.frame >= m_explosion.maxFrame)
-		{
-			m_explosion.isActive = false;
-		}
-	}
-}
+//EffectAnim m_explosion;
+//
+//void TitleScene::InitExplosion()
+//{
+//	m_explosion.isActive = false;
+//	m_explosion.frame = 0;
+//	m_explosion.maxFrame = 40;          //画像のコマ数
+//	m_explosion.frameTime = 0.1f;      // 0.05秒ごと
+//	m_explosion.timer = 0.0f;
+//
+//	m_explosion.frameW = 32;              // 画像1コマの幅
+//	m_explosion.frameH = 32;              // 高さ
+//}
+//
+//void TitleScene::StartExplosion(float x, float y)
+//{
+//	m_explosion.isActive = true;
+//	m_explosion.frame = 0;
+//	m_explosion.timer = 0.0f;
+//	m_explosion.AnimPos = D3DXVECTOR3(x, y, 0);// デスしたキャラ座標を取得
+//}
+//void TitleScene::UpdateExplosion(float deltaTime)
+//{
+//	if (!m_explosion.isActive) return;
+//
+//	m_explosion.timer += deltaTime;
+//	float frameDuration = 2.0f / 40; // 2秒で40フレーム
+//
+//	if (m_explosion.timer >= frameDuration)
+//	{
+//		m_explosion.timer -= frameDuration;
+//		m_explosion.frame++;
+//		if (m_explosion.frame >= m_explosion.maxFrame)
+//		{
+//			m_explosion.isActive = false;
+//		}
+//	}
+//}
 
 void TitleScene::UpdateTitle()
 {	
@@ -71,10 +70,11 @@ void TitleScene::UpdateTitle()
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
 	}
-	if (pInput->IsPushKeyOne(DIK_J)) {
-		StartExplosion(300 ,400);
-		return;
-	}
+	//if (pInput->IsPushKeyOne(DIK_J)) {
+	//	StartExplosion(300 ,400);
+	//	return;
+	//}
+	//UpdateExplosion(1.0f / 60.0f); // 仮で60FPS想定
 	// 確認済み
 	if ((pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_B)||(pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_X)))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
@@ -140,8 +140,6 @@ void TitleScene::DrawTitle()
 
 	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TITLE);
 	IDirect3DTexture9* m_pLogo = GetAppInst()->GetDxTex(TEX_LOGO);
-	IDirect3DTexture9* m_pAnim = GetAppInst()->GetDxTex(TEX_EXP_ANIME);
-
 	//IDirect3DTexture9* m_pUI = GetAppInst()->GetDxTex(TEX_UI_SENSHA);
 
 	//D3DXMATRIX identity;
@@ -169,44 +167,43 @@ void TitleScene::DrawTitle()
 	//pSpr->Draw(pTex, nullptr, nullptr, &pos, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pSpr->End();
 
-	// アニメーション
-	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
+	//if (m_explosion.isActive)
+	//{
+	//	IDirect3DTexture9* m_pAnim = GetAppInst()->GetDxTex(TEX_EXP_ANIME);
+	//	if (m_pAnim)
+	//	{
+	//		m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
 
-	D3DSURFACE_DESC descA;
-	m_pAnim->GetLevelDesc(0, &descA);
-	printf("EXP TEX = %d x %d\n", descA.Width, descA.Height);
-	/*if (!m_explosion.isActive) return;
+	//		// 5x8のグリッド計算
+	//		// 横に5枚なので、5で割った余りがX(列)、5で割った商がY(行)
+	//		int frameX = m_explosion.frame % 5;
+	//		int frameY = m_explosion.frame / 5;
 
-	const int FRAME_X_COUNT = 8;
-	const int FRAME_Y_COUNT = 5;
+	//		RECT src;
+	//		src.left = (long)(frameX * m_explosion.frameW);
+	//		src.top = (long)(frameY * m_explosion.frameH);
+	//		src.right = (long)(src.left + m_explosion.frameW);
+	//		src.bottom = (long)(src.top + m_explosion.frameH);
 
-	int frameX = m_explosion.frame % FRAME_X_COUNT;
-	int frameY = m_explosion.frame / FRAME_X_COUNT;*/
+	//		// 行列によるトランスフォーム（拡大率と座標）
+	//		float scaleA = 3.0f;
+	//		D3DXMATRIX matScale, matTrans, matWorld;
+	//		D3DXMatrixScaling(&matScale, scaleA, scaleA, 1.0f);
+	//		D3DXMatrixTranslation(&matTrans, m_explosion.AnimPos.x, m_explosion.AnimPos.y, 0.0f);
 
-	//RECT src;
-	//src.left = frameX * m_explosion.frameW;
-	//src.top = frameY * m_explosion.frameH;
-	//src.right = src.left + m_explosion.frameW;
-	//src.bottom = src.top + m_explosion.frameH;
+	//		matWorld = matScale * matTrans;
+	//		m_pSpr->SetTransform(&matWorld);
 
-	RECT src;
-	src.left = m_explosion.frame * m_explosion.frameW;
-	src.top = 0;
-	src.right = src.left + m_explosion.frameW;
-	src.bottom = src.top + m_explosion.frameH;
+	//		// 描画実行
+	//		m_pSpr->Draw(m_pAnim, &src, nullptr, nullptr, 0xFFFFFFFF);
 
-	float scaleA = 3.0f;
-	D3DXMATRIX matScaleA, matTransA, matWorldA;
-	D3DXMatrixScaling(&matScaleA, scaleA, scaleA, 1.0f);
-	D3DXMatrixTranslation(&matTransA,m_explosion.AnimPos.x,m_explosion.AnimPos.y,0.0f);
-	matWorldA = matScaleA * matTransA;
-	m_pSpr->SetTransform(&matWorldA);
-	m_pSpr->Draw(m_pAnim, &src, nullptr, nullptr, 0xFFFFFFFF);
-	// 戻す
-	D3DXMATRIX identityA;
-	D3DXMatrixIdentity(&identityA);
-	m_pSpr->SetTransform(&identityA);
-	m_pSpr->End();
+	//		// 他の描画に影響が出ないよう行列を単位行列に戻す
+	//		D3DXMATRIX identity;
+	//		D3DXMatrixIdentity(&identity);
+	//		m_pSpr->SetTransform(&identity);
+	//		m_pSpr->End();
+	//	}
+	//}
 
 	// ロゴ
 	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
@@ -222,7 +219,6 @@ void TitleScene::DrawTitle()
 	// 中央寄せ
 	float x = (WIDTH - logoW) / 2;
 	float y = m_logo.logoY;
-	StartExplosion(x, y);
 	D3DXMatrixTranslation(&matTrans, x, y, 0.0f);
 	// 合成
 	matWorld = matScale * matTrans;
