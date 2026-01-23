@@ -6,7 +6,8 @@
 //#define FULLSCREEN
 
 //#if !defined(_DEBUG)
-//#define FULLSCREEN
+//
+// ----------------------------------------------------------------------------------#define FULLSCREEN
 //#endif
 
 // プロトタイプ宣言.
@@ -307,6 +308,24 @@ void MyApp::ChangeScene(E_GAME_SCENE nextScene)
 		select.SelectInit(); // タイトル初期化関数を呼ぶ
 		break;
 	case GAME_SCENE_STORY:
+	{
+		//m_field.FieldInit(); //フィールドの初期化
+		//m_field.Field2HPInit();
+		////Players動的生成の初期化
+		//m_players.clear();
+		//m_players.push_back(&m_pAAA);
+		//m_players.push_back(&m_pBBB);
+		//m_players.push_back(&m_pCCC);
+		//m_players.push_back(&m_pDDD);
+		//
+		////Players各ステータスの初期化
+		//m_pAAA.Init(&m_field);
+		//m_pBBB.Init(&m_field);
+		//m_pCCC.Init(&m_field);
+		//m_pDDD.Init(&m_field);
+	}
+
+
 		/*case GAME_SCENE_BUTTLE:*/
 		this->InitGame(); // ゲーム開始初期化関数を呼ぶ
 		break;

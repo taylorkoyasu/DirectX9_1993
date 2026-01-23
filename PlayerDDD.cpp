@@ -33,6 +33,11 @@ void PlayerDDD::Init(Field* f) {
 
 	m_bullets.reserve(3);
 	m_tstatus.ring = E_RING_VSHORT;
+
+	m_tstatus.data.ringData = 0;
+	m_tstatus.data.bulletData = 0;
+	m_tstatus.data.speedData = 0;
+	m_tstatus.data.hpData = 0;
 }
 void PlayerDDD::Move() {
 
@@ -344,9 +349,6 @@ void PlayerDDD::DrawPoto() {
 	DWORD color;
 
 
-
-
-
 	if (IsDead()) {
 
 		color = D3DCOLOR_ARGB(255, 80, 80, 80);
@@ -357,7 +359,7 @@ void PlayerDDD::DrawPoto() {
 		color = 0xFFFFFFFF;
 	}
 
-	m_pSpr->Draw(m_pTex, &rc, &cnt, NULL, 0xffffffff);
+	m_pSpr->Draw(m_pTex, &rc, &cnt, NULL, color);
 
 }
 

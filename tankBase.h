@@ -27,6 +27,12 @@ struct TankData {
 	int bulletData;
 	int speedData;
 	int hpData;
+
+	int bulletCount; //発砲数
+	int itemCount;   //アイテム数
+	int objectCount; //障害物数
+	int hpCount; //終了時残りのhp
+	
 };
 
 //タンク(戦車)

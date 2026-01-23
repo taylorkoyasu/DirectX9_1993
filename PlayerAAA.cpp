@@ -24,6 +24,12 @@ void PlayerAAA::Init(Field* f) {
 
     m_bullets.reserve(4);
     m_tstatus.ring = E_RING_VSHORT;
+
+    //表示用データをクリア
+    m_tstatus.data.ringData = 0;
+    m_tstatus.data.bulletData = 0;
+    m_tstatus.data.speedData = 0;
+    m_tstatus.data.hpData = 0;
 }
 void PlayerAAA::Move() {
 

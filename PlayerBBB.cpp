@@ -28,6 +28,11 @@ void PlayerBBB::Init(Field* f) {
 
 	m_bullets.reserve(3);
 	m_tstatus.ring = E_RING_VSHORT;
+
+	m_tstatus.data.ringData = 0;
+	m_tstatus.data.bulletData = 0;
+	m_tstatus.data.speedData = 0;
+	m_tstatus.data.hpData = 0;
 }
 void PlayerBBB::Move() {
 
@@ -338,6 +343,11 @@ void PlayerBBB::DrawPoto() {
 	m_pSpr->SetTransform(&trans);
 
 	DWORD color;
+
+
+
+
+
 	if (IsDead()) {
 
 		color = D3DCOLOR_ARGB(255, 80, 80, 80);
