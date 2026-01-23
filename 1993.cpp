@@ -681,7 +681,7 @@ HRESULT MyApp::InitFont()
 
 	// Се
 	hr = D3DXCreateFont(
-		m_pDev, 128, 0, FW_HEAVY, 1, FALSE,
+		m_pDev, 100, 0, FW_HEAVY, 1, FALSE,
 		SHIFTJIS_CHARSET, OUT_TT_ONLY_PRECIS,
 		ANTIALIASED_QUALITY, FF_DONTCARE, L"DotGothic16-Regular", &m_pFontL);
 	if (FAILED(hr)) return E_FAIL;

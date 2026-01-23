@@ -234,17 +234,16 @@ void SelectScene::UpdateSelect()
 		printf("Enter");
 		return;
 	}
-	if (pInput->IsPushKeyOne(DIK_SPACE)) // Aボタンなど
-	{
-		isP1Activated = true;
-		isActivCnt++;
-	}
+	//if (pInput->IsPushKeyOne(DIK_SPACE)) // Aボタンなど
+	//{
+	//	isP1Activated = true;
+	//	isActivCnt++;
+	//}
 	if (pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A)) // Aボタンなど
 	{
 		isP1Activated = true;
 		//isP2Activated = true;
 		isActivCnt++;
-
 	}
 	if (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A)) // Aボタンなど
 	{
@@ -792,9 +791,18 @@ void ResultScene::DrawResult() {
 	m_pSpr->End();
 	ID3DXFont* fontL = GetAppInst()->GetFontL();
 	ID3DXFont* font = GetAppInst()->GetFont();
+	ID3DXFont* fontS = GetAppInst()->GetFontS();
+
+	RECT rcInfo1 = { -50, 150, WIDTH, HEIGHT };
+	//font->DrawText(nullptr, L"アイテム取得数: 壊した障害物: ", -1, &rcInfo1, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 178, 0));
+	//RECT rcInfo2 = { -50, 300, WIDTH, HEIGHT };
+	//font->DrawText(nullptr, L" :", -1, &rcInfo2, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(200, 158, 0));
+	//RECT rcInfo3 = { -50, 450, WIDTH, HEIGHT };
+	//font->DrawText(nullptr, L":", -1, &rcInfo3, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 100, 0));
+
 
 	// テキスト表示
-	RECT rcWIN = { -30, 800, WIDTH, HEIGHT };
+	RECT rcWIN = { -30, 850, WIDTH, HEIGHT };
 	// サイズはL
 	fontL->DrawText(nullptr, L"Aボタンでタイトルへ", -1, &rcWIN, DT_CENTER | DT_TOP, D3DCOLOR_XRGB(255, 100, 0));//仮
 	// 誰が勝利したか表示する(gamesceneで勝った人)

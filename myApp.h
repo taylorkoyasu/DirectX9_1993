@@ -83,7 +83,7 @@ public:
 	//void DrawSelect();
 	void DrawResult();      // リザルト画面描画
 	void DrawStory();		// 協力用画面描画
-	void DrawMain();		// 描画メイン.
+	void DrawMain();		// 描画メイン
 
 	void ScreenFlip();
 	void MainLoop();		// メッセージループ.
