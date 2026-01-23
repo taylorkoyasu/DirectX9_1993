@@ -65,7 +65,7 @@ void PlayerCCC::Move() {
 		int ix = 0, iy = 0;
 		// ↑
 		//if (pInput->IsPushKey(DIK_UP) && m_tstatus.pos.y >= top)
-		if (pInput->IsPushBtn(JOY_CON_1, JOY_BTN_BIT_UP) && m_tstatus.pos.y >= top)
+		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_UP) && m_tstatus.pos.y >= top)
 		{
 
 			iy -= 1;
@@ -74,7 +74,7 @@ void PlayerCCC::Move() {
 		}
 		// ↓
 		//if (pInput->IsPushKey(DIK_DOWN) && m_tstatus.pos.y <= down)
-		if (pInput->IsPushBtn(JOY_CON_1, JOY_BTN_BIT_DN) && m_tstatus.pos.y <= down)
+		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_DN) && m_tstatus.pos.y <= down)
 		{
 			iy += 1;
 			m_tstatus.angle = D3DXToRadian(180);//ラジアン必須
@@ -83,7 +83,7 @@ void PlayerCCC::Move() {
 		// ←
 
 		//if (pInput->IsPushKey(DIK_LEFT) && m_tstatus.pos.x >= left)
-		if (pInput->IsPushBtn(JOY_CON_1, JOY_BTN_BIT_LT) && m_tstatus.pos.x >= left)
+		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_LT) && m_tstatus.pos.x >= left)
 		{
 			ix -= 1;
 			m_tstatus.angle = D3DXToRadian(270);//ラジアン必須
@@ -91,7 +91,7 @@ void PlayerCCC::Move() {
 		}
 		// →
 		//if (pInput->IsPushKey(DIK_RIGHT) && m_tstatus.pos.x <= right)
-		if (pInput->IsPushBtn(JOY_CON_1, JOY_BTN_BIT_RT) && m_tstatus.pos.x <= right)
+		if (pInput->IsPushBtn(JOY_CON_2, JOY_BTN_BIT_RT) && m_tstatus.pos.x <= right)
 		{
 			ix += 1;
 			m_tstatus.angle = D3DXToRadian(90);//ラジアン必須
@@ -113,7 +113,7 @@ void PlayerCCC::Move() {
 	m_tstatus.vel = v;
 
 	//if (pInput->IsPushKeyOne(DIK_SPACE))
-	if (pInput->IsPushBtnOne(JOY_CON_1, JOY_BTN_BIT_A |
+	if (pInput->IsPushBtnOne(JOY_CON_2, JOY_BTN_BIT_A |
 		JOY_BTN_BIT_B |
 		JOY_BTN_BIT_X |
 		JOY_BTN_BIT_Y))

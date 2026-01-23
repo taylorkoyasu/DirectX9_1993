@@ -79,7 +79,7 @@ void PlayerAAA::Move() {
             }
             // ↓
             //if (pInput->IsPushKey(DIK_DOWN) && m_tstatus.pos.y <= down) 
-			if ((pInput->IsPushBtn(JOY_CON_3, JOY_BTN_BIT_DN) || pInput->IsPushKey(DIK_DOWN))
+			if ((pInput->IsPushBtn(JOY_CON_0, JOY_BTN_BIT_DN) || pInput->IsPushKey(DIK_DOWN))
 				&& m_tstatus.pos.y <= down)
 			{
                 iy += 1;
@@ -89,7 +89,7 @@ void PlayerAAA::Move() {
             // ←
 
            //if (pInput->IsPushKey(DIK_LEFT) && m_tstatus.pos.x >= left) 
-			if ((pInput->IsPushBtn(JOY_CON_3, JOY_BTN_BIT_LT) || pInput->IsPushKey(DIK_LEFT))
+			if ((pInput->IsPushBtn(JOY_CON_0, JOY_BTN_BIT_LT) || pInput->IsPushKey(DIK_LEFT))
 				&& m_tstatus.pos.x >= left)
 			{
                 ix -= 1;
@@ -98,7 +98,7 @@ void PlayerAAA::Move() {
             }
             // →
             //if (pInput->IsPushKey(DIK_RIGHT)&& m_tstatus.pos.x <= right) 
-			if ((pInput->IsPushBtn(JOY_CON_3, JOY_BTN_BIT_RT)|| pInput->IsPushKey(DIK_RIGHT))
+			if ((pInput->IsPushBtn(JOY_CON_0, JOY_BTN_BIT_RT)|| pInput->IsPushKey(DIK_RIGHT))
 				&& m_tstatus.pos.x <= right) 
 			{
                 ix += 1;
@@ -121,7 +121,7 @@ void PlayerAAA::Move() {
         m_tstatus.vel = v;
 
         //if (pInput->IsPushKeyOne(DIK_SPACE))
-		if (pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A | 
+		if (pInput->IsPushBtnOne(JOY_CON_0, JOY_BTN_BIT_A |
 			                             JOY_BTN_BIT_B    | 
 			                             JOY_BTN_BIT_X    | 
 			                             JOY_BTN_BIT_Y))
