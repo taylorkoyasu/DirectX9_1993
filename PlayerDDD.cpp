@@ -340,6 +340,23 @@ void PlayerDDD::DrawPoto() {
 	const float startY = 0 + GetHitShakeOffsetY();
 	D3DXMatrixTranslation(&trans, startX, startY, 0.0f);
 	m_pSpr->SetTransform(&trans);
+
+	DWORD color;
+
+
+
+
+
+	if (IsDead()) {
+
+		color = D3DCOLOR_ARGB(255, 80, 80, 80);
+	}
+	else
+	{
+		// ★ 生存 → 正常
+		color = 0xFFFFFFFF;
+	}
+
 	m_pSpr->Draw(m_pTex, &rc, &cnt, NULL, 0xffffffff);
 
 }
