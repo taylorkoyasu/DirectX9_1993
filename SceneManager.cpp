@@ -5,11 +5,42 @@
 
 // Title
 void TitleScene::TitleInit() {
+
+	MyApp* app = MyApp::GetInstance();
+	app->SetWinnerIndex(-1); // 初期化
+
 	m_logo.logoY = 0.0f;
 	m_logo.logoSpeed = 120.0f;
 	m_logo.logotime = 1.0f / 60.0f;
 	//m_gameScene = GAME_SCENE_BEGIN;
+
+	InitExplosion();
+	StartExplosion(400.0f, 300.0f);
+	
 }
+
+EffectAnim m_explosion;
+
+void TitleScene::InitExplosion()
+{
+	m_explosion.isActive = false;
+	m_explosion.frame = 0;
+	m_explosion.maxFrame = 25;          //画像のコマ数
+	m_explosion.frameTime = 0.05f;      // 0.05秒ごと
+	m_explosion.timer = 0.0f;
+
+	m_explosion.frameW = 32;              // 画像1コマの幅
+	m_explosion.frameH = 32;              // 高さ
+}
+
+void TitleScene::StartExplosion(float x, float y)
+{
+	m_explosion.isActive = true;
+	m_explosion.frame = 0;
+	m_explosion.timer = 0.0f;
+	m_explosion.AnimPos = D3DXVECTOR3(x, y, 0);
+}
+
 
 void TitleScene::UpdateTitle()
 {	
@@ -24,6 +55,10 @@ void TitleScene::UpdateTitle()
 	MyInput* pInput = GetInputInst();
 	if (pInput->IsPushKeyOne(DIK_RETURN)) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
+		return;
+	}
+	if (pInput->IsPushKeyOne(DIK_J)) {
+	    ();
 		return;
 	}
 	// 確認済み
@@ -42,6 +77,24 @@ void TitleScene::UpdateTitle()
 	if ((pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_A))||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_B)||(pInput->IsPushBtnOne(JOY_CON_3, JOY_BTN_BIT_X)))) {
 		GetAppInst()->ChangeScene(GAME_SCENE_SELECT);
 		return;
+	}
+	// アニメーション
+	float deltaTime = 1.0f / 60.0f; // 固定でOK
+
+	if (m_explosion.isActive)
+	{
+		m_explosion.timer += deltaTime;
+
+		if (m_explosion.timer >= m_explosion.frameTime)
+		{
+			m_explosion.timer = 0.0f;
+			m_explosion.frame++;
+
+			if (m_explosion.frame >= m_explosion.maxFrame)
+			{
+				m_explosion.isActive = false; // 1回で終了
+			}
+		}
 	}
 
 	//MyInput* pInput = GetInputInst();
@@ -90,6 +143,8 @@ void TitleScene::DrawTitle()
 
 	IDirect3DTexture9* m_pTex = GetAppInst()->GetDxTex(TEX_TITLE);
 	IDirect3DTexture9* m_pLogo = GetAppInst()->GetDxTex(TEX_LOGO);
+	IDirect3DTexture9* m_pAnim = GetAppInst()->GetDxTex(TEX_EXP_ANIME);
+
 	//IDirect3DTexture9* m_pUI = GetAppInst()->GetDxTex(TEX_UI_SENSHA);
 
 	//D3DXMATRIX identity;
@@ -116,9 +171,35 @@ void TitleScene::DrawTitle()
 	//m_pSpr->Draw(m_pTex, &rc, NULL, NULL, 0xFFFFFFFF);
 	//pSpr->Draw(pTex, nullptr, nullptr, &pos, D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pSpr->End();
-	// ロゴ
+
+	// アニメーション
 	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
 
+	D3DSURFACE_DESC descA;
+	m_pAnim->GetLevelDesc(0, &descA);
+	printf("EXP TEX = %d x %d\n", descA.Width, descA.Height);
+
+	RECT src;
+	src.left = m_explosion.frame * m_explosion.frameW;
+	src.top = 0;
+	src.right = src.left + m_explosion.frameW;
+	src.bottom = src.top + m_explosion.frameH;
+
+	float scaleA = 3.0f;
+	D3DXMATRIX matScaleA, matTransA, matWorldA;
+	D3DXMatrixScaling(&matScaleA, scaleA, scaleA, 1.0f);
+	D3DXMatrixTranslation(&matTransA,m_explosion.AnimPos.x,m_explosion.AnimPos.y,0.0f);
+	matWorldA = matScaleA * matTransA;
+	m_pSpr->SetTransform(&matWorldA);
+	m_pSpr->Draw(m_pAnim, &src, nullptr, nullptr, 0xFFFFFFFF);
+	// 戻す
+	D3DXMATRIX identityA;
+	D3DXMatrixIdentity(&identityA);
+	m_pSpr->SetTransform(&identityA);
+	m_pSpr->End();
+
+	// ロゴ
+	m_pSpr->Begin(D3DXSPRITE_ALPHABLEND);
 	// 行列
 	D3DXMATRIX matScale, matTrans, matWorld;
 	// 縮小率
@@ -131,7 +212,7 @@ void TitleScene::DrawTitle()
 	// 中央寄せ
 	float x = (WIDTH - logoW) / 2;
 	float y = m_logo.logoY;
-
+	StartExplosion(x, y);
 	D3DXMatrixTranslation(&matTrans, x, y, 0.0f);
 	// 合成
 	matWorld = matScale * matTrans;

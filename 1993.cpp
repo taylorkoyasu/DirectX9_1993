@@ -227,6 +227,7 @@ BOOL MyApp::LoadResource()
 			 ,_T("img/tile/distance_32.png")
 			 ,_T("img/tile/spanner_32.png")
 			 ,_T("img/tile/bullet_32.png")
+			 ,_T("img/tile/expo_32.png")
 			
 
 			/* ,_T("img/post.png")*/

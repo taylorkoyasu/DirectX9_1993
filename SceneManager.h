@@ -6,6 +6,20 @@
 // TitleClass
 // アニメーション
 // logo.logoY;
+struct EffectAnim
+{
+	bool  isActive;     // 再生中
+	int   frame;        // 現在のフレーム
+	int   maxFrame;     // 総フレーム数
+	float frameTime;    // 1フレームの時間
+	float timer;        // 経過時間
+
+	int frameW;         // 1コマの幅
+	int frameH;         // 1コマの高さ
+
+	D3DXVECTOR3 AnimPos;    // 表示位置
+};
+
 struct logoAnime
 {
 	float logoY;
@@ -15,7 +29,8 @@ struct logoAnime
 
 class TitleScene {
 public:
-	
+	void InitExplosion();
+	void StartExplosion(float x, float y);
 	void TitleInit();
 	void UpdateTitle();     //更新関数
 	void DrawTitle();       //描画関数
