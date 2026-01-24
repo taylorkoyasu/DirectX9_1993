@@ -87,6 +87,7 @@ BOOL MyApp::InitApp()
 		return FALSE;
 	}
 
+
 	HRESULT hr = E_FAIL;
 
 	// DirectXを初期化する.
@@ -544,6 +545,12 @@ BOOL MyApp::UpdateMain()
 			CheckBulletHitPlayer(m_pAAA, m_pBBB);
 			CheckBulletHitPlayer(m_pAAA, m_pCCC);
 			CheckBulletHitPlayer(m_pAAA, m_pDDD);
+			CheckBulletHitBullet(m_pAAA, m_pBBB);
+			CheckBulletHitBullet(m_pAAA, m_pCCC);
+			CheckBulletHitBullet(m_pAAA, m_pDDD);
+			
+
+
 		}
 		//2p
 		if (m_playerJoined[1] == true) {
@@ -551,6 +558,10 @@ BOOL MyApp::UpdateMain()
 			CheckBulletHitPlayer(m_pBBB, m_pAAA);
 			CheckBulletHitPlayer(m_pBBB, m_pCCC);
 			CheckBulletHitPlayer(m_pBBB, m_pDDD);
+
+			CheckBulletHitBullet(m_pBBB, m_pAAA);
+			CheckBulletHitBullet(m_pBBB, m_pCCC);
+			CheckBulletHitBullet(m_pBBB, m_pDDD);
 		}
 		//3p
 		if (m_playerJoined[2] == true) {
@@ -558,6 +569,10 @@ BOOL MyApp::UpdateMain()
 			CheckBulletHitPlayer(m_pCCC, m_pAAA);
 			CheckBulletHitPlayer(m_pCCC, m_pBBB);
 			CheckBulletHitPlayer(m_pCCC, m_pDDD);
+
+			CheckBulletHitBullet(m_pCCC, m_pAAA);
+			CheckBulletHitBullet(m_pCCC, m_pBBB);
+			CheckBulletHitBullet(m_pCCC, m_pDDD);
 		}
 		//4p
 		if (m_playerJoined[3] == true) {
@@ -565,6 +580,10 @@ BOOL MyApp::UpdateMain()
 			CheckBulletHitPlayer(m_pDDD, m_pAAA);
 			CheckBulletHitPlayer(m_pDDD, m_pBBB);
 			CheckBulletHitPlayer(m_pDDD, m_pCCC);
+
+			CheckBulletHitBullet(m_pDDD, m_pBBB);
+			CheckBulletHitBullet(m_pDDD, m_pCCC);
+			CheckBulletHitBullet(m_pDDD, m_pAAA);
 		}
 
 		m_field.DebugPrintAll();
@@ -676,6 +695,50 @@ void MyApp::CheckBulletHitPlayer(S& shooter, T& target)
 	}
 }
 
+template <class S, class T>
+void MyApp::CheckBulletHitBullet(S& a, T& b)
+{
+	// 半径は Bullet 側にあるなら GetRadius() を使う
+	// 無いなら 8 で固定でもOK（今 Init で radius=8 にしてる前提）
+	const float ra = 8.0f;
+	const float rb = 8.0f;
+	const float hitR = ra + rb;
+	const float hitR2 = hitR * hitR;
+
+	auto& bulletsA = a.GetBullets(); // ★変更できる参照が必要
+	auto& bulletsB = b.GetBullets(); // ★変更できる参照が必要
+
+	for (auto& ba : bulletsA)
+	{
+		if (!ba.GetAlive()) continue;
+
+		Vector2 pa = ba.GetPos();
+
+		for (auto& bb : bulletsB)
+		{
+			if (!bb.GetAlive()) continue;
+
+			Vector2 pb = bb.GetPos();
+
+			float dx = pa.x - pb.x;
+			float dy = pa.y - pb.y;
+			float dist2 = dx * dx + dy * dy;
+
+			if (dist2 <= hitR2)
+			{
+				// 弾同士が当たった → 相殺
+				ba.SetAlive(false);
+				bb.SetAlive(false);
+
+				// ここでエフェクト入れたいなら呼ぶ
+				// SpawnBulletHitEffect(pa);
+				break; // ba は消えたので次へ
+			}
+}
+	}
+}
+
+
 
 #if defined(_DEBUG)
 // デバッグ情報の表示.
@@ -773,7 +836,7 @@ void MyApp::CheckPlayerItemHit()
 			break;
 		
 		case BOX_ITEM_MOVE:
-			tank->AddMoveSpeed(0.3f);
+			tank->AddMoveSpeed(0.6f);
 			break;
 
 		case BOX_ITEM_DISTANCE:

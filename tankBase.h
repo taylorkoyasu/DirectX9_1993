@@ -35,6 +35,16 @@ struct TankData {
 	
 };
 
+//過載
+struct OverLord {
+
+	float overHeatTimer;      // 監視窓の残り時間（例：3.0秒）
+	int   overHeatShots;      // 撃った回数
+	bool  isOverLoaded;       // 過載中か？
+	float overLoadedTimer;    // 過載残り時間（例：2.0秒）
+
+};
+
 //タンク(戦車)
 struct TankStatus
 {
@@ -54,6 +64,7 @@ struct TankStatus
 	int hitShakeTotal; // 開始時のフレーム（減衰用）
  
 	TankData data;
+	OverLord overLord;
 };
 
 class TankBase {
@@ -80,6 +91,11 @@ protected:
 		m_tstatus.data.bulletData = 0;
 		m_tstatus.data.speedData = 0;
 		m_tstatus.data.hpData = 0;
+
+		m_tstatus.overLord.overHeatTimer = 0.0f;
+		m_tstatus.overLord.overHeatShots = 0;
+		m_tstatus.overLord.isOverLoaded = false;
+		m_tstatus.overLord.overLoadedTimer = 0;
 	}
 public:
 	virtual ~TankBase() = default;
@@ -119,4 +135,13 @@ public:
 	void StartHitShake();// ダメージ演出：揺れ開始
 	void UpdateHitShake();// 毎フレーム更新
 	int GetHitShakeOffsetY();// 描画で使う揺れオフセット
+
+    //overlord
+	void BulletOverLord(float time, int bulletMax);//単発(3秒 9発超えた場合、戦車が過載)
+	//弐発 3秒 10 
+	//参発 3秒 11
+	//肆発 3秒 12
+	void BulletCooling(float dt);//冷却
+	void DrawOverLord();//(ゲージ　緑→赤)
+
 };

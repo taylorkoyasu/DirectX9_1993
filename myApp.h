@@ -99,6 +99,10 @@ public:
 	//3
 	template <class S, class T>
 	void CheckBulletHitPlayer(S& shooter, T& target);
+
+	template <class S, class T>
+	void CheckBulletHitBullet(S& Paaa, T& Pbbb);
+
 	void CheckPlayerItemHit();			//アイテム取得チェック
 	void CheckAlivePlayers();
 	int  GetWinnerIndex() const { return m_resultData.winner; }

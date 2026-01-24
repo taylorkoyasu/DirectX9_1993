@@ -29,6 +29,11 @@ void TankBase::Init(float tx, float ty, float tvx, float tvy,int tspeed, int thp
     m_tstatus.data.bulletData = 0;
     m_tstatus.data.speedData = 0;
     m_tstatus.data.hpData = 0;
+
+    m_tstatus.overLord.overHeatTimer = 0.0f;
+    m_tstatus.overLord.overHeatShots = 0;
+    m_tstatus.overLord.isOverLoaded = false;
+    m_tstatus.overLord.overLoadedTimer = 0;
 }
 void TankBase::Updata() {
 
@@ -89,7 +94,7 @@ void TankBase::IsLive() {
 void TankBase::AddMoveSpeed(float speed) {
 
     //微調整
-    m_tstatus.moveSpeed += speed*1.2f;
+    m_tstatus.moveSpeed += speed+0.5f;
     
     m_tstatus.data.speedData++;
   
@@ -161,4 +166,36 @@ int TankBase::GetHitShakeOffsetY()
     float s = sinf(passed * freq);
 
     return (int)(s * amp * fade);
+}
+
+// dt は 1.0f/60.0f を渡す想定
+void TankBase::BulletCooling(float dt)
+{
+    // ★過載中：一定時間撃てない
+    if (m_tstatus.overLord.isOverLoaded)
+    {
+        m_tstatus.overLord.overLoadedTimer -= dt;
+        if (m_tstatus.overLord.overLoadedTimer <= 0.0f)
+        {
+            m_tstatus.overLord.isOverLoaded = false;
+            m_tstatus.overLord.overLoadedTimer = 0.0f;
+
+            // 過載解除時にゲージをリセットするかは好み
+            m_tstatus.overLord.overHeatTimer = 0.0f;
+            m_tstatus.overLord.overHeatShots = 0;
+        }
+        return;
+    }
+
+    // ★監視窓（例：3秒）を減らす
+    if (m_tstatus.overLord.overHeatTimer > 0.0f)
+    {
+        m_tstatus.overLord.overHeatTimer -= dt;
+        if (m_tstatus.overLord.overHeatTimer <= 0.0f)
+        {
+            // 窓が終わったら回数リセット
+            m_tstatus.overLord.overHeatTimer = 0.0f;
+            m_tstatus.overLord.overHeatShots = 0;
+        }
+    }
 }
