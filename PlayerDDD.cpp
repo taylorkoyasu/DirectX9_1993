@@ -29,9 +29,11 @@ void PlayerDDD::Init(Field* f) {
 	m_tstatus.moveSpeed = 1.0f;
 	m_tstatus.hp = 15;
 	m_facing = DIR_DOWN;
-	m_maxBullets = 3;
+	m_tstatus.maxBullet = 1;
 
-	m_bullets.reserve(3);
+	m_tstatus.isDead = false;
+	m_bullets.clear();
+	m_bullets.reserve(4);
 	m_tstatus.ring = E_RING_VSHORT;
 
 	m_tstatus.data.ringData = 0;
@@ -137,7 +139,7 @@ void PlayerDDD::Fire()
 	}
 
 	// 最大弾数チェック
-	if (activeCount >= m_maxBullets) {
+	if (activeCount >= m_tstatus.maxBullet) {
 
 		return;
 

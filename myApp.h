@@ -87,7 +87,8 @@ public:
 
 	void ScreenFlip();
 	void MainLoop();		// メッセージループ.
-	
+	//void JoinPlayer(int joyId);
+	void UpdateJoinInput();
 	//追加
 	
 	LPD3DXFONT  GetFont()  { return m_pFont; } //通常フォント
@@ -102,7 +103,7 @@ public:
 	void CheckAlivePlayers();
 	int  GetWinnerIndex() const { return m_resultData.winner; }
 	void SetWinnerIndex(int idx) { m_resultData.winner = idx; }
-
+	void ResetResultData();
 private:
 	HINSTANCE m_hInstance;				// インスタンスハンドル.
 	HWND m_hWnd;						// 表示ウィンドウ.
@@ -132,7 +133,7 @@ private:
 	PlayerBBB m_pBBB; 
 	PlayerCCC m_pCCC; 
 	PlayerDDD m_pDDD; 
-	
+	bool m_playerJoined[JOY_CON_COUNT];
 	ResultData m_resultData;
 	
 	TitleScene title;                   // タイトルのポインタ

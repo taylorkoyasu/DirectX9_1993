@@ -21,6 +21,14 @@ void Field::FieldInit() {
             m_object2[i][j] = FIELD_OBJECT2_NOTHING;
         }
     }
+
+    //2026 01 23 í«â¡
+    // ïÛî†Drop/itemîzíu èâä˙âª
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            m_boxItem[i][j] = BOX_ITEM_NONE; // = 0 Ç…ëäìñÇ∑ÇÈÇ»ÇÁ 0 Ç≈Ç‡OK
+        }
+    }
 }
 //è·äQï®ÇÃHPÇê›íu
 void Field::Field2HPInit() {

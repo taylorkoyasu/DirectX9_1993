@@ -22,6 +22,9 @@ void PlayerAAA::Init(Field* f) {
     m_facing = DIR_DOWN;
     m_tstatus.maxBullet =1;
 
+
+    m_tstatus.isDead = false;
+    m_bullets.clear();
     m_bullets.reserve(4);
     m_tstatus.ring = E_RING_VSHORT;
 
@@ -30,6 +33,7 @@ void PlayerAAA::Init(Field* f) {
     m_tstatus.data.bulletData = 0;
     m_tstatus.data.speedData = 0;
     m_tstatus.data.hpData = 0;
+
 }
 void PlayerAAA::Move() {
 
@@ -68,7 +72,7 @@ void PlayerAAA::Move() {
 
             // ↑
            //if (pInput->IsPushKey(DIK_UP)&& m_tstatus.pos.y>= top)
-			if ((pInput->IsPushBtn(JOY_CON_3, JOY_BTN_BIT_UP)|| pInput->IsPushKey(DIK_UP))
+			if ((pInput->IsPushBtn(JOY_CON_0, JOY_BTN_BIT_UP)|| pInput->IsPushKey(DIK_UP))
 	
 				&& m_tstatus.pos.y >= top)
             {
@@ -304,7 +308,7 @@ BulletBase PlayerAAA::CreateBullet() {
     bullet.Init(
         startPos, // 位置
         8,                   // 半径
-        3,                   // 最大弾数（以后可用 m_maxBullets）
+        3,                   // 最大弾数
         10,                  // 速度
         1,                   // ダメージ
         0,                   // 角度（以后可用 m_facing）

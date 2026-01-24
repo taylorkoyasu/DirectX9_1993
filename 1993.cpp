@@ -270,16 +270,23 @@ void MyApp::InitGame()
 
 		//Players動的生成の初期化
 		m_players.clear();
-		m_players.push_back(&m_pAAA);
-		m_players.push_back(&m_pBBB);
-		m_players.push_back(&m_pCCC);
-		m_players.push_back(&m_pDDD);
+		//m_players.push_back(&m_pAAA);
+		//m_players.push_back(&m_pBBB);
+		//m_players.push_back(&m_pCCC);
+		//m_players.push_back(&m_pDDD);
 
 		//Players各ステータスの初期化
-		m_pAAA.Init(&m_field);
-		m_pBBB.Init(&m_field);
-		m_pCCC.Init(&m_field);
-		m_pDDD.Init(&m_field);
+		//m_pAAA.Init(&m_field);
+		//m_pBBB.Init(&m_field);
+		//m_pCCC.Init(&m_field);
+		//m_pDDD.Init(&m_field);
+
+
+		if (m_playerJoined[JOY_CON_0]) { m_pAAA.Init(&m_field); m_players.push_back(&m_pAAA); }
+		if (m_playerJoined[JOY_CON_1]) { m_pBBB.Init(&m_field); m_players.push_back(&m_pBBB); }
+		if (m_playerJoined[JOY_CON_2]) { m_pCCC.Init(&m_field); m_players.push_back(&m_pCCC); }
+		if (m_playerJoined[JOY_CON_3]) { m_pDDD.Init(&m_field); m_players.push_back(&m_pDDD); }
+
 	}
 
 }
@@ -303,38 +310,43 @@ void MyApp::ChangeScene(E_GAME_SCENE nextScene)
 	{
 
 	case GAME_SCENE_TITLE:
+		for (int i = 0; i < JOY_CON_COUNT; i++) {
+			m_playerJoined[i] = false;
+		}
 		title.TitleInit(); // タイトル初期化関数を呼ぶ
 		break;
 	case GAME_SCENE_SELECT:
 		select.SelectInit(); // タイトル初期化関数を呼ぶ
 		break;
 	case GAME_SCENE_STORY:
-	{
-		//m_field.FieldInit(); //フィールドの初期化
-		//m_field.Field2HPInit();
-		////Players動的生成の初期化
-		//m_players.clear();
-		//m_players.push_back(&m_pAAA);
-		//m_players.push_back(&m_pBBB);
-		//m_players.push_back(&m_pCCC);
-		//m_players.push_back(&m_pDDD);
-		//
-		////Players各ステータスの初期化
-		//m_pAAA.Init(&m_field);
-		//m_pBBB.Init(&m_field);
-		//m_pCCC.Init(&m_field);
-		//m_pDDD.Init(&m_field);
-	}
+		//this->InitGame(); // ゲーム開始初期化関数を呼ぶ
+		{
+			// フィールド初期化
+			m_field.FieldInit();
+			m_field.ReadCsv1("field_1.csv");
+			m_field.ReadCsv2("field_2.csv");
+			m_field.Field2HPInit();
+
+			// プレイヤー生成
+			m_players.clear();
+
+			if (m_playerJoined[JOY_CON_0]) { m_pAAA.Init(&m_field); m_players.push_back(&m_pAAA); }
+			if (m_playerJoined[JOY_CON_1]) { m_pBBB.Init(&m_field); m_players.push_back(&m_pBBB); }
+			if (m_playerJoined[JOY_CON_2]) { m_pCCC.Init(&m_field); m_players.push_back(&m_pCCC); }
+			if (m_playerJoined[JOY_CON_3]) { m_pDDD.Init(&m_field); m_players.push_back(&m_pDDD); }
+
+		}
 
 
-		/*case GAME_SCENE_BUTTLE:*/
-		this->InitGame(); // ゲーム開始初期化関数を呼ぶ
+
+		this->ResetResultData();
 		break;
 		//case GAME_SCENE_OVER:
 		//	this->GameOverInit(); // ゲームオーバー初期化関数を呼ぶ
 		//	break;
 	case GAME_SCENE_RESULT:
 		// リザルト画面の初期化処理
+		
 		result.ResultInit();
 		break;
 	default:
@@ -351,16 +363,19 @@ void MyApp::UpdateScene()
 		break;
 	case GAME_SCENE_SELECT:
 		select.UpdateSelect();
+		UpdateJoinInput();
 		break;
 	case GAME_SCENE_STORY:
 		/*case GAME_SCENE_BUTTLE:*/
 		this->UpdateStory(); // プレイ中の更新処理
+		this->CheckAlivePlayers();
 		break;
 		//case GAME_SCENE_OVER:
 		//	this->Update();
 		//	break;
 	case GAME_SCENE_RESULT:
 		result.UpdateResult();
+		
 		break;
 
 	default:
@@ -440,50 +455,57 @@ void MyApp::DrawStory() {
 		//アイテムの描画
 		m_field.DrawItems();
 		//p1
-		m_pSpr->SetTransform(&identity);
-		m_pAAA.Draw(TEX_PAAA);
-		m_pAAA.DrawBullets();
-		m_pAAA.DrawPoto();
-		m_pAAA.DrawNation();
-		m_pAAA.DrawHpBar();
-		m_pAAA.DrawTankMark();
-		m_pAAA.DrawTankRing();
-		m_pAAA.DrawTankSpeed();
-		m_pAAA.DrawBulletMark();
+		if (m_playerJoined[0] == true) {
+			m_pSpr->SetTransform(&identity);
+			m_pAAA.Draw(TEX_PAAA);
+			m_pAAA.DrawBullets();
+			m_pAAA.DrawPoto();
+			m_pAAA.DrawNation();
+			m_pAAA.DrawHpBar();
+			m_pAAA.DrawTankMark();
+			m_pAAA.DrawTankRing();
+			m_pAAA.DrawTankSpeed();
+			m_pAAA.DrawBulletMark();
+		}
 		//P2
-		m_pSpr->SetTransform(&identity);
-		m_pBBB.Draw(TEX_PBBB);
-		m_pBBB.DrawBullets();
-		m_pBBB.DrawPoto();
-		m_pBBB.DrawNation();
-		m_pBBB.DrawHpBar();
-		m_pBBB.DrawTankMark();
-		m_pBBB.DrawTankRing();
-		m_pBBB.DrawTankSpeed();
-		m_pBBB.DrawBulletMark();
+		if (m_playerJoined[1] == true) {
+			m_pSpr->SetTransform(&identity);
+			m_pBBB.Draw(TEX_PBBB);
+			m_pBBB.DrawBullets();
+			m_pBBB.DrawPoto();
+			m_pBBB.DrawNation();
+			m_pBBB.DrawHpBar();
+			m_pBBB.DrawTankMark();
+			m_pBBB.DrawTankRing();
+			m_pBBB.DrawTankSpeed();
+			m_pBBB.DrawBulletMark();
+		}
 		//p3
-		m_pSpr->SetTransform(&identity);
-		m_pCCC.Draw(TEX_PCCC);
-		m_pCCC.DrawBullets();
-		m_pCCC.DrawPoto();
-		m_pCCC.DrawNation();
-		m_pCCC.DrawHpBar();
-		m_pCCC.DrawTankMark();
-		m_pCCC.DrawTankRing();
-		m_pCCC.DrawTankSpeed();
-		m_pCCC.DrawBulletMark();
+		if (m_playerJoined[2] == true) {
+			m_pSpr->SetTransform(&identity);
+			m_pCCC.Draw(TEX_PCCC);
+			m_pCCC.DrawBullets();
+			m_pCCC.DrawPoto();
+			m_pCCC.DrawNation();
+			m_pCCC.DrawHpBar();
+			m_pCCC.DrawTankMark();
+			m_pCCC.DrawTankRing();
+			m_pCCC.DrawTankSpeed();
+			m_pCCC.DrawBulletMark();
+		}
 		//p4
-		m_pSpr->SetTransform(&identity);
-		m_pDDD.Draw(TEX_PDDD);
-		m_pDDD.DrawBullets();
-		m_pDDD.DrawPoto();
-		m_pDDD.DrawNation();
-		m_pDDD.DrawHpBar();
-		m_pDDD.DrawTankMark();
-		m_pDDD.DrawTankRing();
-		m_pDDD.DrawTankSpeed();
-		m_pDDD.DrawBulletMark();
-
+		if (m_playerJoined[3] == true) {
+			m_pSpr->SetTransform(&identity);
+			m_pDDD.Draw(TEX_PDDD);
+			m_pDDD.DrawBullets();
+			m_pDDD.DrawPoto();
+			m_pDDD.DrawNation();
+			m_pDDD.DrawHpBar();
+			m_pDDD.DrawTankMark();
+			m_pDDD.DrawTankRing();
+			m_pDDD.DrawTankSpeed();
+			m_pDDD.DrawBulletMark();
+		}
 #if defined(_DEBUG)
 		DrawDebugInfo();// デバッグ情報の表示.
 #endif
@@ -514,33 +536,42 @@ BOOL MyApp::UpdateMain()
 	MyInput* pInput = GetInputInst();
 	pInput->UpdateInput(m_hWnd);
 	UpdateScene(); // シーンごとの更新処理(ここに必須)
-	//1p
-	m_pAAA.Updata();
-	CheckBulletHitPlayer(m_pAAA, m_pBBB);
-	CheckBulletHitPlayer(m_pAAA, m_pCCC);
-	CheckBulletHitPlayer(m_pAAA, m_pDDD);
-	//2p
-	m_pBBB.Updata();
-	CheckBulletHitPlayer(m_pBBB, m_pAAA);
-	CheckBulletHitPlayer(m_pBBB, m_pCCC);
-	CheckBulletHitPlayer(m_pBBB, m_pDDD);
-	//3p
-	m_pCCC.Updata();
-	CheckBulletHitPlayer(m_pCCC, m_pAAA);
-	CheckBulletHitPlayer(m_pCCC, m_pBBB);
-	CheckBulletHitPlayer(m_pCCC, m_pDDD);
-	//4p
-	m_pDDD.Updata();
-	CheckBulletHitPlayer(m_pDDD, m_pAAA);
-	CheckBulletHitPlayer(m_pDDD, m_pBBB);
-	CheckBulletHitPlayer(m_pDDD, m_pCCC);
-	
+	if (m_gameScene == GAME_SCENE_STORY)
+	{
+		//1p
+		if (m_playerJoined[0] == true) {
+			m_pAAA.Updata();
+			CheckBulletHitPlayer(m_pAAA, m_pBBB);
+			CheckBulletHitPlayer(m_pAAA, m_pCCC);
+			CheckBulletHitPlayer(m_pAAA, m_pDDD);
+		}
+		//2p
+		if (m_playerJoined[1] == true) {
+			m_pBBB.Updata();
+			CheckBulletHitPlayer(m_pBBB, m_pAAA);
+			CheckBulletHitPlayer(m_pBBB, m_pCCC);
+			CheckBulletHitPlayer(m_pBBB, m_pDDD);
+		}
+		//3p
+		if (m_playerJoined[2] == true) {
+			m_pCCC.Updata();
+			CheckBulletHitPlayer(m_pCCC, m_pAAA);
+			CheckBulletHitPlayer(m_pCCC, m_pBBB);
+			CheckBulletHitPlayer(m_pCCC, m_pDDD);
+		}
+		//4p
+		if (m_playerJoined[3] == true) {
+			m_pDDD.Updata();
+			CheckBulletHitPlayer(m_pDDD, m_pAAA);
+			CheckBulletHitPlayer(m_pDDD, m_pBBB);
+			CheckBulletHitPlayer(m_pDDD, m_pCCC);
+		}
 
-	m_field.DebugPrintAll();
-	//ドロップ処理
-	m_field.DropUpdate();
-	CheckPlayerItemHit();
-	CheckAlivePlayers();
+		m_field.DebugPrintAll();
+		//ドロップ処理
+		m_field.DropUpdate();
+		CheckPlayerItemHit();
+	}
 	return TRUE;
 }
 
@@ -761,6 +792,8 @@ void MyApp::CheckPlayerItemHit()
 }
 void MyApp::CheckAlivePlayers()
 {
+
+	if (m_gameScene != GAME_SCENE_STORY) return;
 	int aliveCount = 0;
 	TankBase* lastAlive = nullptr;
 
@@ -797,9 +830,34 @@ void MyApp::CheckAlivePlayers()
 }
 
 
+void MyApp::ResetResultData() {
+
+	m_resultData.timeCount = 0;
+	m_resultData.winner = -1;
 
 
+}
 
+//void MyApp::JoinPlayer(int joyId)
+//{
+//	if (joyId < 0 || joyId >= JOY_CON_COUNT) return;
+//
+//	m_playerJoined[joyId] = true;
+//}
+void MyApp::UpdateJoinInput()
+{
+
+	MyInput* pInput = GetInputInst();
+
+	for (int i = 0; i < JOY_CON_COUNT; i++)
+	{
+		// Aボタンを押した瞬間で参加
+		if (pInput->IsPushBtnOne((E_JOY_CON_ID)i, JOY_BTN_BIT_A))
+		{
+			m_playerJoined[i] = true;
+		}
+	}
+}
 
 
 

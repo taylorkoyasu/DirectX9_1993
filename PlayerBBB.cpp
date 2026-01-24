@@ -24,9 +24,11 @@ void PlayerBBB::Init(Field* f) {
 	m_tstatus.moveSpeed = 1.0f;
 	m_tstatus.hp = 15;
 	m_facing = DIR_DOWN;
-	m_maxBullets = 3;
+	m_tstatus.maxBullet = 1;
 
-	m_bullets.reserve(3);
+	m_tstatus.isDead = false;
+	m_bullets.clear();
+	m_bullets.reserve(4);
 	m_tstatus.ring = E_RING_VSHORT;
 
 	m_tstatus.data.ringData = 0;
@@ -62,7 +64,7 @@ void PlayerBBB::Move() {
 		int ix = 0, iy = 0;
 		// ↑
 		//if (pInput->IsPushKey(DIK_UP) && m_tstatus.pos.y >= top)
-			if (pInput->IsPushBtn(JOY_CON_0, JOY_BTN_BIT_UP)&& m_tstatus.pos.y >= top)
+			if (pInput->IsPushBtn(JOY_CON_1, JOY_BTN_BIT_UP)&& m_tstatus.pos.y >= top)
 		{
 
 			iy -= 1;
@@ -132,7 +134,7 @@ void PlayerBBB::Fire()
 	}
 
 	// 最大弾数チェック
-	if (activeCount >= m_maxBullets) {
+	if (activeCount >= m_tstatus.maxBullet) {
 
 		return;
 

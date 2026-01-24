@@ -397,7 +397,7 @@ void SelectScene::UpdateSelect()
 			// タイムアップ処理
 		    // if (pInput->IsPushKeyOne(DIK_RETURN)) {
 			// 決定されたら	
-		    if(isActivCnt > 2){
+		    if(isActivCnt >= 2){
 				GetAppInst()->ChangeScene(GAME_SCENE_STORY);	
 				return;
 			}
